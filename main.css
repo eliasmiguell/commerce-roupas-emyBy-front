@@ -1,0 +1,12 @@
+body{
+/*font-family: 'Pacifico', cursive;
+
+font-family: 'Roboto', sans-serif;*/
+font-family: 'Playfair Display', serif;
+}
+header{
+  background-color: #811B2D;
+}
+header img{
+  height: 80px;
+}
