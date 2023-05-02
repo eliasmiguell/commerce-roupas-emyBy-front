@@ -1,12 +1,26 @@
 body{
 /*font-family: 'Pacifico', cursive;
 
-font-family: 'Roboto', sans-serif;*/
-font-family: 'Playfair Display', serif;
+font-family: 'Roboto', sans-serif;
+font-family: 'Playfair Display', serif;*/
 }
 header{
   background-color: #811B2D;
 }
 header img{
-  height: 80px;
+  height: 70px;
+}
+.navbar-toggler {
+  background-color: #811B2D;
+  color: white;
+}
+.navbar-toggler span{
+  color: white;
+}
+
+.nav-item a, .nav-item a:hover, .nav i, .nav i:hover{
+  color: white;
+}
+.nav .pesquisa input{
+  height: 40px;
 }
