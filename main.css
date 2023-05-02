@@ -74,5 +74,8 @@ header img{
   .input{
     display: none;
   }
+  .navbar-toggler{
+    font-size: 18px;
+  }
 
 }
