@@ -11,15 +11,16 @@ header img{
   height: 70px;
 }
 .navbar-toggler {
-  background-color: #811B2D;
-  color: white;
+  background-color: white;
+ 
 }
 .navbar-toggler span{
-  color: white;
+  color:#811B2D ;
 }
 
 .nav-item a, .nav-item a:hover, .nav i, .nav i:hover{
   color: white;
+  font-family: 'Playfair Display', serif;
 }
 .nav .pesquisa input{
   height: 40px;
