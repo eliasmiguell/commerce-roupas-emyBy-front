@@ -2,26 +2,77 @@ body{
 /*font-family: 'Pacifico', cursive;
 
 font-family: 'Roboto', sans-serif;
-font-family: 'Playfair Display', serif;*/
+font-family: 'Playfair Display', serif;
+
+<img src="imagens/logo-loja.png" alt="logo-loja">
+        <button class="navbar-toggler " data-bs-target="#menu-navegacao" data-bs-toggle="collapse">
+          <span class="navbar-toggler-icon "></span>
+        </button>
+        <nav class="navbar-collapse collapse justify-content-end mt-2" id="menu-navegacao">
+          <ul class="nav">
+            <div class="pesquisa">
+            </i></div>
+            <li class="nav-item fs-5">
+              
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link fs-5"><i class="bi bi-person">
+              </i>Entrar</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="bi bi-cart fs-4"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+    </div>
+
+
+
+
+
+
+
+
+
+*/
 }
 header{
   background-color: #811B2D;
+  margin-bottom: 0px;
 }
 header img{
   height: 70px;
 }
-.navbar-toggler {
-  background-color: white;
- 
+.input{
+  width: 80%;
+  height: 35px;
+  outline: none;
 }
-.navbar-toggler span{
-  color:#811B2D ;
+.container a {
+  text-decoration: none;
 }
-
-.nav-item a, .nav-item a:hover, .nav i, .nav i:hover{
-  color: white;
+.container a i{
+  font-family: 'Playfair Display', serif;
+ color: white;
+ text-decoration: none;
+ text-align: center;
+}
+.navbar-toggler{
+ background-color: white;
+}
+.navbar-collapse{
+  background-color: #811b2e98;
+  margin-top: 0px;
+}
+.nav-item{
+  font-weight: bold;
   font-family: 'Playfair Display', serif;
 }
-.nav .pesquisa input{
-  height: 40px;
+@media (max-width:767px){
+  .input{
+    display: none;
+  }
+
 }
