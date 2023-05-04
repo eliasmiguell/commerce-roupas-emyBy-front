@@ -89,6 +89,11 @@ font-family: 'Playfair Display', serif;
 .text-font{
   font-family: 'Playfair Display', serif;
 }
+aside .nav-link {
+  color: #811B2D;
+  font-size: 1.2em;
+
+}
 .text-colored{
   color:#811B2D 
 
@@ -110,12 +115,12 @@ section span{
 
 
 }
-#vestidos button{
+#vestidos button, #blusas button{
   background-color:#811B2D ;
 color: white;
 font-family: 'Playfair Display', serif;
 }
-#vestidos button:hover{
+#vestidos button:hover, #blusas button:hover{
   background-color:#ba5164;
 
 }
