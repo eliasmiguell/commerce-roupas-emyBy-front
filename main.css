@@ -54,6 +54,9 @@ background-color: white;
   color: white;
 
 }
+.nav img{
+  height: 24px;
+}
 @media (max-width:767px){
   .input{
     display: none;
