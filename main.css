@@ -70,7 +70,7 @@ header .nav .nav-link.active, .nav.nav-pills .nav-link.active{
 header .nav .nav-link.active i{
   color: #811B2D;
 }
-section img{
+#loja img{
   border-radius: 50%;
 }
 
@@ -105,6 +105,19 @@ section span{
   font-family: 'Playfair Display', serif;
   color:#811B2D;
   font-weight: bold;
+}
+#vestidos img{
+
+
+}
+#vestidos button{
+  background-color:#811B2D ;
+color: white;
+font-family: 'Playfair Display', serif;
+}
+#vestidos button:hover{
+  background-color:#ba5164;
+
 }
 @media (max-width:767px){
 }
