@@ -19,6 +19,9 @@ font-family: 'Playfair Display', serif;
         
 */
 }
+html{
+  overflow-x: hidden;
+}
 header{
   background-color: #811B2D;
 }
