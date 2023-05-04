@@ -1,6 +1,6 @@
 body{
-/*font-family: 'Pacifico', cursive;
-font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
+/*
 font-family: 'Playfair Display', serif;
 
 <input class="input rounded" type="search" name="" id="pesquisar">
@@ -57,10 +57,50 @@ background-color: white;
 .nav img{
   height: 24px;
 }
-@media (max-width:767px){
-  .input{
-    display: none;
-  }
- 
+.nav .nav-link.active{
+  background-color:white;
+  color: #811B2D;
+}
+.nav .nav-link.active i{
+  color: #811B2D;
+}
+section img{
+  border-radius: 50%;
+}
 
+.carousel-caption a {
+background-color: #811b2eac;
+color: white;
+font-family: 'Playfair Display', serif;
+}
+.carousel-caption a:hover{
+  background-color: #811B2D;
+}
+.carousel-caption a{
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.text-font{
+  font-family: 'Playfair Display', serif;
+}
+.text-colored{
+  color:#811B2D 
+
+}
+
+section h2 span{
+  color:#811B2D ;
+  font-weight: bold;
+  border-bottom: 4px solid #811B2D;
+}
+
+section h2 span{
+  padding-bottom: 10px;
+}
+section span{
+  font-family: 'Playfair Display', serif;
+  color:#811B2D;
+  font-weight: bold;
+}
+@media (max-width:767px){
 }
