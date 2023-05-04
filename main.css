@@ -34,9 +34,12 @@ header img{
   outline: none;
 }
 .container a {
-  text-decoration: none;
+  
 }
-.container a i{
+#loja{
+  background-color: rgba(240, 128, 128, 0.045);
+}
+#loja a i{
   font-family: 'Playfair Display', serif;
 color: white;
 text-decoration: none;
@@ -48,23 +51,23 @@ background-color: white;
 .navbar-collapse{
   background-color: #811b2e98;
 }
-.nav-item{
+header .nav-item{
   font-weight: bold;
   font-family: 'Playfair Display', serif;
   
 }
-.nav-item a, .nav-item a:hover{
+header .nav-item a, .nav-item a:hover{
   color: white;
 
 }
 .nav img{
   height: 24px;
 }
-.nav .nav-link.active{
-  background-color:white;
-  color: #811B2D;
+header .nav .nav-link.active, .nav.nav-pills .nav-link.active{
+  background-color:#811B2D;
+  color: white;
 }
-.nav .nav-link.active i{
+header .nav .nav-link.active i{
   color: #811B2D;
 }
 section img{
@@ -90,13 +93,11 @@ font-family: 'Playfair Display', serif;
   color:#811B2D 
 
 }
-
 section h2 span{
   color:#811B2D ;
   font-weight: bold;
   border-bottom: 4px solid #811B2D;
 }
-
 section h2 span{
   padding-bottom: 10px;
 }
