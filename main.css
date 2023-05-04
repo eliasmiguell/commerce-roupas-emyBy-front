@@ -115,12 +115,12 @@ section span{
 
 
 }
-#vestidos button, #blusas button{
+#vestidos button, #blusas button, #saias button, #calcas button{
   background-color:#811B2D ;
 color: white;
 font-family: 'Playfair Display', serif;
 }
-#vestidos button:hover, #blusas button:hover{
+#vestidos button:hover, #blusas button:hover, #saias button:hover, #calcas button:hover{
   background-color:#ba5164;
 
 }
