@@ -1,127 +1,455 @@
-body{
+.body{
   font-family: 'Roboto', sans-serif;
-/*
-font-family: 'Playfair Display', serif;
-
-<input class="input rounded" type="search" name="" id="pesquisar">
-          <a href="#"><i class="bi bi-search w-10 fs-5"></i>
-          </a>
-      
-        <div class="col-md-2 d-md-block">
-          
-          <a href="#"><i class="bi bi-person fs-5">Entrar</i></a>
-        </div>
-        <div class="col-md-2 ">
-          <a href="#">
-            <i class="bi bi-cart fs-5"></i>
-          </a>
-        </div>
-        
-*/
 }
 html{
   overflow-x: hidden;
 }
 header{
   background-color: #811B2D;
-  
 }
 header img{
   height: 70px;
 }
-.input{
-  width: 80%;
-  height: 35px;
-  outline: none;
-}
-
-#loja{
-  background-color: rgba(240, 128, 128, 0.045);
-}
-#loja a i{
-  font-family: 'Playfair Display', serif;
-color: white;
-text-decoration: none;
-text-align: center;
-}
-.navbar-toggler{
-background-color: white;
-}
-.navbar-collapse{
-  background-color: #811b2e98;
-}
-header .nav-item{
-  font-weight: bold;
+header span{
   font-family: 'Playfair Display', serif;
   
+  text-decoration: none;
+  text-align: center
 }
-header .nav-item a, .nav-item a:hover{
-  color: white;
-
-}
-.nav img{
+.navbar-toggler{
+  background-color: white;
+  }
+nav  .nav-link img{
   height: 24px;
 }
-header .nav .nav-link.active, .nav.nav-pills .nav-link.active{
-  background-color:#811B2D;
+nav  .nav-link {
+  color: white;
+  font-weight: bold;
+}
+nav  .nav-link:hover{
   color: white;
 }
-header .nav .nav-link.active i{
+#cabecalho .nav .nav-link.active{
+  background-color:white ;
   color: #811B2D;
 }
-#loja img{
+
+#loja .row img{
+  width: 695px;
+}
+#loja .row img{
   border-radius: 50%;
 }
-
-.carousel-caption a {
-background-color: #811b2eac;
-color: white;
-font-family: 'Playfair Display', serif;
-}
-.carousel-caption a:hover{
-  background-color: #811B2D;
-}
-.carousel-caption a{
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-.text-font{
+#loja .row h2, .row .col-md-3 h3{
   font-family: 'Playfair Display', serif;
+  color:#811B2D ;
+  font-weight: bold;
 }
-aside .nav-link {
-  color: #811B2D;
-  font-size: 1.2em;
+#loja .row p  span{
+  font-family: 'Playfair Display', serif;
+  color:#811B2D ;
+  font-weight: bold;
+}
 
-}
-.text-colored{
-  color:#811B2D 
-
-}
-section h2 span{
+section h1 span, section h2 span{
+  font-family: 'Playfair Display', serif;
   color:#811B2D ;
   font-weight: bold;
   border-bottom: 4px solid #811B2D;
-}
-section h2 span{
   padding-bottom: 10px;
 }
-section span{
+section h2, section h1 {
   font-family: 'Playfair Display', serif;
-  color:#811B2D;
   font-weight: bold;
 }
-#vestidos img{
-
-
+section .col-md-3 img{
+ border-radius: 10px;
 }
-#vestidos button, #blusas button, #saias button, #calcas button{
-  background-color:#811B2D ;
+section .carousel-item a{
+background-color:#811b2e98 ;
 color: white;
 font-family: 'Playfair Display', serif;
 }
-#vestidos button:hover, #blusas button:hover, #saias button:hover, #calcas button:hover{
-  background-color:#ba5164;
+section .carousel-item a:hover{
+  background-color:#811B2D;
+}
+section .row .btn{
+  background-color:#811B2D;
+  color: white;
+  font-family: 'Playfair Display', serif;
+}
+section .row .btn:hover{
+  background-color:#b71634;
+color: white;
+font-family: 'Playfair Display', serif;
+}
+.nav-pills.flex-column .nav-link{
+  color: #811B2D;
+  font-family: 'Playfair Display', serif;
+}
+
+.nav-pills.flex-column .nav-link.active{
+  background-color:#811B2D;
+  color: white;
 
 }
-@media (max-width:767px){
+.row .col-md-3{
+  padding-bottom: 30px;
 }
+.row .col-md-3{
+  padding-top: 18px;
+}
+.social-links li{
+  list-style: none;
+  display: inline;
+}
+.social-links a {
+  text-decoration: none;
+}
+.text-colored {
+  font-family: 'Playfair Display', serif;
+  color: #811B2D;
+}
+footer{
+  background-color: #811B2D;
+  color: white;
+}
+
+
+
+/*
+
+ <section  id="calcados"class="pb-5 pt-5">
+      <h2 class="text-font text-center"><span>Calçados </span >Emy-by</h2>
+      <div class="container">
+        <div class="row pt-5 ">
+          <aside class="col-md-2 flex-column">
+            <nav class="nav nav-pills flex-column" >
+              <button type="button" data-bs-toggle="tab" data-bs-target="#sapatos1" class="mb-2 p-2 text-font text-start fw-bold nav-link active">Sapatos</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#tenis1" class="mb-2 p-2 text-font text-start fw-bold nav-link">Tênis</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#sandalhas1" class="mb-2 p-2 text-font text-start fw-bold nav-link">Sandalhas</button>
+              
+            </nav>
+          </aside>
+        <div class="col-md-10">
+          <div class="tab-content">
+            <div class="tab-pane active" id="sapatos1">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-1.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para casamentos</h3>
+                  <p>Sapato Bege</p>
+                 <strong class="text-font fs-5">R$ 300,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">36</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-2.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para casamentos</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-3.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para cinza</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 400,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">38</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-2.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para casamentos</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-3.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para cinza</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 400,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">38</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane " id="tenis1">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/tenis-nik1.jpg" alt="tenis nike">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Nike</h3>
+                  <p>Sapato Bege</p>
+                 <strong class="text-font fs-5">R$ 300,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">36</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/ten-adid-2.jpg" alt="Tênis adidas">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Adidas</h3>
+                  <p>Adidas</p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                    <label class="form-label"for="tamanhoe">41</label>
+                    <input type="radio" name="tamanho" id="tamanhoe">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/ten-nike-3.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Nike</h3>
+                  <p>Tênis Nike</p>
+                 <strong class="text-font fs-5">R$ 400,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/ten-puma-4.jpg" alt="Tênis Puma">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Puma</h3>
+                  <p>Tênis Puma Vermelho/p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="sandalhas1">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://boutiquedassi.fbitsstatic.net/img/p/sandalia-rute-81693/301956-1.jpg?w=600&h=800&v=no-change&qs=ignore" alt="Sandalha rute">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sandalha Rute</h3>
+                  <p>Sandalha Rute</p>
+                 <strong class="text-font fs-5">R$ 125,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">36</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://a-static.mlcdn.com.br/800x560/sandalia-salto-sandalha-tira-sandalha-moda-sandalha-verao-misslis/misslis/7d5076c041e311ed867b4201ac185019/77cf9a8ff5198cc414d891968876a349.jpeg" alt="Salto Sandalha Verão">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Adidas</h3>
+                  <p>Salto Sandalha Verão</p>
+                 <strong class="text-font fs-5">R$ 150,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                    <label class="form-label"for="tamanhoe">41</label>
+                    <input type="radio" name="tamanho" id="tamanhoe">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://img1.wsimg.com/isteam/ip/3a9eb2b2-580d-44cc-a8c8-9c01b580ee7f/ols/36-006.1.jpg/:/rs=w:1200,h:1200" alt="Sandalha Anabela">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sandalha Anabela</h3>
+                  <p>Sandalha Anabela</p>
+                 <strong class="text-font fs-5">R$ 90,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://photos.enjoei.com.br/sandalha-nova-84370008/828xN/czM6Ly9waG90b3MuZW5qb2VpLmNvbS5ici9wcm9kdWN0cy8yMzg0NjYyNi8xZmVkOGRmZTY4ODFlMDE2NzEyY2NlMTk5YjFmYzZhMS5qcGc" alt="Sandalha Flip">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Puma</h3>
+                  <p>Sandalha Flip</p>
+                 <strong class="text-font fs-5">R$ 150,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  </secti>
+  </div>
+  <section  id="acessorios"class="pb-5 pt-5">
+    <h2 class="text-font text-center"><span>Acessórios </span >Emy-by</h2>
+    <div class="container">
+      <div class="row pt-5 ">
+        <aside class="col-md-2 flex-column">
+          <nav class="nav nav-pills flex-column" >
+            <button type="button" data-bs-toggle="tab" data-bs-target="#relogios" class="mb-2 p-2 text-font text-start fw-bold nav-link active">Relógios</button>
+            <button type="button" data-bs-toggle="tab" data-bs-target="#colar" class="mb-2 p-2 text-font text-start fw-bold nav-link">Colar</button>
+          </nav>
+        </aside>
+      <div class="col-md-10">
+        <div class="tab-content">
+          <div class="tab-pane active" id="relogios">
+            <div class="row" >
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://d2r9epyceweg5n.cloudfront.net/stores/754/485/products/lrgj138l-kz511-26351753f5637bafc016345825233105-1024-1024.png" alt="Kit relogio">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio Lice</h3>
+                <p>Kit relógio Lice</p>
+                <strong class="text-font fs-5">R$ 400,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://images.tcdn.com.br/img/img_prod/555399/3857_0_20200229141847.jpg" alt="Kit relógio HTS">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio HTS</h3>
+                <p>Kit relógio HTS</p>
+                <strong class="text-font fs-5">R$ 250,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://zionstorerj.com.br/wp-content/uploads/2021/04/Screenshot_2-2.png" alt="Kit relógio zions">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio Zions</h3>
+                <p>Kit relógio zions</p>
+                <strong class="text-font fs-5">R$ 350,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://images.tcdn.com.br/img/img_prod/555399/3857_0_20200229141847.jpg" alt="Kit relógio HTS">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio HTS</h3>
+                <p>Kit relógio HTS</p>
+                <strong class="text-font fs-5">R$ 250,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://zionstorerj.com.br/wp-content/uploads/2021/04/Screenshot_2-2.png" alt="Kit relógio zions">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio Zions</h3>
+                <p>Kit relógio zions</p>
+                <strong class="text-font fs-5">R$ 350,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane " id="colar">
+            <div class="row" >
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://d3ugyf2ht6aenh.cloudfront.net/stores/001/296/390/products/whatsapp-image-2023-02-07-at-13-01-331-46de0e2c1ffea4cfb916759659039393-480-0.webp" alt="Kit relogio">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar Dourado</h3>
+                <p>Colar Dourado</p>
+                <strong class="text-font fs-5">R$ 150,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://i.pinimg.com/474x/52/d3/db/52d3dbb7279b833b73a6ce2a4aa8ce0a.jpg" alt="Colar de ouro">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar de Ouro</h3>
+                <p>Colar de Ouro</p>
+                <strong class="text-font fs-5">R$ 1000,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://d3ugyf2ht6aenh.cloudfront.net/stores/001/296/390/products/whatsapp-image-2023-02-07-at-13-01-331-46de0e2c1ffea4cfb916759659039393-480-0.webp" alt="Kit relogio">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar Dourado</h3>
+                <p>Colar Dourado</p>
+                <strong class="text-font fs-5">R$ 150,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://i.pinimg.com/474x/52/d3/db/52d3dbb7279b833b73a6ce2a4aa8ce0a.jpg" alt="Colar de ouro">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar de Ouro</h3>
+                <p>Colar de Ouro</p>
+                <strong class="text-font fs-5">R$ 1000,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+            </div>
+        </div>
+      </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
