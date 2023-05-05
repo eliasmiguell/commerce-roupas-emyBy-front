@@ -15,25 +15,27 @@
 </head>
 
 <body>
-  <header class="navbar navbar-expand-lg sticky-top mb-5 " id="cabecalho">
+  <header class="navbar navbar-expand-lg sticky-top " id="cabecalho">
     <div class="container">
             <img src="imagens/logo-loja.png" alt="logo-loja">
             <button class="navbar-toggler " data-bs-target="#menu-navegacao" data-bs-toggle="collapse">
               <span class="navbar-toggler-icon "></span>
             </button>
             <nav class="navbar-collapse collapse justify-content-end mt-2 " id="menu-navegacao">
-              <ul class="nav nav-pills d-block d-md-flex active">
-                  <li class="nav-item">
-                    <a href="#loja"class="nav-link"><i class="bi bi-house me-2 fs-5 "></i>Loja</a>
+              <ul class="nav nav-pills d-block d-md-flex">
+                  <li class="nav-item active">
+                   <a href="#loja"class="nav-link">
+                    <i class="bi bi-house me-2 fs-5 "></i>Loja
+                    </a>
                   </li>
                   <li class="nav-item">
                   <a href="#roupas" class="nav-link"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA9klEQVR4nO3TQStEURjG8TsSQ/kys7RTihVZWFiLkrJE8Qn4SGxtNBLzAWhCWc2KsvHTqXfqlDt1c89Gzb/u4vQ87/Occ+69VTXl34BN9PGFAXZKhm/h22/KlOA+Ao+xiLNYD0oVXOMBs7FeioKPIgU5mMdpFNxWJcFNdv+fWCkZ3snCr7BcMnw1XUdWkN7Hdiptu+ON+PbHvMUzph+eTtsdv+MEC5jDPl4y/bHRibCOu2zwFUfo1ni7oSXPmDS7Nil8r0lww6LdOuNziOdNgicUpdnEU51hGGKv+iPoRcawTjxUjoO6ghlcYtQieISLVv/HlKo0P/KdNaE00ttAAAAAAElFTkSuQmCC"> Roupas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADDElEQVR4nO2Ya2hPYRzH/zbJJWp5YZOQuWa5T1jhBZLLXEpZihduaYi8cEkJTWOUN9QQuUSWcpkZVkJqickLxSvRpEUh2ua6j578Dr+Oc87/HP+b1fOpU////zzP7/l9z/ldnucfi1ksFovFYmnnAB2BMmBmrD0CzOAPd4Gi2P8EMBzICbg/j7+5COSn11MPgJ3i0Htgmc+YvsAPDxGfgd1Ap1gmAAaIE5prwDCPsZfx5zEwIhMCqnwc+g7cBDYCC4E5QI1rzDPX9y/AViA7Xc7nq7BoA86I42E4B2QBG4AW1737wJh0CNivFr0uv40FroggP07qmAeW+LzBwyZ3UuV8B6BJLTjNdb8fsBqoBC4BN8Sh8RFz4ytwGpie1EQHCtQir0w4JGDrk9gx4TgbqPUR8xG4AKwBBicqYL0yfCJBW2VSgneo3AoKQYdG4Dgw1URE1EWP/DYD6xIR4GHbJLbu2hUeFctNAzApyiI6bkuSLGAK8E2uIvX7IPOwpIO/8xBhxi8Nu8hVNXFuMgWI/f5A74D72cAE4JT0DwfzuSDMAmfVpHCqUwS/tikmhByOhk08XYVMqSsFZgETgdHSEyYDxcByYAuwV/KnSkrsdrmfm6CIQuXP8zAT9pB8XgDngU0ivFtI53OAg8pOS5hJt0k9pi+8BG6ZsJA3uEqutbKLNQ2y1TXvdRgBpqk4zJfqcEwM1gOPgIfAHaDa9ApgH7AZWAkskoZ0QEplcxKFV8dzvoca3By5ifgfOUcBKyQ3GmQb8S8Ux1uspxr8JlHnA9bpDIwEFsi2vBw4JALNvmqXvGVNTagHCrxVk0yn7BXnjTmOlEoYOZcT04ulghVKWewaYC9P5jxxOf80yA+3EZNAmjYRZYzcAx5I+9dCo2JOek1is15smv2PF+YMkRfKeRHQJc42OF18ALaZHArtvBKRJdWkzqOUaVrlKdbJYaZC4rlc4rlSTmi1Ur0a49hrlmpndsTdIzseUEUGqu47DhgS6bV6J3EuMFS6u7HdJ2P/YFgsFovFYrHE2h8/AUusSCR/UE3fAAAAAElFTkSuQmCC"> Calçados</a>
+                  <a href="#calcados" class="nav-link"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADDElEQVR4nO2Ya2hPYRzH/zbJJWp5YZOQuWa5T1jhBZLLXEpZihduaYi8cEkJTWOUN9QQuUSWcpkZVkJqickLxSvRpEUh2ua6j578Dr+Oc87/HP+b1fOpU////zzP7/l9z/ldnucfi1ksFovFYmnnAB2BMmBmrD0CzOAPd4Gi2P8EMBzICbg/j7+5COSn11MPgJ3i0Htgmc+YvsAPDxGfgd1Ap1gmAAaIE5prwDCPsZfx5zEwIhMCqnwc+g7cBDYCC4E5QI1rzDPX9y/AViA7Xc7nq7BoA86I42E4B2QBG4AW1737wJh0CNivFr0uv40FroggP07qmAeW+LzBwyZ3UuV8B6BJLTjNdb8fsBqoBC4BN8Sh8RFz4ytwGpie1EQHCtQir0w4JGDrk9gx4TgbqPUR8xG4AKwBBicqYL0yfCJBW2VSgneo3AoKQYdG4Dgw1URE1EWP/DYD6xIR4GHbJLbu2hUeFctNAzApyiI6bkuSLGAK8E2uIvX7IPOwpIO/8xBhxi8Nu8hVNXFuMgWI/f5A74D72cAE4JT0DwfzuSDMAmfVpHCqUwS/tikmhByOhk08XYVMqSsFZgETgdHSEyYDxcByYAuwV/KnSkrsdrmfm6CIQuXP8zAT9pB8XgDngU0ivFtI53OAg8pOS5hJt0k9pi+8BG6ZsJA3uEqutbKLNQ2y1TXvdRgBpqk4zJfqcEwM1gOPgIfAHaDa9ApgH7AZWAkskoZ0QEplcxKFV8dzvoca3By5ifgfOUcBKyQ3GmQb8S8Ux1uspxr8JlHnA9bpDIwEFsi2vBw4JALNvmqXvGVNTagHCrxVk0yn7BXnjTmOlEoYOZcT04ulghVKWewaYC9P5jxxOf80yA+3EZNAmjYRZYzcAx5I+9dCo2JOek1is15smv2PF+YMkRfKeRHQJc42OF18ALaZHArtvBKRJdWkzqOUaVrlKdbJYaZC4rlc4rlSTmi1Ur0a49hrlmpndsTdIzseUEUGqu47DhgS6bV6J3EuMFS6u7HdJ2P/YFgsFovFYrHE2h8/AUusSCR/UE3fAAAAAElFTkSuQmCC"> Calçados</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link" ><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVR4nO3Yy4tPYRzH8WdcBouJWLhnJpRbUW4pt8TERuEPUP6CSbGZlZLbks3YkDHW2NjYsZmNWMilLCxccolQivDSac6Px5kzgzPn9/P76bzr1Omc+nw+z3l6vuf7PCFUVFRUVFSMAHpxGUtDg8Gy1Lu3qMAqP7lSesLf+1+N/FcWEVgXCdytS8pRwL3If00RgQWRwDu0hQaBNryP/OcXFXkbiayuS9ocsDbyfVP442EgEjpWSKSY74nIt38sQnsioVeYWmrSHDANryPf3aEomIKnkdjRwmJ/7nk88nuCyWMVPBAJfsam0tJmwAZ8ivz2h7GC8bgdiSYzMnfMwsN95uFZ5HML48oS70rXQI3HWFyKePih/yhTeRaVpV8z6caXyOQ5dpaguwsvIt3EY0c5qYeb7cNHv3IOswtozcH5jFaivbcu4TML7WXGOFl4F7AZ7VErsj291qXPJmFLUtszi1U6C+vrGj4axCxckk/yFQdzng/mzF6Ni5jZkPCZgSRf96bi3MC2hgfPGcgKnMEDfBslcPLuPk5jeWhGMAMHc8Inz6aHVgBbcwawNbQK6MTXKHxy3xlaAUzEtZwZuF4rsU2LoU1QUuNHor+RO7u/BqcygY+kV8zJ0IxgSaaE9kXv+jKltLRGsDSwMDOA7kwjGA+gKzQjhlqCGg/T3qc9c0RSfI9bb5J+JnOScQiHM8czc0Izg54o8If0qtETmh1MwJ2cEno3+UeEVgAbc5q61mklcg7FBkKrgQ6cTf8BHf86T0VFRUXF/8l3cI2v2mK1y+EAAAAASUVORK5CYII="> Acessórios</a>
+                  <a href="#acessorios" class="nav-link" ><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVR4nO3Yy4tPYRzH8WdcBouJWLhnJpRbUW4pt8TERuEPUP6CSbGZlZLbks3YkDHW2NjYsZmNWMilLCxccolQivDSac6Px5kzgzPn9/P76bzr1Omc+nw+z3l6vuf7PCFUVFRUVFSMAHpxGUtDg8Gy1Lu3qMAqP7lSesLf+1+N/FcWEVgXCdytS8pRwL3If00RgQWRwDu0hQaBNryP/OcXFXkbiayuS9ocsDbyfVP442EgEjpWSKSY74nIt38sQnsioVeYWmrSHDANryPf3aEomIKnkdjRwmJ/7nk88nuCyWMVPBAJfsam0tJmwAZ8ivz2h7GC8bgdiSYzMnfMwsN95uFZ5HML48oS70rXQI3HWFyKePih/yhTeRaVpV8z6caXyOQ5dpaguwsvIt3EY0c5qYeb7cNHv3IOswtozcH5jFaivbcu4TML7WXGOFl4F7AZ7VErsj291qXPJmFLUtszi1U6C+vrGj4axCxckk/yFQdzng/mzF6Ni5jZkPCZgSRf96bi3MC2hgfPGcgKnMEDfBslcPLuPk5jeWhGMAMHc8Inz6aHVgBbcwawNbQK6MTXKHxy3xlaAUzEtZwZuF4rsU2LoU1QUuNHor+RO7u/BqcygY+kV8zJ0IxgSaaE9kXv+jKltLRGsDSwMDOA7kwjGA+gKzQjhlqCGg/T3qc9c0RSfI9bb5J+JnOScQiHM8czc0Izg54o8If0qtETmh1MwJ2cEno3+UeEVgAbc5q61mklcg7FBkKrgQ6cTf8BHf86T0VFRUXF/8l3cI2v2mK1y+EAAAAASUVORK5CYII="> Acessórios</a>
                 </li>
                 <li class="nav-item">
                   <a href="#" class="nav-link" ><i class="bi bi-chat-left-text me-2 fs-5"></i>Fale Conosco</a>
@@ -45,8 +47,7 @@
             </nav>
       </div>
   </header>
-  <main>
-    <div class=" carousel carousel-slide" data-bs-ride="carousel" id="slide">
+    <div class=" carousel carousel-slide mb-5" data-bs-ride="carousel" id="slide">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img  class="w-100 d-block"src="imagens/slide/img-1.jpg" alt="">
@@ -85,243 +86,549 @@
         </div>
       </div>
     </div>
-  </main>
-  <section  id="loja"  data-bs-spy="scroll" data-bs-target="#cabecalho"data-bs-smooth-scroll="true">
-        <div class="container">
-      <div class="row text-center pb-5 pt-5">
-        <h2 class="text-font ">Sobre <span>Emy-by</span></h2>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <img class=" d-block w-100 img-fluid"src="imagens/dona-loja1.jpeg" alt="">
+  <div data-bs-spy="scroll" data-bs-target="#cabecalho"data-bs-smooth-scroll="true">
+    <section  id="loja" >
+          <div class="container">
+        <div class="row text-center pb-5 pt-5">
+          <h2 class="text-font ">Sobre <span>Emy-by</span></h2>
         </div>
-        <div class="col-md-6 mx-2">
-          <h2 class="text-font text-colored fw-bold pb-5">Loja</h2>
-          <p class="fs-5 ">Olá meu nome é Esterfanny, sou proprietária da loja Emy, que é abreviação do meu nome. Há um tempo sou empreenderora e sempre gostei do ramo de beleza e eleva autoestima das mulheres</p>
-          <p class="fs-5 ">Agora resolvi divulgar aos meus clientes para continuarem investibdo em si com frequência e as novas passem a valorizar a beleza que tem de forma modesta e com estilo.</p>
-          <p class="fs-5 text-center">Invista em<span class="fs-4"> Você</span> com mais frequência</p>
+        <div class="row">
+          <div class="col-md-4">
+            <img class=" d-block w-100 img-fluid"src="imagens/dona-loja1.jpeg" alt="">
+          </div>
+          <div class="col-md-6 mx-2">
+            <h2 class="text-font text-colored fw-bold pb-5">Loja</h2>
+            <p class="fs-5 ">Olá meu nome é Esterfanny, sou proprietária da loja Emy, que é abreviação do meu nome. Há um tempo sou empreenderora e sempre gostei do ramo de beleza e eleva autoestima das mulheres</p>
+            <p class="fs-5 ">Agora resolvi divulgar aos meus clientes para continuarem investibdo em si com frequência e as novas passem a valorizar a beleza que tem de forma modesta e com estilo.</p>
+            <p class="fs-5 text-center">Invista em<span class="fs-4"> Você</span> com mais frequência</p>
+          </div>
+        </div>
+    </section>
+    <section  id="roupas"class="pb-5 pt-5">
+      <h2 class="text-font text-center"><span>Roupas </span>Emy-by</h2>
+      <div class="container">
+        <div class="row pt-5 ">
+          <aside class="col-md-2 flex-column">
+            <nav class="nav nav-pills flex-column" >
+              <button type="button" data-bs-toggle="tab" data-bs-target="#vestidos" class="mb-2 p-2 text-font text-start fw-bold nav-link active">Vestidos</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#blusas" class="mb-2 p-2 text-font text-start fw-bold nav-link">Blusas</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#saias" class="mb-2 p-2 text-font text-start fw-bold nav-link">Saias</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#calcas" class="mb-2 p-2 text-font text-start fw-bold nav-link">Calças</button>
+            </nav>
+          </aside>
+        <div class="col-md-10">
+          <div class="tab-content">
+            <div class="tab-pane active" id="vestidos">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/vestidos/vestido-1.jpeg" alt="vestido">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Vestido longo Florido</h3>
+                  <p>Malha suede; Decote em V; Mangas princesa</p>
+                 <strong class="text-font fs-5">R$ 70,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">P</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">M</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/vestidos/vestido-2.jpeg" alt="vestido">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Vestido Midi</h3>
+                  <p>lilás; Com babados na barra</p>
+                  <strong class="text-font fs-5">R$ 150,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">P</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">M</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2  mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/blusas/blusa-1.jpeg" alt="Blusa">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Vestido Florido</h3>
+                  <p>Malha suede; Conforto; Elegância</p>
+                 <strong class="text-font fs-5">R$ 55,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">P</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">M</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="blusas">
+            <div class="row" >
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="imagens/blusas/blusas-2.jpeg" alt="vestido">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Blusa com manga bodada</h3>
+                <p>Elegante e despojada</p>
+               <strong class="text-font fs-5">R$ 65,00</strong><br>
+                <div class="form-froup">
+                  <label class="from-label"for="tamanhoP">P</label>
+                  <input type="radio" name="tamanho" id="tamanhoP">
+                  <label class="form-label"for="tamanhoM">M</label>
+                  <input type="radio" name="tamanho" id="tamanhoM">
+                </div>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="imagens/blusas/blusas-3.jpeg" alt="Blusa">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Blusa Preta</h3>
+               <strong class="text-font fs-5">R$ 45,00</strong><br>
+                <div class="form-froup">
+                  <label class="from-label"for="tamanhoP">P</label>
+                  <input type="radio" name="tamanho" id="tamanhoM">
+                </div>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="imagens/blusas/blusas-2.jpeg" alt="vestido">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Blusa com manga bodada</h3>
+                <p>Elegante e despojada</p>
+               <strong class="text-font fs-5">R$ 65,00</strong><br>
+                <div class="form-froup">
+                  <label class="from-label"for="tamanhoP">P</label>
+                  <input type="radio" name="tamanho" id="tamanhoP">
+                  <label class="form-label"for="tamanhoM">M</label>
+                  <input type="radio" name="tamanho" id="tamanhoM">
+                </div>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+            </div>
+    
+        </div>
+        <div id="saias"class="tab-pane" >
+          <div class="row" >
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/saias/saia-1.jpeg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia estampa Alegre longa</h3>
+              <p>Tecido em crepe com forro</p>
+             <strong class="text-font fs-5">R$ 75,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoP">
+                <label class="from-label"for="tamanhog">G</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+                <label class="form-label"for="tamanhoM">M</label>
+                <input type="radio" name="tamanho" id="tamanhoM">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/saias/saia-2.jpeg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia longa</h3>
+              <p>Tecido em crepe com forro</p>
+             <strong class="text-font fs-5">R$ 75,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/saias/saia-1.jpeg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia estampa Alegre longa</h3>
+              <p>Tecido em crepe com forro</p>
+             <strong class="text-font fs-5">R$ 75,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoP">
+                <label class="from-label"for="tamanhog">G</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+                <label class="form-label"for="tamanhoM">M</label>
+                <input type="radio" name="tamanho" id="tamanhoM">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/saias/saia-2.jpeg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia longa</h3>
+              <p>Tecido em crepe com forro</p>
+             <strong class="text-font fs-5">R$ 75,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
         </div>
       </div>
-  </section>
-  <section  id="roupas"class="pb-5 pt-5">
-    <h2 class="text-font text-center"><span>Roupas </span>Emy-by</h2>
+        <div id="calcas"class="tab-pane" >
+          <div class="row" >
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/calcas/calca-1.jpg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Calça Rosa</h3>
+              <p>Tecido algodão</p>
+             <strong class="text-font fs-5">R$ 150,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoP">
+                <label class="from-label"for="tamanhog">G</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+                <label class="form-label"for="tamanhoM">M</label>
+                <input type="radio" name="tamanho" id="tamanhoM">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/calcas/calca-2.jpg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Calça cinza com bolsos</h3>
+              <p>Bom tecido</p>
+             <strong class="text-font fs-5">R$ 200,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoP">
+                <label class="from-label"for="tamanhog">G</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+                <label class="form-label"for="tamanhoM">M</label>
+                <input type="radio" name="tamanho" id="tamanhoM">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
+            <div class="col-md-3">
+              <img class="w-100 d-block roudend"src="imagens/calcas/calca-3.jpg" alt="vestido">
+              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Calça Jeans</h3>
+              <p>Bom tecido</p>
+             <strong class="text-font fs-5">R$ 250,00</strong><br>
+              <div class="form-froup">
+                <label class="from-label"for="tamanhoP">P</label>
+                <input type="radio" name="tamanho" id="tamanhoP">
+                <label class="from-label"for="tamanhog">G</label>
+                <input type="radio" name="tamanho" id="tamanhoG">
+                <label class="form-label"for="tamanhoM">M</label>
+                <input type="radio" name="tamanho" id="tamanhoM">
+              </div>
+              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+            </div>
+          </div>
+      </div>
+    </section>
+    <section  id="calcados"class="pb-5 pt-5">
+      <h2 class="text-font text-center"><span>Calçados </span >Emy-by</h2>
+      <div class="container">
+        <div class="row pt-5 ">
+          <aside class="col-md-2 flex-column">
+            <nav class="nav nav-pills flex-column" >
+              <button type="button" data-bs-toggle="tab" data-bs-target="#sapatos1" class="mb-2 p-2 text-font text-start fw-bold nav-link active">Sapatos</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#tenis1" class="mb-2 p-2 text-font text-start fw-bold nav-link">Tênis</button>
+              <button type="button" data-bs-toggle="tab" data-bs-target="#sandalhas1" class="mb-2 p-2 text-font text-start fw-bold nav-link">Sandalhas</button>
+              
+            </nav>
+          </aside>
+        <div class="col-md-10">
+          <div class="tab-content">
+            <div class="tab-pane active" id="sapatos1">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-1.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para casamentos</h3>
+                  <p>Sapato Bege</p>
+                 <strong class="text-font fs-5">R$ 300,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">36</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-2.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para casamentos</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-3.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para cinza</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 400,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">38</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-2.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para casamentos</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/sapatos/sapatos-3.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sapato para cinza</h3>
+                  <p>Sapato Branco</p>
+                 <strong class="text-font fs-5">R$ 400,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">38</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane active" id="tenis1">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/tenis-nik1.jpg" alt="tenis nike">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Nike</h3>
+                  <p>Sapato Bege</p>
+                 <strong class="text-font fs-5">R$ 300,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">36</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/ten-adid-2.jpg" alt="Tênis adidas">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Adidas</h3>
+                  <p>Adidas</p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                    <label class="form-label"for="tamanhoe">41</label>
+                    <input type="radio" name="tamanho" id="tamanhoe">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/ten-nike-3.jpg" alt="sapato">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Nike</h3>
+                  <p>Tênis Nike</p>
+                 <strong class="text-font fs-5">R$ 400,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="imagens/tenis/ten-puma-4.jpg" alt="Tênis Puma">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Puma</h3>
+                  <p>Tênis Puma Vermelho/p>
+                 <strong class="text-font fs-5">R$ 350,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane active" id="sandalhas1">
+              <div class="row" >
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://boutiquedassi.fbitsstatic.net/img/p/sandalia-rute-81693/301956-1.jpg?w=600&h=800&v=no-change&qs=ignore" alt="Sandalha rute">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sandalha Rute</h3>
+                  <p>Sandalha Rute</p>
+                 <strong class="text-font fs-5">R$ 125,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">36</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://a-static.mlcdn.com.br/800x560/sandalia-salto-sandalha-tira-sandalha-moda-sandalha-verao-misslis/misslis/7d5076c041e311ed867b4201ac185019/77cf9a8ff5198cc414d891968876a349.jpeg" alt="Salto Sandalha Verão">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Adidas</h3>
+                  <p>Salto Sandalha Verão</p>
+                 <strong class="text-font fs-5">R$ 150,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">37</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoM">
+                    <label class="form-label"for="tamanhod">40</label>
+                    <input type="radio" name="tamanho" id="tamanhod">
+                    <label class="form-label"for="tamanhoe">41</label>
+                    <input type="radio" name="tamanho" id="tamanhoe">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://img1.wsimg.com/isteam/ip/3a9eb2b2-580d-44cc-a8c8-9c01b580ee7f/ols/36-006.1.jpg/:/rs=w:1200,h:1200" alt="Sandalha Anabela">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Sandalha Anabela</h3>
+                  <p>Sandalha Anabela</p>
+                 <strong class="text-font fs-5">R$ 90,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                <div class="col-md-3">
+                  <img class="w-100 d-block roudend"src="https://photos.enjoei.com.br/sandalha-nova-84370008/828xN/czM6Ly9waG90b3MuZW5qb2VpLmNvbS5ici9wcm9kdWN0cy8yMzg0NjYyNi8xZmVkOGRmZTY4ODFlMDE2NzEyY2NlMTk5YjFmYzZhMS5qcGc" alt="Sandalha Flip">
+                  <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Tênis Puma</h3>
+                  <p>Sandalha Flip</p>
+                 <strong class="text-font fs-5">R$ 150,00</strong><br>
+                  <div class="form-froup">
+                    <label class="from-label"for="tamanhoP">35</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhoM">37</label>
+                    <input type="radio" name="tamanho" id="tamanhof">
+                    <label class="from-label"for="tamanhof">39</label>
+                    <input type="radio" name="tamanho" id="tamanhoP">
+                    <label class="form-label"for="tamanhog">42</label>
+                    <input type="radio" name="tamanho" id="tamanhog">
+                  </div>
+                  <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+    </secti>
+  </div>
+  <section  id="acessorios"class="pb-5 pt-5">
+    <h2 class="text-font text-center"><span>Acessórios </span >Emy-by</h2>
     <div class="container">
       <div class="row pt-5 ">
         <aside class="col-md-2 flex-column">
           <nav class="nav nav-pills flex-column" >
-            <button type="button" data-bs-toggle="tab" data-bs-target="#vestidos" class="mb-2 p-2 text-font text-start fw-bold nav-link active">Vestidos</button>
-            <button type="button" data-bs-toggle="tab" data-bs-target="#blusas" class="mb-2 p-2 text-font text-start fw-bold nav-link">Blusas</button>
-            <button type="button" data-bs-toggle="tab" data-bs-target="#saias" class="mb-2 p-2 text-font text-start fw-bold nav-link">Saias</button>
-            <button type="button" data-bs-toggle="tab" data-bs-target="#calcas" class="mb-2 p-2 text-font text-start fw-bold nav-link">Calças</button>
+            <button type="button" data-bs-toggle="tab" data-bs-target="#relogios" class="mb-2 p-2 text-font text-start fw-bold nav-link active">Relógios</button>
+            <button type="button" data-bs-toggle="tab" data-bs-target="#colar" class="mb-2 p-2 text-font text-start fw-bold nav-link">Colar</button>
           </nav>
         </aside>
       <div class="col-md-10">
         <div class="tab-content">
-          <div class="tab-pane active" id="vestidos">
+          <div class="tab-pane active" id="relogios">
             <div class="row" >
               <div class="col-md-3">
-                <img class="w-100 d-block roudend"src="imagens/vestidos/vestido-1.jpeg" alt="vestido">
-                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Vestido longo Florido</h3>
-                <p>Malha suede; Decote em V; Mangas princesa</p>
-               <strong class="text-font fs-5">R$ 70,00</strong><br>
-                <div class="form-froup">
-                  <label class="from-label"for="tamanhoP">P</label>
-                  <input type="radio" name="tamanho" id="tamanhoP">
-                  <label class="form-label"for="tamanhoM">M</label>
-                  <input type="radio" name="tamanho" id="tamanhoM">
-                </div>
+                <img class="w-100 d-block roudend"src="https://d2r9epyceweg5n.cloudfront.net/stores/754/485/products/lrgj138l-kz511-26351753f5637bafc016345825233105-1024-1024.png" alt="Kit relogio">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio Lice</h3>
+                <p>Kit relógio Lice</p>
+                <strong class="text-font fs-5">R$ 400,00</strong><br>
                 <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
               </div>
               <div class="col-md-3">
-                <img class="w-100 d-block roudend"src="imagens/vestidos/vestido-2.jpeg" alt="vestido">
-                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Vestido Midi</h3>
-                <p>lilás; Com babados na barra</p>
+                <img class="w-100 d-block roudend"src="https://images.tcdn.com.br/img/img_prod/555399/3857_0_20200229141847.jpg" alt="Kit relógio HTS">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio HTS</h3>
+                <p>Kit relógio HTS</p>
+                <strong class="text-font fs-5">R$ 250,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://zionstorerj.com.br/wp-content/uploads/2021/04/Screenshot_2-2.png" alt="Kit relógio zions">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio Zions</h3>
+                <p>Kit relógio zions</p>
+                <strong class="text-font fs-5">R$ 350,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://images.tcdn.com.br/img/img_prod/555399/3857_0_20200229141847.jpg" alt="Kit relógio HTS">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio HTS</h3>
+                <p>Kit relógio HTS</p>
+                <strong class="text-font fs-5">R$ 250,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://zionstorerj.com.br/wp-content/uploads/2021/04/Screenshot_2-2.png" alt="Kit relógio zions">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Kit relógio Zions</h3>
+                <p>Kit relógio zions</p>
+                <strong class="text-font fs-5">R$ 350,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane " id="colar">
+            <div class="row" >
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://d3ugyf2ht6aenh.cloudfront.net/stores/001/296/390/products/whatsapp-image-2023-02-07-at-13-01-331-46de0e2c1ffea4cfb916759659039393-480-0.webp" alt="Kit relogio">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar Dourado</h3>
+                <p>Colar Dourado</p>
                 <strong class="text-font fs-5">R$ 150,00</strong><br>
-                <div class="form-froup">
-                  <label class="from-label"for="tamanhoP">P</label>
-                  <input type="radio" name="tamanho" id="tamanhoP">
-                  <label class="form-label"for="tamanhoM">M</label>
-                  <input type="radio" name="tamanho" id="tamanhoM">
-                </div>
-                <button type="button" class="btn fw-bold mt-2  mb-2">Comprar</button>
-              </div>
-              <div class="col-md-3">
-                <img class="w-100 d-block roudend"src="imagens/blusas/blusa-1.jpeg" alt="Blusa">
-                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Vestido Florido</h3>
-                <p>Malha suede; Conforto; Elegância</p>
-               <strong class="text-font fs-5">R$ 55,00</strong><br>
-                <div class="form-froup">
-                  <label class="from-label"for="tamanhoP">P</label>
-                  <input type="radio" name="tamanho" id="tamanhoP">
-                  <label class="form-label"for="tamanhoM">M</label>
-                  <input type="radio" name="tamanho" id="tamanhoM">
-                </div>
                 <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
               </div>
-          </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://i.pinimg.com/474x/52/d3/db/52d3dbb7279b833b73a6ce2a4aa8ce0a.jpg" alt="Colar de ouro">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar de Ouro</h3>
+                <p>Colar de Ouro</p>
+                <strong class="text-font fs-5">R$ 1000,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://d3ugyf2ht6aenh.cloudfront.net/stores/001/296/390/products/whatsapp-image-2023-02-07-at-13-01-331-46de0e2c1ffea4cfb916759659039393-480-0.webp" alt="Kit relogio">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar Dourado</h3>
+                <p>Colar Dourado</p>
+                <strong class="text-font fs-5">R$ 150,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+              <div class="col-md-3">
+                <img class="w-100 d-block roudend"src="https://i.pinimg.com/474x/52/d3/db/52d3dbb7279b833b73a6ce2a4aa8ce0a.jpg" alt="Colar de ouro">
+                <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Colar de Ouro</h3>
+                <p>Colar de Ouro</p>
+                <strong class="text-font fs-5">R$ 1000,00</strong><br>
+                <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
+              </div>
+            </div>
         </div>
-        <div class="tab-pane" id="blusas">
-          <div class="row" >
-            <div class="col-md-3">
-              <img class="w-100 d-block roudend"src="imagens/blusas/blusas-2.jpeg" alt="vestido">
-              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Blusa com manga bodada</h3>
-              <p>Elegante e despojada</p>
-             <strong class="text-font fs-5">R$ 65,00</strong><br>
-              <div class="form-froup">
-                <label class="from-label"for="tamanhoP">P</label>
-                <input type="radio" name="tamanho" id="tamanhoP">
-                <label class="form-label"for="tamanhoM">M</label>
-                <input type="radio" name="tamanho" id="tamanhoM">
-              </div>
-              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-            </div>
-            <div class="col-md-3">
-              <img class="w-100 d-block roudend"src="imagens/blusas/blusas-3.jpeg" alt="Blusa">
-              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Blusa Preta</h3>
-             <strong class="text-font fs-5">R$ 45,00</strong><br>
-              <div class="form-froup">
-                <label class="from-label"for="tamanhoP">P</label>
-                <input type="radio" name="tamanho" id="tamanhoM">
-              </div>
-              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-            </div>
-            <div class="col-md-3">
-              <img class="w-100 d-block roudend"src="imagens/blusas/blusas-2.jpeg" alt="vestido">
-              <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Blusa com manga bodada</h3>
-              <p>Elegante e despojada</p>
-             <strong class="text-font fs-5">R$ 65,00</strong><br>
-              <div class="form-froup">
-                <label class="from-label"for="tamanhoP">P</label>
-                <input type="radio" name="tamanho" id="tamanhoP">
-                <label class="form-label"for="tamanhoM">M</label>
-                <input type="radio" name="tamanho" id="tamanhoM">
-              </div>
-              <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-            </div>
-          </div>
-          
       </div>
-      <div id="saias"class="tab-pane" >
-        <div class="row" >
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/saias/saia-1.jpeg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia estampa Alegre longa</h3>
-            <p>Tecido em crepe com forro</p>
-           <strong class="text-font fs-5">R$ 75,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoP">
-              <label class="from-label"for="tamanhog">G</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-              <label class="form-label"for="tamanhoM">M</label>
-              <input type="radio" name="tamanho" id="tamanhoM">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div>
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/saias/saia-2.jpeg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia longa</h3>
-            <p>Tecido em crepe com forro</p>
-           <strong class="text-font fs-5">R$ 75,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div> 
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/saias/saia-1.jpeg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia estampa Alegre longa</h3>
-            <p>Tecido em crepe com forro</p>
-           <strong class="text-font fs-5">R$ 75,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoP">
-              <label class="from-label"for="tamanhog">G</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-              <label class="form-label"for="tamanhoM">M</label>
-              <input type="radio" name="tamanho" id="tamanhoM">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div>
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/saias/saia-2.jpeg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Saia longa</h3>
-            <p>Tecido em crepe com forro</p>
-           <strong class="text-font fs-5">R$ 75,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div> 
-      </div>
-    </div>
-
-      <div id="calcas"class="tab-pane" >
-        <div class="row" >
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/calcas/calca-1.jpg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Calça Rosa</h3>
-            <p>Tecido algodão</p>
-           <strong class="text-font fs-5">R$ 150,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoP">
-              <label class="from-label"for="tamanhog">G</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-              <label class="form-label"for="tamanhoM">M</label>
-              <input type="radio" name="tamanho" id="tamanhoM">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div>
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/calcas/calca-2.jpg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Calça cinza com bolsos</h3>
-            <p>Bom tecido</p>
-           <strong class="text-font fs-5">R$ 200,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoP">
-              <label class="from-label"for="tamanhog">G</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-              <label class="form-label"for="tamanhoM">M</label>
-              <input type="radio" name="tamanho" id="tamanhoM">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div>
-          <div class="col-md-3">
-            <img class="w-100 d-block roudend"src="imagens/calcas/calca-3.jpg" alt="vestido">
-            <h3 class="text-font text-colored fw-bold fs-5 mt-3 w-100 d-block">Calça Jeans</h3>
-            <p>Bom tecido</p>
-           <strong class="text-font fs-5">R$ 250,00</strong><br>
-            <div class="form-froup">
-              <label class="from-label"for="tamanhoP">P</label>
-              <input type="radio" name="tamanho" id="tamanhoP">
-              <label class="from-label"for="tamanhog">G</label>
-              <input type="radio" name="tamanho" id="tamanhoG">
-              <label class="form-label"for="tamanhoM">M</label>
-              <input type="radio" name="tamanho" id="tamanhoM">
-            </div>
-            <button type="button" class="btn fw-bold mt-2 mb-2">Comprar</button>
-          </div>
-        </div>
-
-
-
-
-
-
-
-
-
-    </div>
-     
-   
-
-</section>
-
-
+  </section>
   <script src="boostrap/bootstrap.bundle.min.js"></script>
 </body>
 </html>
