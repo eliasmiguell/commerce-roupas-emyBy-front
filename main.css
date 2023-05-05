@@ -78,6 +78,11 @@ section .row .btn{
   color: white;
   font-family: 'Playfair Display', serif;
 }
+section .row .btn a{
+  color: white;
+  font-family: 'Playfair Display', serif;
+  text-decoration: none;
+}
 section .row .btn:hover{
   background-color:#b71634;
 color: white;
