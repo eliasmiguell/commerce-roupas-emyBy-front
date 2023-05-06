@@ -115,6 +115,9 @@ font-family: 'Playfair Display', serif;
   font-family: 'Playfair Display', serif;
   color: #811B2D;
 }
+.form-froup input[type="radio"]{
+  outline-color: #811B2D;
+}
 footer{
   background-color: #811B2D;
   color: white;
