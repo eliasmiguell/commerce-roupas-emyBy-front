@@ -33,6 +33,19 @@ nav  .nav-link:hover{
   background-color:white ;
   color: #811B2D;
 }
+#loja{
+  background-color: #c4496028;
+  background-color: ;
+  padding-bottom: 30px;
+}
+#calcados{
+  background-color: #c4496028;
+  padding-bottom: 30px;
+}
+#fale-conosco{
+  background-color: #c4496028;
+
+}
 
 #loja .row img{
   width: 695px;
