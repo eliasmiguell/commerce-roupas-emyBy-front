@@ -1,0 +1,153 @@
+"use client"
+
+import { useState } from "react"
+import ProductCard from "./product-card"
+
+const clothingCategories = {
+  vestidos: [
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Vestido longo Florido",
+      description: "Malha suede; Decote em V; Mangas princesa",
+      price: "R$ 70,00",
+      sizes: ["P", "M"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Vestido Midi",
+      description: "lilás; Com babados na barra",
+      price: "R$ 150,00",
+      sizes: ["P", "M"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Vestido Florido",
+      description: "Malha suede; Conforto; Elegância",
+      price: "R$ 55,00",
+      sizes: ["P", "M"],
+    },
+  ],
+  blusas: [
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Blusa com manga bordada",
+      description: "Elegante e despojada",
+      price: "R$ 65,00",
+      sizes: ["P", "M"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Blusa Preta",
+      description: "Básica e versátil",
+      price: "R$ 45,00",
+      sizes: ["P"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Blusa com manga bordada",
+      description: "Elegante e despojada",
+      price: "R$ 65,00",
+      sizes: ["P", "M"],
+    },
+  ],
+  saias: [
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Saia estampa Alegre longa",
+      description: "Tecido em crepe com forro",
+      price: "R$ 75,00",
+      sizes: ["P", "M", "G"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Saia longa",
+      description: "Tecido em crepe com forro",
+      price: "R$ 75,00",
+      sizes: ["P"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Saia estampa Alegre longa",
+      description: "Tecido em crepe com forro",
+      price: "R$ 75,00",
+      sizes: ["P", "M", "G"],
+    },
+  ],
+  calcas: [
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Calça Rosa",
+      description: "Tecido algodão",
+      price: "R$ 150,00",
+      sizes: ["P", "M", "G"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Calça cinza com bolsos",
+      description: "Bom tecido",
+      price: "R$ 200,00",
+      sizes: ["P", "M", "G"],
+    },
+    {
+      image: "/placeholder.svg?height=300&width=250",
+      title: "Calça Jeans",
+      description: "Bom tecido",
+      price: "R$ 250,00",
+      sizes: ["P", "M", "G"],
+    },
+  ],
+}
+
+export default function ClothingSection() {
+  const [activeCategory, setActiveCategory] = useState("vestidos")
+
+  return (
+    <section className="py-8 md:py-16">
+      <div className="container mx-auto px-4">
+        <h2
+          className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12"
+          style={{ fontFamily: "Playfair Display, serif" }}
+        >
+          <span className="text-pink-600">Roupas</span> Emy-by
+        </h2>
+
+        <div className="grid lg:grid-cols-12 gap-6 md:gap-8">
+          {/* Category Navigation */}
+          <aside className="lg:col-span-2">
+            <nav className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
+              {Object.keys(clothingCategories).map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-4 py-2 text-left font-semibold rounded-lg transition-colors whitespace-nowrap lg:whitespace-normal ${
+                    activeCategory === category
+                      ? "bg-pink-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-pink-100"
+                  }`}
+                >
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </button>
+              ))}
+            </nav>
+          </aside>
+
+          {/* Products Grid */}
+          <div className="lg:col-span-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              {clothingCategories[activeCategory as keyof typeof clothingCategories].map((product, index) => (
+                <ProductCard
+                  key={index}
+                  image={product.image}
+                  title={product.title}
+                  description={product.description}
+                  price={product.price}
+                  sizes={product.sizes}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
