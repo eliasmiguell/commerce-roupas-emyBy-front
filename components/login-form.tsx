@@ -2,45 +2,75 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, ShoppingBag, Facebook, Instagram, MessageCircle, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { redirectIfAuthenticated } from "@/lib/auth"
+import { useRouter } from "next/navigation"
+
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    redirectIfAuthenticated()
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Aqui você adicionaria a lógica de autenticação
-    console.log("Login attempt:", { email, password })
+    setLoading(true)
+    setError("")
+    try {
+      const res = await fetch("http://localhost:8001/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json()
+      console.log(data)
+      if (!res.ok) {
+        setError(data.error || "Erro ao fazer login")
+        setLoading(false)
+        return
+      }
+      // Salvar token no localStorage
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("user", JSON.stringify(data.user))
+      // Redirecionar para a home
+      router.push("/")
+    } catch (err) {
+      setError("Erro de conexão com o servidor")
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       {/* Back to home button */}
-      <Link
+      {/* <Link
         href="/"
         className="fixed top-4 left-4 z-10 flex items-center space-x-2 text-gray-600 hover:text-pink-600 transition-colors bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md"
       >
         <ArrowLeft className="h-4 w-4" />
         <span className="hidden sm:inline">Voltar à loja</span>
-      </Link>
+      </Link> */}
 
       <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
         {/* Left side - Branding */}
         <div className="hidden lg:block space-y-8">
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center space-x-3 mb-8">
-              <ShoppingBag className="h-12 w-12 text-pink-600" />
-              <h1 className="text-4xl font-bold text-pink-600" style={{ fontFamily: "Pacifico, cursive" }}>
-                Emy-by
-              </h1>
+            <img src="imagens/logo-loja.png" alt="logo-loja" className="w-[70px] h-[70px] rounded-md"/>
+             
             </div>
             <h2 className="text-3xl font-bold text-gray-800" style={{ fontFamily: "Playfair Display, serif" }}>
               Bem-vinda de volta!
@@ -174,11 +204,16 @@ export default function LoginForm() {
                     Esqueceu a senha?
                   </Link>
                 </div>
+                {error && (
+                  <div className="text-red-600 text-sm font-semibold text-center">{error}</div>
+                )}
                 <Button
                   type="submit"
-                  className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                  style={{ backgroundColor: '#811B2D' }}
+                  className="w-full   text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                  disabled={loading}
                 >
-                  Entrar
+                  {loading ? "Entrando..." : "Entrar"}
                 </Button>
               </form>
 
@@ -262,3 +297,4 @@ export default function LoginForm() {
     </div>
   )
 }
+

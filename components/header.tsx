@@ -2,11 +2,13 @@
 
 import { useState } from "react"
 import { Menu, X, Home, ShoppingCart, MessageCircle, Shirt,Gem,
-  MessageSquare, } from "lucide-react";
+  MessageSquare,
+  LogOut, } from "lucide-react";
   import { FaShoePrints } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { logout } from "@/lib/auth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -15,7 +17,9 @@ export default function Header() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
-
+  const handleLogout = () => {
+    logout()
+  }
   const closeMenu = () => {
     setIsMenuOpen(false)
   }
@@ -31,7 +35,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" onClick={closeMenu}>
             
-            <img src="imagens/logo-loja.png" alt="logo-loja" className="w-[60px] h-[60px]"/>
+            <img src="imagens/logo-loja.png" alt="logo-loja" className="w-[80px] h-[60px]"/>
           </Link>
 
           {/* Desktop Navigation */}
@@ -89,14 +93,16 @@ export default function Header() {
             >
               <ShoppingCart className="h-6 w-6" />
             </Link>
-            <Link
-              href="/login"
+            <Button
+              onClick={handleLogout}
+              variant='ghost'
               className={`flex items-center space-x-2 transition-colors ${
                 isActive("/login") ? "text-pink-600" : "text-white hover:text-pink-600"
               }`}
             >
-              <span>Entrar</span>
-            </Link>
+              <LogOut />
+              <span>Sair</span>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -173,16 +179,16 @@ export default function Header() {
                 <ShoppingCart className="h-6 w-6" />
                 <span className="text-lg font-medium">Carrinho</span>
               </Link>
-              <Link
-                href="/login"
-                onClick={closeMenu}
-                className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  isActive("/login") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
-                }`}
-              >
-                <span className="text-xl">👤</span>
-                <span className="text-lg font-medium">Entrar</span>
-              </Link>
+              <Button
+              onClick={handleLogout}
+              variant='ghost'
+              className={`flex items-center space-x-2 transition-colors ${
+                isActive("/login") ? "text-pink-600" : "text-white hover:text-pink-600"
+              }`}
+            >
+              <LogOut />
+              <span>Sair</span>
+            </Button>
             </div>
           </div>
         </div>

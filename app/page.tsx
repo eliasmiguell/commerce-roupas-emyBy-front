@@ -4,18 +4,21 @@ import AboutSection from "@/components/about-section"
 import FeaturedProducts from "@/components/featured-products"
 import NewArrivals from "@/components/new-arrivals" // Novo componente
 import Footer from "@/components/footer"
+import AuthGuard from "@/components/AuthGuard"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        <HeroCarousel />
-        <AboutSection />
-        <FeaturedProducts />
-        <NewArrivals /> {/* Nova seção */}
-      </main>
-      <Footer />
-    </div>
+    <AuthGuard>
+      <div className="min-h-screen">
+        <Header />
+        <main>
+          <HeroCarousel />
+          <AboutSection />
+          <FeaturedProducts />
+          <NewArrivals /> {/* Nova seção */}
+        </main>
+        <Footer />
+      </div>
+    </AuthGuard>
   )
 }

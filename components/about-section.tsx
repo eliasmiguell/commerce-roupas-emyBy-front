@@ -13,11 +13,9 @@ export default function AboutSection() {
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="order-2 md:order-1">
-            <img
-              src="/placeholder.svg?height=400&width=400"
-              alt="Esterfanny - Dona da loja"
-              className="w-full h-auto rounded-lg shadow-lg"
-            />
+          <img src="imagens/dona-loja1.jpeg" alt="logo-loja" className="w-full h-auto rounded-full shadow-lg"/>
+
+            
           </div>
 
           <div className="order-1 md:order-2 space-y-4 md:space-y-6">
