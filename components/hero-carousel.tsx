@@ -7,19 +7,19 @@ import Link from "next/link"
 
 const carouselImages = [
   {
-    src: "/placeholder.svg?height=600&width=1200",
+    src: "imagens/slide/img-1.jpg",
     alt: "Promoção 1",
   },
   {
-    src: "/placeholder.svg?height=600&width=1200",
+    src: "imagens/slide/img-2.jpg",
     alt: "Promoção 2",
   },
   {
-    src: "/placeholder.svg?height=600&width=1200",
+    src: "imagens/slide/img-3.jpg",
     alt: "Promoção 3",
   },
   {
-    src: "/placeholder.svg?height=600&width=1200",
+    src: "imagens/slide/img-4.jpg",
     alt: "Promoção 4",
   },
 ]

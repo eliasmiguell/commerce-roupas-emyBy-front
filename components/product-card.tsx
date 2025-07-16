@@ -24,7 +24,8 @@ export default function ProductCard({ image, title, description, price, sizes }:
       ...(selectedSize && { size: selectedSize }),
     })
 
-    window.location.href = `/comprar?${params.toString()}`
+    // Redireciona para a página de carrinho
+    window.location.href = `/carrinho?${params.toString()}`
   }
 
   return (
