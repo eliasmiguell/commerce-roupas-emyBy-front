@@ -1,7 +1,7 @@
+"use client"
+
+import ClothingSectionSimple from "@/components/clothing-section-simple"
 import Header from "@/components/header"
-import ClothingSection from "@/components/clothing-section"
-import ShopByStyle from "@/components/shop-by-style" // Novo componente
-import Footer from "@/components/footer"
 
 export default function RoupasPage() {
   return (
@@ -19,10 +19,8 @@ export default function RoupasPage() {
             Descubra as últimas tendências e peças essenciais para o seu guarda-roupa.
           </p>
         </div>
-        <ClothingSection />
-        <ShopByStyle /> {/* Nova seção */}
+        <ClothingSectionSimple />
       </main>
-      <Footer />
     </div>
   )
 }

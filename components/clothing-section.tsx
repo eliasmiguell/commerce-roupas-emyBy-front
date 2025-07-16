@@ -2,104 +2,55 @@
 
 import { useState } from "react"
 import ProductCard from "./product-card"
+import { useVestidos, useBlusas, useSaias, useCalcas, getRoupaAvailableSizes } from "@/lib/roupasService"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const clothingCategories = {
-  vestidos: [
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Vestido longo Florido",
-      description: "Malha suede; Decote em V; Mangas princesa",
-      price: "R$ 70,00",
-      sizes: ["P", "M"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Vestido Midi",
-      description: "lilás; Com babados na barra",
-      price: "R$ 150,00",
-      sizes: ["P", "M"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Vestido Florido",
-      description: "Malha suede; Conforto; Elegância",
-      price: "R$ 55,00",
-      sizes: ["P", "M"],
-    },
-  ],
-  blusas: [
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Blusa com manga bordada",
-      description: "Elegante e despojada",
-      price: "R$ 65,00",
-      sizes: ["P", "M"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Blusa Preta",
-      description: "Básica e versátil",
-      price: "R$ 45,00",
-      sizes: ["P"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Blusa com manga bordada",
-      description: "Elegante e despojada",
-      price: "R$ 65,00",
-      sizes: ["P", "M"],
-    },
-  ],
-  saias: [
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Saia estampa Alegre longa",
-      description: "Tecido em crepe com forro",
-      price: "R$ 75,00",
-      sizes: ["P", "M", "G"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Saia longa",
-      description: "Tecido em crepe com forro",
-      price: "R$ 75,00",
-      sizes: ["P"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Saia estampa Alegre longa",
-      description: "Tecido em crepe com forro",
-      price: "R$ 75,00",
-      sizes: ["P", "M", "G"],
-    },
-  ],
-  calcas: [
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Calça Rosa",
-      description: "Tecido algodão",
-      price: "R$ 150,00",
-      sizes: ["P", "M", "G"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Calça cinza com bolsos",
-      description: "Bom tecido",
-      price: "R$ 200,00",
-      sizes: ["P", "M", "G"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Calça Jeans",
-      description: "Bom tecido",
-      price: "R$ 250,00",
-      sizes: ["P", "M", "G"],
-    },
-  ],
+  vestidos: "vestidos",
+  blusas: "blusas", 
+  saias: "saias",
+  calcas: "calcas"
 }
 
 export default function ClothingSection() {
   const [activeCategory, setActiveCategory] = useState("vestidos")
+
+  // Hooks para buscar dados da API
+  const { data: vestidos, isLoading: loadingVestidos } = useVestidos()
+  const { data: blusas, isLoading: loadingBlusas } = useBlusas()
+  const { data: saias, isLoading: loadingSaias } = useSaias()
+  const { data: calcas, isLoading: loadingCalcas } = useCalcas()
+
+  // Função para obter dados da categoria ativa
+  const getActiveCategoryData = () => {
+    switch (activeCategory) {
+      case "vestidos":
+        return { data: vestidos, loading: loadingVestidos }
+      case "blusas":
+        return { data: blusas, loading: loadingBlusas }
+      case "saias":
+        return { data: saias, loading: loadingSaias }
+      case "calcas":
+        return { data: calcas, loading: loadingCalcas }
+      default:
+        return { data: vestidos, loading: loadingVestidos }
+    }
+  }
+
+  const { data: products, loading } = getActiveCategoryData()
+
+  // Componente de skeleton para loading
+  const ProductSkeleton = () => (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <Skeleton className="w-full h-48 md:h-64" />
+      <div className="p-4">
+        <Skeleton className="h-6 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-full mb-3" />
+        <Skeleton className="h-6 w-1/2 mb-4" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+    </div>
+  )
 
   return (
     <section className="py-8 md:py-16">
@@ -133,18 +84,35 @@ export default function ClothingSection() {
 
           {/* Products Grid */}
           <div className="lg:col-span-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {clothingCategories[activeCategory as keyof typeof clothingCategories].map((product, index) => (
-                <ProductCard
-                  key={index}
-                  image={product.image}
-                  title={product.title}
-                  description={product.description}
-                  price={product.price}
-                  sizes={product.sizes}
-                />
-              ))}
-            </div>
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <ProductSkeleton key={index} />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {products?.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    id={product.id}
+                    image={product.imageUrl || "/placeholder.svg"}
+                    title={product.name}
+                    description={product.description}
+                    price={product.price}
+                    sizes={getRoupaAvailableSizes(product)}
+                  />
+                ))}
+              </div>
+            )}
+            
+            {!loading && (!products || products.length === 0) && (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">
+                  Nenhum produto encontrado nesta categoria.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

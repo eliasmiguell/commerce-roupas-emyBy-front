@@ -19,10 +19,18 @@ export default function LoginForm() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
   const router = useRouter()
 
   useEffect(() => {
     redirectIfAuthenticated()
+    
+    // Verificar se há mensagem de sucesso na URL
+    const urlParams = new URLSearchParams(window.location.search)
+    const message = urlParams.get('message')
+    if (message) {
+      setSuccessMessage(message)
+    }
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -204,8 +212,15 @@ export default function LoginForm() {
                     Esqueceu a senha?
                   </Link>
                 </div>
+                {successMessage && (
+                  <div className="text-green-600 text-sm font-semibold text-center bg-green-50 p-3 rounded-lg border border-green-200">
+                    {successMessage}
+                  </div>
+                )}
                 {error && (
-                  <div className="text-red-600 text-sm font-semibold text-center">{error}</div>
+                  <div className="text-red-600 text-sm font-semibold text-center bg-red-50 p-3 rounded-lg border border-red-200">
+                    {error}
+                  </div>
                 )}
                 <Button
                   type="submit"

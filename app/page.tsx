@@ -5,6 +5,9 @@ import FeaturedProducts from "@/components/featured-products"
 import NewArrivals from "@/components/new-arrivals" // Novo componente
 import Footer from "@/components/footer"
 import AuthGuard from "@/components/AuthGuard"
+import DebugAdminButton from "@/components/DebugAdminButton"
+import FinalAdminButton from "@/components/FinalAdminButton"
+import UltimateAdminButton from "@/components/UltimateAdminButton"
 
 export default function HomePage() {
   return (
@@ -18,6 +21,9 @@ export default function HomePage() {
           <NewArrivals /> {/* Nova seção */}
         </main>
         <Footer />
+        <DebugAdminButton />
+        <FinalAdminButton />
+        <UltimateAdminButton />
       </div>
     </AuthGuard>
   )

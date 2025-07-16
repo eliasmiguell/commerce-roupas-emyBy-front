@@ -3,69 +3,102 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { ShoppingCart, ArrowLeft, Trash2 } from "lucide-react"
+import { ShoppingCart, ArrowLeft, Trash2, Loader2 } from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
-
-// Placeholder para itens do carrinho
-interface CartItem {
-  id: string
-  image: string
-  title: string
-  price: number
-  quantity: number
-  size?: string
-}
-
-const initialCartItems: CartItem[] = [
-  {
-    id: "1",
-    image: "/placeholder.svg?height=100&width=100",
-    title: "Vestido longo Florido",
-    price: 70.0,
-    quantity: 1,
-    size: "M",
-  },
-  {
-    id: "2",
-    image: "/placeholder.svg?height=100&width=100",
-    title: "Sapato para casamentos",
-    price: 300.0,
-    quantity: 1,
-    size: "37",
-  },
-  {
-    id: "3",
-    image:
-      "https://d2r9epyceweg5n.cloudfront.net/stores/754/485/products/lrgj138l-kz511-26351753f5637bafc016345825233105-1024-1024.png",
-    title: "Kit relógio Lice",
-    price: 400.0,
-    quantity: 1,
-  },
-]
+import { useCartItems, useUpdateCartItem, useRemoveCartItem, useClearCart } from "@/lib/cartService"
+import { useToast } from "@/hooks/use-toast"
+import { formatCurrency } from "@/lib/utils"
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>(initialCartItems)
+  const { data: cartData, isLoading, error } = useCartItems()
+  const updateCartItem = useUpdateCartItem()
+  const removeCartItem = useRemoveCartItem()
+  const clearCart = useClearCart()
+  const { toast } = useToast()
 
-  const updateQuantity = (id: string, delta: number) => {
-    setCartItems(
-      (prevItems) =>
-        prevItems
-          .map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item))
-          .filter((item) => item.quantity > 0), // Remove if quantity becomes 0 (though we prevent it from going below 1)
+  const handleUpdateQuantity = async (id: string, quantity: number) => {
+    try {
+      await updateCartItem.mutateAsync({ id, data: { quantity } })
+      toast({
+        title: "Sucesso!",
+        description: "Quantidade atualizada",
+      })
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao atualizar quantidade",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleRemoveItem = async (id: string) => {
+    try {
+      await removeCartItem.mutateAsync(id)
+      toast({
+        title: "Sucesso!",
+        description: "Item removido do carrinho",
+      })
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao remover item",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleClearCart = async () => {
+    try {
+      await clearCart.mutateAsync()
+      toast({
+        title: "Sucesso!",
+        description: "Carrinho limpo",
+      })
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao limpar carrinho",
+        variant: "destructive",
+      })
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <section className="py-8 md:py-12 bg-gradient-to-br from-pink-50 to-rose-50 min-h-[calc(100vh-150px)]">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-pink-600" />
+              <p className="text-gray-600">Carregando carrinho...</p>
+            </div>
+          </div>
+        </div>
+      </section>
     )
   }
 
-  const removeItem = (id: string) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id))
+  if (error) {
+    return (
+      <section className="py-8 md:py-12 bg-gradient-to-br from-pink-50 to-rose-50 min-h-[calc(100vh-150px)]">
+        <div className="container mx-auto px-4">
+          <Card className="max-w-2xl mx-auto text-center p-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-2">Erro ao carregar carrinho</h2>
+            <p className="text-gray-600 mb-6">Tente novamente mais tarde.</p>
+            <Link href="/">
+              <Button className="bg-pink-600 hover:bg-pink-700">Voltar à Loja</Button>
+            </Link>
+          </Card>
+        </div>
+      </section>
+    )
   }
 
-  const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-  }
-
+  const cartItems = cartData?.items || []
+  const subtotal = cartData?.total || 0
   const shippingCost = 15.0 // Frete fixo
-  const total = calculateSubtotal() + shippingCost
+  const total = subtotal + shippingCost
 
   return (
     <section className="py-8 md:py-12 bg-gradient-to-br from-pink-50 to-rose-50 min-h-[calc(100vh-150px)]">
@@ -96,38 +129,44 @@ export default function CartPage() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Itens do Carrinho */}
             <div className="lg:col-span-2 space-y-4">
-              {cartItems.map((item) => (
+              {cartItems.map((item: any) => (
                 <Card key={item.id} className="flex items-center p-4">
                   <img
-                    src={item.image || "/placeholder.svg"}
-                    alt={item.title}
+                    src={item.product.imageUrl || "/placeholder.svg"}
+                    alt={item.product.name}
                     className="w-24 h-24 object-cover rounded-lg mr-4"
                   />
                   <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
                     <div>
-                      <h3 className="font-semibold text-lg text-pink-600">{item.title}</h3>
-                      {item.size && <p className="text-sm text-gray-600">Tamanho: {item.size}</p>}
-                      <p className="font-bold text-gray-800">R$ {item.price.toFixed(2).replace(".", ",")}</p>
+                      <h3 className="font-semibold text-lg text-pink-600">{item.product.name}</h3>
+                      {item.variant && <p className="text-sm text-gray-600">Tamanho: {item.variant.size}</p>}
+                      <p className="font-bold text-gray-800">{formatCurrency(item.product.price)}</p>
                     </div>
                     <div className="flex items-center justify-end md:justify-between space-x-2">
                       <div className="flex items-center space-x-2 border rounded-md p-1">
                         <Button
                           variant="ghost"
                           size="icon"
-                          onClick={() => updateQuantity(item.id, -1)}
-                          disabled={item.quantity <= 1}
+                          onClick={() => handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          disabled={item.quantity <= 1 || updateCartItem.isPending}
                         >
                           -
                         </Button>
                         <span className="font-medium w-6 text-center">{item.quantity}</span>
-                        <Button variant="ghost" size="icon" onClick={() => updateQuantity(item.id, 1)}>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                          disabled={updateCartItem.isPending}
+                        >
                           +
                         </Button>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveItem(item.id)}
+                        disabled={removeCartItem.isPending}
                         className="text-red-500 hover:text-red-700"
                       >
                         <Trash2 className="h-5 w-5" />
@@ -136,6 +175,28 @@ export default function CartPage() {
                   </div>
                 </Card>
               ))}
+              
+              {/* Botão Limpar Carrinho */}
+              <div className="flex justify-end">
+                <Button
+                  variant="outline"
+                  onClick={handleClearCart}
+                  disabled={clearCart.isPending}
+                  className="text-red-600 border-red-600 hover:bg-red-50"
+                >
+                  {clearCart.isPending ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Limpando...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Limpar Carrinho
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
 
             {/* Resumo do Pedido */}
@@ -151,20 +212,20 @@ export default function CartPage() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Subtotal:</span>
-                      <span>R$ {calculateSubtotal().toFixed(2).replace(".", ",")}</span>
+                      <span>{formatCurrency(subtotal)}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Frete:</span>
-                      <span>R$ {shippingCost.toFixed(2).replace(".", ",")}</span>
+                      <span>{formatCurrency(shippingCost)}</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between font-bold text-lg">
                       <span>Total:</span>
-                      <span className="text-pink-600">R$ {total.toFixed(2).replace(".", ",")}</span>
+                      <span className="text-pink-600">{formatCurrency(total)}</span>
                     </div>
                   </div>
                   <Link href="/comprar">
-                    <Button style={{ backgroundColor: '#811B2D' }}  className="w-full  hover:bg-pink-700 text-white font-semibold py-3">
+                    <Button style={{ backgroundColor: '#811B2D' }} className="w-full hover:bg-pink-700 text-white font-semibold py-3">
                       Finalizar Compra
                     </Button>
                   </Link>

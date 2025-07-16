@@ -1,18 +1,58 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Menu, X, Home, ShoppingCart, MessageCircle, Shirt,Gem,
   MessageSquare,
-  LogOut, } from "lucide-react";
+  LogOut, Settings, Crown, } from "lucide-react";
   import { FaShoePrints } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { logout } from "@/lib/auth";
+import { useCartItems } from "@/lib/cartService";
+import { getAuthState } from "@/lib/auth";
+import AdminNotification from "./AdminNotification";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [userName, setUserName] = useState("")
+  const [showAdminNotification, setShowAdminNotification] = useState(false)
   const pathname = usePathname()
+  const authState = getAuthState()
+  const { data: cartData } = useCartItems()
+
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      try {
+        const token = localStorage.getItem("token")
+        if (token) {
+          const res = await fetch("http://localhost:8001/api/auth/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          if (res.ok) {
+                      const userData = await res.json()
+          const isUserAdmin = userData.role === "ADMIN"
+          setIsAdmin(isUserAdmin)
+          setUserName(userData.name)
+          
+          // Mostrar notificação se for admin
+          if (isUserAdmin) {
+            setShowAdminNotification(true)
+            // Auto-hide após 8 segundos
+            setTimeout(() => setShowAdminNotification(false), 8000)
+          }
+          }
+        }
+      } catch (error) {
+        console.error("Erro ao verificar status de admin:", error)
+      }
+    }
+
+    checkAdminStatus()
+  }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -87,22 +127,54 @@ export default function Header() {
             </Link>
             <Link
               href="/carrinho"
-              className={`flex items-center space-x-2 transition-colors ${
+              className={`flex items-center space-x-2 transition-colors relative ${
                 isActive("/carrinho") ? "text-pink-600" : "text-white hover:text-pink-600"
               }`}
             >
               <ShoppingCart className="h-6 w-6" />
+              {cartData?.count && cartData.count > 0 && (
+                <span className="absolute -top-2 -right-2 bg-pink-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartData.count}
+                </span>
+              )}
             </Link>
-            <Button
-              onClick={handleLogout}
-              variant='ghost'
-              className={`flex items-center space-x-2 transition-colors ${
-                isActive("/login") ? "text-pink-600" : "text-white hover:text-pink-600"
-              }`}
-            >
-              <LogOut />
-              <span>Sair</span>
-            </Button>
+            
+            {/* Indicador de Admin */}
+            {isAdmin && (
+              <div className="flex items-center space-x-2 text-yellow-400">
+                <Crown className="h-5 w-5" />
+                <span className="text-sm font-medium">Admin</span>
+              </div>
+            )}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="flex items-center space-x-2 bg-yellow-500 hover:bg-yellow-600 text-gray-900 px-4 py-2 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <Settings className="h-5 w-5" />
+                <span>Painel Admin</span>
+              </Link>
+            )}
+                          {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={closeMenu}
+                  className="flex items-center space-x-3 p-4 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <Settings className="h-6 w-6" />
+                  <span className="text-lg font-medium">Painel Admin</span>
+                </Link>
+              )}
+              <Button
+                onClick={handleLogout}
+                variant='ghost'
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                  isActive("/login") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                }`}
+              >
+                <LogOut className="h-6 w-6" />
+                <span className="text-lg font-medium">Sair</span>
+              </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -172,13 +244,26 @@ export default function Header() {
               <Link
                 href="/carrinho"
                 onClick={closeMenu}
-                className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-colors relative ${
                   isActive("/carrinho") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
                 }`}
               >
                 <ShoppingCart className="h-6 w-6" />
                 <span className="text-lg font-medium">Carrinho</span>
+                {cartData?.count && cartData.count > 0 && (
+                  <span className="absolute top-2 right-2 bg-pink-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartData.count}
+                  </span>
+                )}
               </Link>
+              
+              {/* Indicador de Admin no Mobile */}
+              {isAdmin && (
+                <div className="flex items-center space-x-3 p-3 rounded-lg bg-yellow-500/20 text-yellow-400 border border-yellow-400/30">
+                  <Crown className="h-6 w-6" />
+                  <span className="text-lg font-medium">Administrador</span>
+                </div>
+              )}
               <Button
               onClick={handleLogout}
               variant='ghost'
@@ -196,6 +281,12 @@ export default function Header() {
         {/* Mobile Menu Overlay */}
         {isMenuOpen && <div className="lg:hidden fixed inset-0 bg-black/50 z-30" onClick={closeMenu} />}
       </div>
+      
+      {/* Admin Notification */}
+      <AdminNotification 
+        isVisible={showAdminNotification} 
+        onClose={() => setShowAdminNotification(false)} 
+      />
     </header>
   )
 }

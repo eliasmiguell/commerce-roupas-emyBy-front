@@ -2,8 +2,8 @@ export interface User {
     id: string
     name: string
     email: string
-    phone : String
-    role: "ADMIN" | "MANAGER" | "INSTRUCTOR"
+    phone?: string
+    role: "ADMIN" | "CUSTOMER"
     avatar?: string
   }
   

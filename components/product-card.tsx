@@ -2,30 +2,52 @@
 
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
+import { formatCurrency } from "@/lib/utils"
+import { useAddToCart } from "@/lib/cartService"
+import { useToast } from "@/hooks/use-toast"
 
 interface ProductCardProps {
+  id: string
   image: string
   title: string
   description: string
-  price: string
+  price: number
   sizes: string[]
   onBuy?: () => void
 }
 
-export default function ProductCard({ image, title, description, price, sizes }: ProductCardProps) {
+export default function ProductCard({ id, image, title, description, price, sizes }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState(sizes[0] || "")
+  const addToCart = useAddToCart()
+  const { toast } = useToast()
 
-  const handleBuyClick = () => {
-    const params = new URLSearchParams({
-      title,
-      price,
-      image,
-      description,
-      ...(selectedSize && { size: selectedSize }),
-    })
+  const handleBuyClick = async () => {
+    if (!selectedSize) {
+      toast({
+        title: "Erro",
+        description: "Selecione um tamanho antes de adicionar ao carrinho",
+        variant: "destructive",
+      })
+      return
+    }
 
-    // Redireciona para a página de carrinho
-    window.location.href = `/carrinho?${params.toString()}`
+    try {
+      await addToCart.mutateAsync({
+        productId: id,
+        quantity: 1,
+      })
+      
+      toast({
+        title: "Sucesso!",
+        description: "Produto adicionado ao carrinho",
+      })
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao adicionar produto ao carrinho",
+        variant: "destructive",
+      })
+    }
   }
 
   return (
@@ -36,7 +58,7 @@ export default function ProductCard({ image, title, description, price, sizes }:
           {title}
         </h3>
         <p className="text-gray-600 mb-3 text-sm md:text-base">{description}</p>
-        <p className="text-lg md:text-xl font-bold text-gray-800 mb-4">{price}</p>
+        <p className="text-lg md:text-xl font-bold text-gray-800 mb-4">{formatCurrency(price)}</p>
 
         {sizes.length > 0 && (
           <div className="mb-4">
@@ -59,8 +81,13 @@ export default function ProductCard({ image, title, description, price, sizes }:
           </div>
         )}
 
-        <Button onClick={handleBuyClick} style={{ backgroundColor: '#811B2D' }} className="w-full hover:bg-pink-700 text-white font-semibold">
-          Comprar
+        <Button 
+          onClick={handleBuyClick} 
+          disabled={addToCart.isPending}
+          style={{ backgroundColor: '#811B2D' }} 
+          className="w-full hover:bg-pink-700 text-white font-semibold"
+        >
+          {addToCart.isPending ? "Adicionando..." : "Adicionar ao Carrinho"}
         </Button>
       </div>
     </div>

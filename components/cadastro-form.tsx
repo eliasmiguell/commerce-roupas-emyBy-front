@@ -9,10 +9,13 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, ShoppingBag, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function CadastroForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
@@ -20,11 +23,52 @@ export default function CadastroForm() {
     password: "",
     confirmPassword: "",
   })
+  const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Aqui você adicionaria a lógica de cadastro
-    console.log("Cadastro attempt:", formData)
+    setLoading(true)
+    setError("")
+
+    // Validações
+    if (formData.password !== formData.confirmPassword) {
+      setError("As senhas não coincidem")
+      setLoading(false)
+      return
+    }
+
+    if (formData.password.length < 6) {
+      setError("A senha deve ter pelo menos 6 caracteres")
+      setLoading(false)
+      return
+    }
+
+    try {
+      const res = await fetch("http://localhost:8001/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.nome,
+          email: formData.email,
+          password: formData.password,
+          phone: formData.telefone,
+        }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error || "Erro ao criar conta")
+        setLoading(false)
+        return
+      }
+
+      // Redirecionar para login com mensagem de sucesso
+      router.push("/login?message=Conta criada com sucesso! Faça login para continuar.")
+    } catch (err) {
+      setError("Erro de conexão com o servidor")
+      setLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,18 +76,14 @@ export default function CadastroForm() {
       ...formData,
       [e.target.name]: e.target.value,
     })
+    // Limpar erro quando o usuário começar a digitar
+    if (error) setError("")
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       {/* Back to home button */}
-      <Link
-        href="/"
-        className="fixed top-4 left-4 z-10 flex items-center space-x-2 text-gray-600 hover:text-pink-600 transition-colors bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        <span className="hidden sm:inline">Voltar à loja</span>
-      </Link>
+     
 
       <div className="w-full max-w-md mx-auto">
         <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
@@ -102,7 +142,6 @@ export default function CadastroForm() {
                   placeholder="Digite seu telefone"
                   value={formData.telefone}
                   onChange={handleChange}
-                  required
                   className="border-gray-300 focus:border-pink-500 focus:ring-pink-500"
                 />
               </div>
@@ -172,11 +211,16 @@ export default function CadastroForm() {
                   </Link>
                 </label>
               </div>
+              {error && (
+                <div className="text-red-600 text-sm font-semibold text-center">{error}</div>
+              )}
               <Button
                 type="submit"
-                className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                style={{ backgroundColor: '#811B2D' }}
+                className="w-full text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                disabled={loading}
               >
-                Criar conta
+                {loading ? "Criando conta..." : "Criar conta"}
               </Button>
             </form>
 
