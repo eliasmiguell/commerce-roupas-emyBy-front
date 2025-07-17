@@ -65,13 +65,13 @@ export default function CompraForm() {
   useEffect(() => {
     const checkUserLogin = async () => {
       const token = localStorage.getItem("token")
-      console.log("Token encontrado no localStorage:", token ? "Sim" : "Não")
+      
       
       if (token) {
         try {
           console.log("Fazendo requisição para /auth/me...")
           const userResponse = await api.get("/auth/me")
-          console.log("Resposta da API:", userResponse.data)
+        
           
           // Verificar se a resposta tem dados válidos
           if (userResponse.data) {
@@ -84,7 +84,7 @@ export default function CompraForm() {
               nome: user.name || "",
               email: user.email || "",
             }))
-            console.log("Usuário logado com sucesso:", user.name)
+          
           } else {
             console.log("Resposta da API não contém dados do usuário")
             localStorage.removeItem("token")
@@ -312,13 +312,6 @@ export default function CompraForm() {
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Status do usuário */}
-                {isUserLoggedIn && currentUser && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                    <p className="text-green-800 text-sm font-medium">
-                      ✅ Você está logado como: {currentUser.name || "Usuário"}
-                    </p>
-                  </div>
-                )}
 
                 {/* Opção de registro (apenas se não estiver logado) */}
                 {!isUserLoggedIn && (

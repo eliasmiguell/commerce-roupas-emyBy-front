@@ -237,7 +237,7 @@ export default function LoginForm() {
                 </div>
               </div>
 
-              <div className="space-y-3">
+              {/* <div className="space-y-3">
                 <Button variant="outline" className="w-full border-gray-300 hover:bg-gray-50 bg-transparent">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                     <path
@@ -263,7 +263,7 @@ export default function LoginForm() {
                   <Facebook className="w-5 h-5 mr-2 text-blue-600" />
                   Continuar com Facebook
                 </Button>
-              </div>
+              </div> */}
 
               <div className="text-center">
                 <p className="text-sm text-gray-600">

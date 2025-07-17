@@ -12,7 +12,7 @@ import { getImageUrl } from "@/lib/utils"
 function NewArrivalCard({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState(product.variants?.[0]?.size || "")
   const router = useRouter()
-
+  console.log(product)
   const handleBuy = () => {
     try {
       const params = new URLSearchParams({
@@ -29,6 +29,7 @@ function NewArrivalCard({ product }: { product: any }) {
       window.location.href = `/comprar?title=${encodeURIComponent(product.name)}&price=${encodeURIComponent(Number(product.price).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }))}&image=${encodeURIComponent(product.imageUrl)}&description=${encodeURIComponent(product.description)}${selectedSize ? `&size=${encodeURIComponent(selectedSize)}` : ''}`
     }
   }
+  
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">

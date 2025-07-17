@@ -6,19 +6,19 @@ import { Button } from "@/components/ui/button"
 const styles = [
   {
     name: "Casual Chic",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "imagens/casual-chiq.jpg",
     description: "Conforto e elegância para o dia a dia.",
     href: "/colecoes", // Redireciona para a página de coleções
   },
   {
     name: "Festa & Eventos",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "imagens/festa-eventos.avif",
     description: "Brilhe em qualquer celebração com peças deslumbrantes.",
     href: "/colecoes", // Redireciona para a página de coleções
   },
   {
     name: "Trabalho & Profissional",
-    image: "/placeholder.svg?height=300&width=400",
+    image: "imagens/roupa-de-trabalho-o-que-vestir.jpg",
     description: "Looks sofisticados para o ambiente corporativo.",
     href: "/colecoes", // Redireciona para a página de coleções
   },
