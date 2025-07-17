@@ -17,7 +17,7 @@ export default function WorkingAdminButton() {
           return
         }
 
-        const response = await fetch("http://localhost:8001/api/auth/me", {
+        const response = await fetch("https://emy-backend.onrender.com/api/auth/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
