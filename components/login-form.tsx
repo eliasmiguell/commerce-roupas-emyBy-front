@@ -157,10 +157,7 @@ export default function LoginForm() {
           <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
             <CardHeader className="text-center space-y-4">
               <div className="lg:hidden flex items-center justify-center space-x-3 mb-4">
-                <ShoppingBag className="h-8 w-8 text-pink-600" />
-                <h1 className="text-2xl font-bold text-pink-600" style={{ fontFamily: "Pacifico, cursive" }}>
-                  Emy-by
-                </h1>
+              <img src="imagens/logo-loja.png" alt="logo-loja" className="w-[70px] h-[70px] rounded-md"/>
               </div>
               <CardTitle className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Playfair Display, serif" }}>
                 Entrar na sua conta
