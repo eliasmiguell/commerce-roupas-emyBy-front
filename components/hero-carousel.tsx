@@ -60,11 +60,7 @@ export default function HeroCarousel() {
                   Emy-by Esterfanny
                 </h2>
                 <p className="text-lg md:text-2xl mb-8">Invista em você com mais frequência</p>
-                <Link href="/contato">
-                  <Button style={{ backgroundColor: '#811B2D' }}  className=" hover:bg-pink-700 text-white px-8 py-3 text-lg font-semibold">
-                    Comprar
-                  </Button>
-                </Link>
+               
               </div>
             </div>
           </div>

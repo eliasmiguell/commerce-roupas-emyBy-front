@@ -9,8 +9,10 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Eye, EyeOff, ShoppingBag, Facebook, Instagram, MessageCircle, ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { redirectIfAuthenticated } from "@/lib/auth"
+
 import { useRouter } from "next/navigation"
+import { API_ENDPOINTS } from "@/lib/config"
+import { useAuth } from "@/hooks/use-auth"
 
 
 export default function LoginForm() {
@@ -21,10 +23,9 @@ export default function LoginForm() {
   const [error, setError] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
   const router = useRouter()
+  const { login } = useAuth()
 
   useEffect(() => {
-    redirectIfAuthenticated()
-    
     // Verificar se há mensagem de sucesso na URL
     const urlParams = new URLSearchParams(window.location.search)
     const message = urlParams.get('message')
@@ -38,7 +39,7 @@ export default function LoginForm() {
     setLoading(true)
     setError("")
     try {
-      const res = await fetch("https://emy-backend.onrender.com/api/auth/login", {
+      const res = await fetch(API_ENDPOINTS.LOGIN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -50,13 +51,8 @@ export default function LoginForm() {
         setLoading(false)
         return
       }
-      // Salvar token no localStorage
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("user", JSON.stringify(data.user))
-      console.log("Token salvo:", data.token.substring(0, 20) + "...")
-      console.log("Usuário salvo:", data.user)
-      // Redirecionar para a home
-      router.push("/")
+      // Usar o hook de autenticação para fazer login
+      login(data.token, data.user)
     } catch (err) {
       console.error("Erro no login:", err)
       setError("Erro de conexão com o servidor")

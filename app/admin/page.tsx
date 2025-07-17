@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Package, Users, ShoppingCart, BarChart3 } from "lucide-react"
 import Link from "next/link"
+import { API_ENDPOINTS } from "@/lib/config"
 
 interface User {
   id: string
@@ -28,7 +29,7 @@ export default function AdminPage() {
           return
         }
 
-        const res = await fetch("http://localhost:8001/api/auth/me", {
+        const res = await fetch(API_ENDPOINTS.ME, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

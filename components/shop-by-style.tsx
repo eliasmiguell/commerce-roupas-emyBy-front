@@ -8,19 +8,19 @@ const styles = [
     name: "Casual Chic",
     image: "/placeholder.svg?height=300&width=400",
     description: "Conforto e elegância para o dia a dia.",
-    href: "/roupas", // Redireciona para a página de roupas
+    href: "/colecoes", // Redireciona para a página de coleções
   },
   {
     name: "Festa & Eventos",
     image: "/placeholder.svg?height=300&width=400",
     description: "Brilhe em qualquer celebração com peças deslumbrantes.",
-    href: "/roupas", // Redireciona para a página de roupas
+    href: "/colecoes", // Redireciona para a página de coleções
   },
   {
     name: "Trabalho & Profissional",
     image: "/placeholder.svg?height=300&width=400",
     description: "Looks sofisticados para o ambiente corporativo.",
-    href: "/roupas", // Redireciona para a página de roupas
+    href: "/colecoes", // Redireciona para a página de coleções
   },
 ]
 

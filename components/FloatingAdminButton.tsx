@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Settings, Crown } from "lucide-react"
 import Link from "next/link"
+import { API_ENDPOINTS } from "@/lib/config"
 
 export default function FloatingAdminButton() {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -19,7 +20,7 @@ export default function FloatingAdminButton() {
 
         console.log("FloatingAdminButton: Verificando status de admin...")
         
-        const res = await fetch("https://emy-backend.onrender.com/api/auth/me", {
+        const res = await fetch(API_ENDPOINTS.ME, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

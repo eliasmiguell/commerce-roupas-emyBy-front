@@ -8,10 +8,10 @@ import { Menu, X, Home, ShoppingCart, MessageCircle, Shirt,Gem,
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { logout } from "@/lib/auth";
 import { useCartItems } from "@/lib/cartService";
-import { getAuthState } from "@/lib/auth";
 import AdminNotification from "./AdminNotification";
+import { API_ENDPOINTS } from "@/lib/config";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -19,31 +19,22 @@ export default function Header() {
   const [userName, setUserName] = useState("")
   const [showAdminNotification, setShowAdminNotification] = useState(false)
   const pathname = usePathname()
-  const authState = getAuthState()
+  const { isAuthenticated, user, logout } = useAuth()
   const { data: cartData } = useCartItems()
 
   useEffect(() => {
     const checkAdminStatus = async () => {
       try {
-        const token = localStorage.getItem("token")
-        if (token) {
-          const res = await fetch("https://emy-backend.onrender.com/api/auth/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          if (res.ok) {
-                      const userData = await res.json()
-          const isUserAdmin = userData.role === "ADMIN"
+        if (isAuthenticated && user) {
+          const isUserAdmin = user.role === "ADMIN"
           setIsAdmin(isUserAdmin)
-          setUserName(userData.name)
+          setUserName(user.name)
           
           // Mostrar notificação se for admin
           if (isUserAdmin) {
             setShowAdminNotification(true)
             // Auto-hide após 8 segundos
             setTimeout(() => setShowAdminNotification(false), 8000)
-          }
           }
         }
       } catch (error) {
@@ -52,16 +43,28 @@ export default function Header() {
     }
 
     checkAdminStatus()
+
+    // Cleanup function para restaurar overflow
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
   }, [])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
+    // Prevenir scroll quando menu estiver aberto
+    if (!isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
   }
   const handleLogout = () => {
     logout()
   }
   const closeMenu = () => {
     setIsMenuOpen(false)
+    document.body.style.overflow = 'unset'
   }
 
   const isActive = (path: string) => {
@@ -88,6 +91,15 @@ export default function Header() {
             >
               <Home className="h-5 w-5" />
               <span>Loja</span>
+            </Link>
+            <Link
+              href="/colecoes"
+              className={`flex items-center space-x-2 transition-colors ${
+                isActive("/colecoes") ? "text-pink-600" : "text-white hover:text-pink-600"
+              }`}
+            >
+              <span className="text-lg">🛍️</span>
+              <span>Coleções</span>
             </Link>
             <Link
               href="/roupas"
@@ -146,6 +158,9 @@ export default function Header() {
                 <span className="text-sm font-medium">Admin</span>
               </div>
             )}
+            
+
+            
             {isAdmin && (
               <Link
                 href="/admin"
@@ -168,64 +183,79 @@ export default function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={toggleMenu}>
+          <Button 
+            size="icon" 
+            className="lg:hidden text-white hover:bg-white/30 bg-white/20 backdrop-blur-sm rounded-lg p-2 border border-white/20" 
+            onClick={toggleMenu}
+          >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </nav>
 
         {/* Mobile Navigation Menu */}
         <div
-          className={`lg:hidden fixed inset-0 top-[73px] bg-white z-40 transform transition-transform duration-300 ease-in-out ${
+          className={`lg:hidden fixed inset-0 top-[73px] bg-white shadow-2xl z-40 transform transition-transform duration-300 ease-in-out ${
             isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
+          style={{ backgroundColor: 'white' }}
         >
-          <div className="flex flex-col h-full">
-            <div className="flex-1 px-4 py-8 space-y-6">
+          <div className="flex flex-col h-full bg-white">
+            <div className="flex-1 px-4 py-8 space-y-4 bg-white">
               <Link
                 href="/"
                 onClick={closeMenu}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  isActive("/") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                  isActive("/") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
                 <Home className="h-6 w-6" />
                 <span className="text-lg font-medium">Loja</span>
               </Link>
               <Link
+                href="/colecoes"
+                onClick={closeMenu}
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                  isActive("/colecoes") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
+                }`}
+              >
+                <span className="text-xl">🛍️</span>
+                <span className="text-lg font-medium">Coleções</span>
+              </Link>
+              <Link
                 href="/roupas"
                 onClick={closeMenu}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  isActive("/roupas") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                  isActive("/roupas") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
-                <span className="text-2xl">👗</span>
+                <Shirt className="h-6 w-6" />
                 <span className="text-lg font-medium">Roupas</span>
               </Link>
               <Link
                 href="/calcados"
                 onClick={closeMenu}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  isActive("/calcados") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                  isActive("/calcados") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
-                <span className="text-2xl">👠</span>
+                <FaShoePrints className="h-6 w-6" />
                 <span className="text-lg font-medium">Calçados</span>
               </Link>
               <Link
                 href="/acessorios"
                 onClick={closeMenu}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  isActive("/acessorios") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                  isActive("/acessorios") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
-                <span className="text-2xl">💍</span>
+                <Gem className="h-6 w-6" />
                 <span className="text-lg font-medium">Acessórios</span>
               </Link>
               <Link
                 href="/contato"
                 onClick={closeMenu}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                  isActive("/contato") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                  isActive("/contato") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
                 <MessageCircle className="h-6 w-6" />
@@ -235,7 +265,7 @@ export default function Header() {
                 href="/carrinho"
                 onClick={closeMenu}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-colors relative ${
-                  isActive("/carrinho") ? "bg-pink-100 text-pink-600" : "text-white hover:bg-gray-100"
+                  isActive("/carrinho") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
                 }`}
               >
                 <ShoppingCart className="h-6 w-6" />
@@ -249,27 +279,43 @@ export default function Header() {
               
               {/* Indicador de Admin no Mobile */}
               {isAdmin && (
-                <div className="flex items-center space-x-3 p-3 rounded-lg bg-yellow-500/20 text-yellow-400 border border-yellow-400/30">
+                <div className="flex items-center space-x-3 p-3 rounded-lg bg-yellow-500/20 text-yellow-600 border border-yellow-400/30">
                   <Crown className="h-6 w-6" />
                   <span className="text-lg font-medium">Administrador</span>
                 </div>
               )}
+              
+              {/* Botão Admin no Mobile */}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={closeMenu}
+                  className="flex items-center space-x-3 p-3 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold transition-colors"
+                >
+                  <Settings className="h-6 w-6" />
+                  <span className="text-lg font-medium">Painel Admin</span>
+                </Link>
+              )}
               <Button
-              onClick={handleLogout}
-              variant='ghost'
-              className={`flex items-center space-x-2 transition-colors ${
-                isActive("/login") ? "text-pink-600" : "text-white hover:text-pink-600"
-              }`}
-            >
-              <LogOut />
-              <span>Sair</span>
-            </Button>
+                onClick={handleLogout}
+                variant='ghost'
+                className="flex items-center space-x-3 p-3 rounded-lg transition-colors text-gray-800 hover:bg-gray-100 w-full justify-start"
+              >
+                <LogOut className="h-6 w-6" />
+                <span className="text-lg font-medium">Sair</span>
+              </Button>
             </div>
           </div>
         </div>
 
         {/* Mobile Menu Overlay */}
-        {isMenuOpen && <div className="lg:hidden fixed inset-0 bg-black/50 z-30" onClick={closeMenu} />}
+        {isMenuOpen && (
+          <div 
+            className="lg:hidden fixed inset-0 bg-black/20 z-30" 
+            onClick={closeMenu}
+            style={{ top: '73px' }}
+          />
+        )}
       </div>
       
       {/* Admin Notification */}

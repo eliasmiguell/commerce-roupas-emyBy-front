@@ -2,63 +2,44 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/hooks/use-auth"
+import { Loader2 } from "lucide-react"
 
 interface AdminGuardProps {
   children: React.ReactNode
 }
 
 export default function AdminGuard({ children }: AdminGuardProps) {
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const { isAuthenticated, user, loading } = useAuth()
+  const [checked, setChecked] = useState(false)
 
   useEffect(() => {
-    const checkAdminStatus = async () => {
-      try {
-        const token = localStorage.getItem("token")
-        if (!token) {
-          router.push("/login")
-          return
-        }
-
-        const res = await fetch("https://emy-backend.onrender.com/api/auth/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        if (!res.ok) {
-          router.push("/login")
-          return
-        }
-
-        const userData = await res.json()
-        if (userData.role !== "ADMIN") {
-          router.push("/")
-          return
-        }
-
-        setIsAdmin(true)
-      } catch (error) {
-        console.error("Erro ao verificar status de admin:", error)
+    if (!loading) {
+      if (!isAuthenticated) {
         router.push("/login")
-      } finally {
-        setLoading(false)
+        return
       }
+      if (user && user.role !== "ADMIN") {
+        router.push("/")
+        return
+      }
+      setChecked(true)
     }
+  }, [isAuthenticated, user, loading, router])
 
-    checkAdminStatus()
-  }, [router])
-
-  if (loading) {
+  if (loading || !checked) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Verificando permissões...</div>
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-pink-600 mx-auto mb-4" />
+          <p className="text-gray-600">Verificando permissões...</p>
+        </div>
       </div>
     )
   }
 
-  if (!isAdmin) {
+  if (!isAuthenticated || !user || user.role !== "ADMIN") {
     return null
   }
 

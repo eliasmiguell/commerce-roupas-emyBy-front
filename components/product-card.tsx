@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-import { formatCurrency, getImageUrl } from "@/lib/utils"
+import { formatCurrency, getImageUrl, getOptimizedImageUrl } from "@/lib/utils"
 import { useAddToCart } from "@/lib/cartService"
 import { useToast } from "@/hooks/use-toast"
 
@@ -52,7 +52,16 @@ export default function ProductCard({ id, image, title, description, price, size
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <img src={getImageUrl(image)} alt={title} className="w-full h-48 md:h-64 object-cover" />
+      <img 
+        src={getImageUrl(image)} 
+        alt={title} 
+        className="w-full h-48 md:h-64 object-cover"
+        loading="lazy"
+        onError={(e) => {
+          console.log("Erro ao carregar imagem:", image, e)
+          e.currentTarget.src = "/placeholder.svg"
+        }}
+      />
       <div className="p-4">
         <h3 className="text-lg font-bold text-pink-600 mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
           {title}

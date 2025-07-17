@@ -8,7 +8,7 @@ import { useAddToCart } from "@/lib/cartService"
 import { useToast } from "@/hooks/use-toast"
 import { ShoppingCart, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { getImageUrl } from "@/lib/utils"
+import { getImageUrl, getOptimizedImageUrl } from "@/lib/utils"
 
 export default function ClothingSectionSimple() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)

@@ -14,7 +14,9 @@ import { Switch } from "@/components/ui/switch"
 import { ArrowLeft, Upload, X, Plus, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
-
+import { getImageUrl } from "@/lib/utils"
+import { API_ENDPOINTS } from "@/lib/config"
+    
 interface Category {
   id: string
   name: string
@@ -182,7 +184,7 @@ export default function EditarProdutoPage() {
         const imageFormData = new FormData()
         imageFormData.append("image", image)
         
-        const uploadRes = await fetch("http://localhost:8001/api/upload", {
+        const uploadRes = await fetch(API_ENDPOINTS.UPLOAD, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -200,7 +202,7 @@ export default function EditarProdutoPage() {
       }
 
       // Preparar dados para atualização
-      const updateData = {
+      const updateData: any = {
         name: formData.name,
         description: formData.description,
         price: parseFloat(formData.price),

@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Eye, EyeOff, ShoppingBag, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { API_ENDPOINTS } from "@/lib/config"
 
 export default function CadastroForm() {
   const [showPassword, setShowPassword] = useState(false)
@@ -44,7 +45,7 @@ export default function CadastroForm() {
     }
 
     try {
-      const res = await fetch("https://emy-backend.onrender.com/api/auth/register", {
+      const res = await fetch(API_ENDPOINTS.REGISTER, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

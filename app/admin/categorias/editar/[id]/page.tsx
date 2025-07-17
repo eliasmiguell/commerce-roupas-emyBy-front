@@ -12,6 +12,7 @@ import { ArrowLeft, Upload, X, Save } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/hooks/use-toast"
 import { Loader2 } from "lucide-react"
+import { API_ENDPOINTS } from "@/lib/config"
 
 export default function EditarCategoriaPage() {
   const params = useParams()
@@ -116,7 +117,7 @@ export default function EditarCategoriaPage() {
         const imageFormData = new FormData()
         imageFormData.append("image", newImage)
         
-        const uploadRes = await fetch("http://localhost:8001/api/upload", {
+        const uploadRes = await fetch(API_ENDPOINTS.UPLOAD, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

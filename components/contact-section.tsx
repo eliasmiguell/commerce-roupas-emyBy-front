@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Facebook, Instagram, MessageCircle, MapPin, ThumbsUp } from "lucide-react"
 import Link from "next/link"
+import { API_ENDPOINTS } from "@/lib/config"
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ export default function ContactSection() {
     setSuccess("")
     setError("")
     try {
-      const res = await fetch("https://emy-backend.onrender.com/api/contact/send", {
+      const res = await fetch(API_ENDPOINTS.CONTACT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

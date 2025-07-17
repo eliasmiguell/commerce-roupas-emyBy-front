@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { API_BASE_URL } from "./config"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -25,19 +26,22 @@ export function getImageUrl(imagePath: string | null): string {
   
   // Se começa com /uploads, adiciona a URL base do backend
   if (imagePath.startsWith('/uploads')) {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://emy-backend.onrender.com"
-    return `${baseUrl}${imagePath}`
+    return `${API_BASE_URL}${imagePath}`
   }
   
   // Se não começa com /, adiciona /uploads/
   if (!imagePath.startsWith('/')) {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://emy-backend.onrender.com"
-    return `${baseUrl}/uploads/${imagePath}`
+    return `${API_BASE_URL}/uploads/${imagePath}`
   }
   
   // Para outros casos, adiciona a URL base
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://emy-backend.onrender.com"
-  return `${baseUrl}${imagePath}`
+  return `${API_BASE_URL}${imagePath}`
+}
+
+// Função para otimizar imagens com parâmetros de qualidade
+export function getOptimizedImageUrl(imagePath: string | null, width?: number, height?: number, quality: number = 80): string {
+  // Temporariamente, usar a função getImageUrl normal até resolver o middleware
+  return getImageUrl(imagePath)
 }
 
 export const formatDate = (date: string | Date): string => {

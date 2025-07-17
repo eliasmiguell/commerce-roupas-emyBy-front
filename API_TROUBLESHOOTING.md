@@ -5,8 +5,8 @@
 ### Possíveis Causas:
 
 1. **Backend não está rodando**
-   - Verifique se o backend está rodando em `https://emy-backend.onrender.com`
-   - Teste a rota de health: `https://emy-backend.onrender.com/api/health`
+   - Verifique se o backend está rodando em `http://localhost:8001/`
+   - Teste a rota de health: `http://localhost:8001//api/health`
 
 2. **Problema de CORS**
    - O backend foi atualizado para aceitar requisições da Vercel
@@ -14,20 +14,20 @@
 
 3. **Variável de ambiente incorreta**
    - Verifique se `NEXT_PUBLIC_API_URL` está configurada na Vercel
-   - Valor correto: `https://emy-backend.onrender.com/api`
+   - Valor correto: `http://localhost:8001//api`
 
 ### Passos para Resolver:
 
 1. **Teste a API diretamente:**
    ```bash
-   curl https://emy-backend.onrender.com/api/health
-   curl https://emy-backend.onrender.com/api/categories
+   curl http://localhost:8001//api/health
+   curl http://localhost:8001//api/categories
    ```
 
 2. **Verifique as variáveis de ambiente na Vercel:**
    - Acesse o dashboard da Vercel
    - Vá em Settings > Environment Variables
-   - Configure: `NEXT_PUBLIC_API_URL = https://emy-backend.onrender.com/api`
+   - Configure: `NEXT_PUBLIC_API_URL = http://localhost:8001//api`
 
 3. **Use o componente de teste:**
    - O componente `ApiTest` foi adicionado na página principal

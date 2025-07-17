@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Upload, X, Plus } from "lucide-react"
 import Link from "next/link"
+import { API_ENDPOINTS } from "@/lib/config"
 
 interface Category {
   id: string
@@ -46,7 +47,7 @@ export default function NovoProdutoPage() {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch("http://localhost:8001/api/categories")
+      const res = await fetch(API_ENDPOINTS.CATEGORIES)
       if (res.ok) {
         const data = await res.json()
         setCategories(data.categories || data)
@@ -133,7 +134,7 @@ export default function NovoProdutoPage() {
         const imageFormData = new FormData()
         imageFormData.append("image", image)
         
-        const uploadRes = await fetch("http://localhost:8001/api/upload", {
+        const uploadRes = await fetch(API_ENDPOINTS.UPLOAD, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -164,7 +165,10 @@ export default function NovoProdutoPage() {
         variants: variants.filter(v => v.size && v.color && v.stock > 0),
       }
 
-      const res = await fetch("http://localhost:8001/api/products", {
+      console.log("Dados do produto a serem enviados:", productData)
+      console.log("URLs das imagens:", imageUrls)
+
+      const res = await fetch(API_ENDPOINTS.PRODUCTS, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

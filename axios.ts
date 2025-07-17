@@ -1,15 +1,17 @@
 import axios from "axios"
+import { API_BASE_URL } from "./lib/config"
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://emy-backend.onrender.com/api",
+  baseURL: `${API_BASE_URL}/api`,
 })
 
 // Interceptor para adicionar o token de autenticação automaticamente
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token")
-  console.log('Interceptor - Token encontrado:', token ? 'Sim' : 'Não')
+  console.log('Interceptor - URL:', config.url, 'Token encontrado:', token ? 'Sim' : 'Não')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+    console.log('Interceptor - Token adicionado ao header:', token.substring(0, 20) + '...')
   }
   return config
 })

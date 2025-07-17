@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Settings } from "lucide-react"
 import Link from "next/link"
+import { API_ENDPOINTS } from "@/lib/config"
 
 export default function FinalAdminButton() {
   const [isAdmin, setIsAdmin] = useState(false)
@@ -24,7 +25,7 @@ export default function FinalAdminButton() {
 
         console.log("FinalAdminButton: Fazendo requisição para verificar admin...")
         
-        const response = await fetch("https://emy-backend.onrender.com/api/auth/me", {
+        const response = await fetch(API_ENDPOINTS.ME, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

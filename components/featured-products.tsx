@@ -5,7 +5,7 @@ import { useGetCategorias } from "@/lib/categoriaService"
 import { getProdutos } from "@/lib/produtoService"
 import { useQuery } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
-import { getImageUrl } from "@/lib/utils"
+import { getImageUrl, getOptimizedImageUrl } from "@/lib/utils"
 
 export default function FeaturedProducts() {
   // Buscar categorias usando hook
@@ -64,7 +64,12 @@ export default function FeaturedProducts() {
           >
             Nossas <span className="text-pink-600">Categorias</span>
           </h2>
-          <p className="text-lg text-gray-600">Descubra nossa coleção completa</p>
+          <p className="text-lg text-gray-600 mb-6">Descubra nossa coleção completa</p>
+          <Link href="/colecoes">
+            <Button className="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-8 py-3">
+              Ver Todas as Coleções
+            </Button>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -75,9 +80,13 @@ export default function FeaturedProducts() {
             >
               <div className="relative h-48 md:h-64">
                 <img
-                  src={getImageUrl(category.imageUrl)}
+                  src={getOptimizedImageUrl(category.imageUrl, 400, 300, 90)}
                   alt={category.name}
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = "/placeholder.svg"
+                  }}
                 />
                 <div className="absolute inset-0 bg-black/20"></div>
                 <div className="absolute top-4 left-4 text-3xl md:text-4xl">
@@ -97,9 +106,13 @@ export default function FeaturedProducts() {
                     {(productsByCategory[category.id] || []).slice(0, 2).map((product: any) => (
                       <div key={product.id} className="flex items-center gap-3">
                         <img 
-                          src={getImageUrl(product.imageUrl)} 
+                          src={getOptimizedImageUrl(product.imageUrl, 100, 100, 90)} 
                           alt={product.name} 
                           className="w-12 h-12 object-cover rounded" 
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.src = "/placeholder.svg"
+                          }}
                         />
                         <div>
                           <div className="font-semibold text-gray-800">{product.name}</div>

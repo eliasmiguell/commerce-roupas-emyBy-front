@@ -13,6 +13,7 @@ import { formatCurrency, getImageUrl } from "@/lib/utils"
 import api from "@/axios"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CheckCircle, XCircle } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
 
 export default function CompraForm() {
   const searchParams = useSearchParams()
@@ -29,6 +30,7 @@ export default function CompraForm() {
     numeroCartao: "",
     validade: "",
     cvv: "",
+    senha: "",
   })
 
   const [loading, setLoading] = useState(false)
@@ -37,6 +39,9 @@ export default function CompraForm() {
   const [paymentMethod, setPaymentMethod] = useState("CREDIT_CARD")
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null)
   const [paymentMessage, setPaymentMessage] = useState<string>("")
+  const [wantsToRegister, setWantsToRegister] = useState(false)
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
+  const [currentUser, setCurrentUser] = useState<any>(null)
 
   // Dados do carrinho
   const cartItems = cartData?.items || []
@@ -55,6 +60,48 @@ export default function CompraForm() {
 
   // Verificar se veio do carrinho ou compra direta
   const isFromCart = cartItems.length > 0
+
+  // Verificar se usuário está logado
+  useEffect(() => {
+    const checkUserLogin = async () => {
+      const token = localStorage.getItem("token")
+      console.log("Token encontrado no localStorage:", token ? "Sim" : "Não")
+      
+      if (token) {
+        try {
+          console.log("Fazendo requisição para /auth/me...")
+          const userResponse = await api.get("/auth/me")
+          console.log("Resposta da API:", userResponse.data)
+          
+          // Verificar se a resposta tem dados válidos
+          if (userResponse.data) {
+            const user = userResponse.data
+            setCurrentUser(user)
+            setIsUserLoggedIn(true)
+            // Preencher dados do usuário logado
+            setFormData(prev => ({
+              ...prev,
+              nome: user.name || "",
+              email: user.email || "",
+            }))
+            console.log("Usuário logado com sucesso:", user.name)
+          } else {
+            console.log("Resposta da API não contém dados do usuário")
+            localStorage.removeItem("token")
+            setIsUserLoggedIn(false)
+            setCurrentUser(null)
+          }
+        } catch (error: any) {
+          console.log("Erro na verificação do token:", error.response?.data || error.message)
+          localStorage.removeItem("token")
+          setIsUserLoggedIn(false)
+          setCurrentUser(null)
+        }
+      }
+    }
+    
+    checkUserLogin()
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -79,56 +126,69 @@ export default function CompraForm() {
         return
       }
 
-      // Criar ou buscar usuário
       let userId = ""
-      const token = localStorage.getItem("token")
-      
-      if (token) {
-        // Usuário logado - usar dados existentes
-        try {
-          const userResponse = await api.get("/auth/me")
-          userId = userResponse.data.user.id
-        } catch (error) {
-          console.log("Usuário não encontrado, criando novo...")
-        }
-      }
+      let userToken = localStorage.getItem("token") || ""
 
-      if (!userId) {
-        // Criar novo usuário
+      // Se usuário está logado, usar dados existentes
+      if (isUserLoggedIn && currentUser) {
+        userId = currentUser.id
+      } else if (wantsToRegister) {
+        // Criar novo usuário se escolheu se registrar
+        if (!formData.senha) {
+          setError("Por favor, digite uma senha para se registrar")
+          setLoading(false)
+          return
+        }
+
         const userData = {
           name: formData.nome,
           email: formData.email,
-          password: "senha123", // Senha padrão para compras sem cadastro
+          password: formData.senha,
           role: "USER"
         }
 
         const userResponse = await api.post("/auth/register", userData)
-        userId = userResponse.data.user.id
         
-        // Fazer login automático
-        const loginResponse = await api.post("/auth/login", {
-          email: formData.email,
-          password: "senha123"
+        // Verificar se o registro foi bem-sucedido
+        if (userResponse.data && userResponse.data.user) {
+          userId = userResponse.data.user.id
+          
+          // Fazer login automático
+          const loginResponse = await api.post("/auth/login", {
+            email: formData.email,
+            password: formData.senha
+          })
+          
+          userToken = loginResponse.data.token || ""
+          localStorage.setItem("token", userToken)
+          setIsUserLoggedIn(true)
+          setCurrentUser(userResponse.data.user)
+        } else {
+          throw new Error("Erro ao criar usuário: dados inválidos")
+        }
+      } else {
+        // Compra sem registro - criar usuário temporário ou usar dados sem login
+        // Para simplificar, vamos criar um pedido sem usuário específico
+        userId = "guest"
+      }
+
+      // Criar endereço apenas se tiver token (usuário logado ou registrado)
+      let addressId = null
+      if (userToken) {
+        const addressData = {
+          street: formData.endereco,
+          city: formData.cidade,
+          state: "SP", // Estado padrão
+          zipCode: formData.cep,
+          phone: formData.telefone,
+          isDefault: true
+        }
+
+        const addressResponse = await api.post("/addresses", addressData, {
+          headers: { Authorization: `Bearer ${userToken}` }
         })
-        
-        localStorage.setItem("token", loginResponse.data.token)
+        addressId = addressResponse.data.address.id
       }
-
-      // Criar endereço
-      const addressData = {
-        street: formData.endereco,
-        city: formData.cidade,
-        state: "SP", // Estado padrão
-        zipCode: formData.cep,
-        phone: formData.telefone,
-        isDefault: true
-      }
-
-      const addressResponse = await api.post("/addresses", addressData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      })
-
-      const addressId = addressResponse.data.address.id
 
       // Preparar itens do pedido
       let orderItems = []
@@ -154,37 +214,42 @@ export default function CompraForm() {
 
       // Criar pedido
       const orderData = {
-        userId: userId,
+        userId: userId === "guest" ? null : userId,
         status: "PENDING",
-        items: orderItems
+        items: orderItems,
+        customerInfo: userId === "guest" ? {
+          name: formData.nome,
+          email: formData.email,
+          phone: formData.telefone,
+          address: formData.endereco,
+          city: formData.cidade,
+          zipCode: formData.cep
+        } : null
       }
 
-      const orderResponse = await api.post("/orders/admin", orderData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      })
+      const headers = userToken ? { Authorization: `Bearer ${userToken}` } : {}
+      const orderResponse = await api.post("/orders/admin", orderData, { headers })
       const orderId = orderResponse.data.order?.id || orderResponse.data.id
+
       // Criar pagamento
       const paymentRes = await api.post(`/orders/admin/${orderId}/payment`, {
         orderId,
         method: paymentMethod,
         amount: total
-      }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      })
+      }, { headers })
       const paymentId = paymentRes.data.payment.id
+
       // Processar pagamento (simulação)
-      const processRes = await api.post(`/orders/admin/payment/${paymentId}/process`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      })
+      const processRes = await api.post(`/orders/admin/payment/${paymentId}/process`, {}, { headers })
       setPaymentStatus(processRes.data.payment.status)
       setPaymentMessage(processRes.data.message)
       setSuccess("Compra realizada com sucesso! Pedido criado.")
       
       // Limpar carrinho se veio do carrinho
-      if (isFromCart) {
+      if (isFromCart && userToken) {
         try {
           await api.delete("/cart", {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            headers: { Authorization: `Bearer ${userToken}` }
           })
         } catch (error) {
           console.log("Erro ao limpar carrinho:", error)
@@ -224,7 +289,7 @@ export default function CompraForm() {
             <CardHeader className="text-center space-y-4">
               <Button
                 onClick={() => router.push(isFromCart ? "/carrinho" : "/")}
-                className="flex items-center space-x-2 text-white transition-colors bg-pink-600 backdrop-blur-sm rounded-lg px-3 py-2 w-[140px] mb-4"
+                className="flex items-center space-x-2 text-white transition-colors bg-pink-600 backdrop-blur-sm rounded-lg px-3 py-2  mb-4"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">
@@ -232,20 +297,62 @@ export default function CompraForm() {
                 </span>
               </Button>
               <div className="flex items-center justify-center space-x-3 mb-4">
-                <ShoppingBag className="h-8 w-8 text-pink-600" />
-                <h1 className="text-2xl font-bold text-pink-600" style={{ fontFamily: "Pacifico, cursive" }}>
-                  Emy-by
-                </h1>
+              <img src="imagens/logo-loja.png" alt="logo-loja" className="w-[80px] h-[60px] rounded-md"/>
               </div>
               <CardTitle className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Playfair Display, serif" }}>
                 Finalizar Compra
               </CardTitle>
               <CardDescription className="text-gray-600">
-                {isFromCart ? "Complete seus dados para finalizar a compra" : "Complete seus dados para finalizar a compra"}
+                {isUserLoggedIn 
+                  ? "Complete seus dados para finalizar a compra" 
+                  : "Complete seus dados para finalizar a compra"
+                }
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Status do usuário */}
+                {isUserLoggedIn && currentUser && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <p className="text-green-800 text-sm font-medium">
+                      ✅ Você está logado como: {currentUser.name || "Usuário"}
+                    </p>
+                  </div>
+                )}
+
+                {/* Opção de registro (apenas se não estiver logado) */}
+                {!isUserLoggedIn && (
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="register"
+                        checked={wantsToRegister}
+                        onCheckedChange={(checked) => setWantsToRegister(checked as boolean)}
+                      />
+                      <Label htmlFor="register" className="text-sm font-medium text-gray-700">
+                        Quero criar uma conta para acompanhar meus pedidos
+                      </Label>
+                    </div>
+                    {wantsToRegister && (
+                      <div className="space-y-2">
+                        <Label htmlFor="senha" className="text-sm font-semibold text-gray-700">
+                          Senha
+                        </Label>
+                        <Input
+                          id="senha"
+                          name="senha"
+                          type="password"
+                          placeholder="Digite sua senha"
+                          value={formData.senha}
+                          onChange={handleChange}
+                          required={wantsToRegister}
+                          className="border-gray-300 focus:border-pink-500 focus:ring-pink-500"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Dados Pessoais */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-800 border-b pb-2">Dados Pessoais</h3>
