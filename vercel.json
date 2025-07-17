@@ -4,6 +4,6 @@
     { "src": "package.json", "use": "@vercel/next" }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "http://localhost:8001//api" 
+    "NEXT_PUBLIC_API_URL": "https://emy-backend.onrender.com" 
   }
 }
