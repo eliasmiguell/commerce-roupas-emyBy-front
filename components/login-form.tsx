@@ -236,6 +236,7 @@ export default function LoginForm() {
                   <span className="bg-white px-2 text-gray-500">Ou</span>
                 </div>
               </div>
+              <div className="space-y-3 text-center bg-gray-200 p-1 rounded-lg">Para melhor experiência e visualização, utilize o dispositivo desktop ou tablet</div>
 
               {/* <div className="space-y-3">
                 <Button variant="outline" className="w-full border-gray-300 hover:bg-gray-50 bg-transparent">

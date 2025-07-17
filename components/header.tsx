@@ -161,6 +161,34 @@ export default function Header() {
             
 
             
+            {/* Seção do usuário logado - Desktop */}
+            {isAuthenticated && user && (
+              <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+                <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+                  {user.avatar ? (
+                    <img 
+                      src={user.avatar} 
+                      alt={user.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-pink-600 text-sm font-semibold">
+                      {user.name.charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <div className="hidden md:block">
+                  <p className="text-sm font-medium text-white">{user.name}</p>
+                  {isAdmin && (
+                    <div className="flex items-center space-x-1">
+                      <Crown className="h-3 w-3 text-yellow-400" />
+                      <span className="text-xs text-yellow-400">Admin</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
             {isAdmin && (
               <Link
                 href="/admin"
@@ -200,6 +228,37 @@ export default function Header() {
           style={{ backgroundColor: 'white' }}
         >
           <div className="flex flex-col h-full bg-white">
+            {/* Seção do usuário logado */}
+            {isAuthenticated && user && (
+              <div className="px-4 py-6 border-b border-gray-200 bg-gray-50">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                    {user.avatar ? (
+                      <img 
+                        src={user.avatar} 
+                        alt={user.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-pink-600 text-lg font-semibold">
+                        {user.name.charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-900">{user.name}</p>
+                    <p className="text-sm text-gray-600">{user.email}</p>
+                    {isAdmin && (
+                      <div className="flex items-center space-x-1 mt-1">
+                        <Crown className="h-4 w-4 text-yellow-500" />
+                        <span className="text-xs text-yellow-600 font-medium">Administrador</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="flex-1 px-4 py-8 space-y-4 bg-white">
               <Link
                 href="/"
