@@ -25,18 +25,18 @@ export function getImageUrl(imagePath: string | null): string {
   
   // Se começa com /uploads, adiciona a URL base do backend
   if (imagePath.startsWith('/uploads')) {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001"
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://emy-backend.onrender.com"
     return `${baseUrl}${imagePath}`
   }
   
   // Se não começa com /, adiciona /uploads/
   if (!imagePath.startsWith('/')) {
-    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001"
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://emy-backend.onrender.com"
     return `${baseUrl}/uploads/${imagePath}`
   }
   
   // Para outros casos, adiciona a URL base
-  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001"
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "https://emy-backend.onrender.com"
   return `${baseUrl}${imagePath}`
 }
 

@@ -27,7 +27,7 @@ export default function ContactSection() {
     setSuccess("")
     setError("")
     try {
-      const res = await fetch("http://localhost:8001/api/contact/send", {
+      const res = await fetch("https://emy-backend.onrender.com/api/contact/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

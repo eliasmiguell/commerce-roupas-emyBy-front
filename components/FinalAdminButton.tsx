@@ -24,7 +24,7 @@ export default function FinalAdminButton() {
 
         console.log("FinalAdminButton: Fazendo requisição para verificar admin...")
         
-        const response = await fetch("http://localhost:8001/api/auth/me", {
+        const response = await fetch("https://emy-backend.onrender.com/api/auth/me", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -27,9 +27,16 @@ export const useGetCategorias = () => {
   return useQuery<any>({
     queryKey: ['categorias'],
     queryFn: async () => {
-      const response = await api.get('/categories') 
-      return response.data
+      try {
+        const response = await api.get('/categories') 
+        return response.data
+      } catch (error) {
+        console.error('Erro ao buscar categorias:', error)
+        throw error
+      }
     },
+    retry: 3,
+    retryDelay: 1000,
   })
 }
 

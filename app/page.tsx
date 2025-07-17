@@ -5,6 +5,7 @@ import FeaturedProducts from "@/components/featured-products"
 import NewArrivals from "@/components/new-arrivals" // Novo componente
 import Footer from "@/components/footer"
 import AuthGuard from "@/components/AuthGuard"
+import ApiTest from "@/components/api-test"
 
 import FinalAdminButton from "@/components/FinalAdminButton"
 import UltimateAdminButton from "@/components/UltimateAdminButton"
@@ -16,6 +17,7 @@ export default function HomePage() {
               <main>
           <HeroCarousel />
           <AboutSection />
+          <ApiTest />
           <FeaturedProducts />
           <NewArrivals /> {/* Nova seção */}
         </main>

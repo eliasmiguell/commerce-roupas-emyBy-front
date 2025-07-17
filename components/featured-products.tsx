@@ -25,9 +25,23 @@ export default function FeaturedProducts() {
     </div>
   )
   
-  if (isError || !categoriesData) return (
-    <div className="text-center text-red-500">Erro ao carregar categorias</div>
-  )
+  if (isError) {
+    console.error('Erro ao carregar categorias:', isError)
+    return (
+      <div className="text-center py-16">
+        <div className="text-red-500 mb-4">Erro ao carregar categorias</div>
+        <div className="text-gray-500 text-sm">Verifique sua conexão com a internet</div>
+      </div>
+    )
+  }
+
+  if (!categoriesData || categoriesData.length === 0) {
+    return (
+      <div className="text-center py-16">
+        <div className="text-gray-500">Nenhuma categoria encontrada</div>
+      </div>
+    )
+  }
 
   // Extrair as categorias dos dados
   const categories = categoriesData || []

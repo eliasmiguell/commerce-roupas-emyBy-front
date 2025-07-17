@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://emy-backend.onrender.com/api",
 })
 
 // Interceptor para adicionar o token de autenticação automaticamente

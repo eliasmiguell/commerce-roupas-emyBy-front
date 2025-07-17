@@ -19,7 +19,7 @@ export default function FloatingAdminButton() {
 
         console.log("FloatingAdminButton: Verificando status de admin...")
         
-        const res = await fetch("http://localhost:8001/api/auth/me", {
+        const res = await fetch("https://emy-backend.onrender.com/api/auth/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
