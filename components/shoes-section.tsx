@@ -1,85 +1,175 @@
 "use client"
 
 import { useState } from "react"
-import ProductCard from "./product-card"
+import { useCalcados, useSapatos, useTenis, useSandalias } from "@/lib/calcadosService"
+import { useProfile } from "@/lib/authService"
+import { useAddToCart } from "@/lib/cartService"
+import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { getImageUrl } from "@/lib/utils"
 
-const shoesCategories = {
-  sapatos: [
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Sapato para casamentos",
-      description: "Sapato Bege",
-      price: "R$ 300,00",
-      sizes: ["36", "37"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Sapato para casamentos",
-      description: "Sapato Branco",
-      price: "R$ 350,00",
-      sizes: ["37", "39"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Sapato cinza",
-      description: "Sapato elegante",
-      price: "R$ 400,00",
-      sizes: ["35", "37", "38", "39"],
-    },
-  ],
-  tenis: [
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Tênis Nike",
-      description: "Confortável e estiloso",
-      price: "R$ 300,00",
-      sizes: ["36", "37", "40"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Tênis Adidas",
-      description: "Qualidade Adidas",
-      price: "R$ 350,00",
-      sizes: ["37", "39", "40", "41"],
-    },
-    {
-      image: "/placeholder.svg?height=300&width=250",
-      title: "Tênis Puma",
-      description: "Tênis Puma Vermelho",
-      price: "R$ 350,00",
-      sizes: ["35", "37", "39", "42"],
-    },
-  ],
-  sandalias: [
-    {
-      image:
-        "https://boutiquedassi.fbitsstatic.net/img/p/sandalia-rute-81693/301956-1.jpg?w=600&h=800&v=no-change&qs=ignore",
-      title: "Sandália Rute",
-      description: "Sandália elegante",
-      price: "R$ 125,00",
-      sizes: ["36", "37", "40"],
-    },
-    {
-      image:
-        "https://a-static.mlcdn.com.br/800x560/sandalia-salto-sandalha-tira-sandalha-moda-sandalha-verao-misslis/misslis/7d5076c041e311ed867b4201ac185019/77cf9a8ff5198cc414d891968876a349.jpeg",
-      title: "Sandália Verão",
-      description: "Salto Sandália Verão",
-      price: "R$ 150,00",
-      sizes: ["37", "39", "40", "41"],
-    },
-    {
-      image:
-        "https://img1.wsimg.com/isteam/ip/3a9eb2b2-580d-44cc-a8c8-9c01b580ee7f/ols/36-006.1.jpg/:/rs=w:1200,h:1200",
-      title: "Sandália Anabela",
-      description: "Sandália confortável",
-      price: "R$ 90,00",
-      sizes: ["35", "37", "39", "42"],
-    },
-  ],
+interface Product {
+  id: string
+  name: string
+  description: string
+  price: string
+  imageUrl: string | null
+  category: {
+    id: string
+    name: string
+    slug: string
+  }
+  variants: {
+    id: string
+    size: string
+    color?: string
+    stock: number
+    productId: string
+  }[]
+}
+
+interface ProductCardProps {
+  product: Product
+}
+
+function ProductCard({ product }: ProductCardProps) {
+  const [selectedSize, setSelectedSize] = useState("")
+  const { data: user } = useProfile()
+  const addToCart = useAddToCart()
+  const { toast } = useToast()
+  const router = useRouter()
+
+  const availableSizes = product.variants
+    .filter(variant => variant.stock > 0)
+    .map(variant => variant.size)
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      toast({
+        title: "Login necessário",
+        description: "Faça login para adicionar produtos ao carrinho",
+        variant: "destructive",
+      })
+      router.push("/login")
+      return
+    }
+
+    if (!selectedSize) {
+      toast({
+        title: "Selecione um tamanho",
+        description: "Por favor, selecione um tamanho antes de adicionar ao carrinho",
+        variant: "destructive",
+      })
+      return
+    }
+
+    try {
+      await addToCart.mutateAsync({
+        productId: product.id,
+        quantity: 1,
+      })
+      
+      toast({
+        title: "Sucesso!",
+        description: `${product.name} adicionado ao carrinho`,
+      })
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao adicionar produto ao carrinho",
+        variant: "destructive",
+      })
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      <img 
+        src={getImageUrl(product.imageUrl || "")} 
+        alt={product.name} 
+        className="w-full h-48 md:h-64 object-cover" 
+      />
+      <div className="p-4">
+        <h3 className="text-lg font-bold text-pink-600 mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
+          {product.name}
+        </h3>
+        <p className="text-gray-600 mb-3 text-sm md:text-base">{product.description}</p>
+        <p className="text-lg md:text-xl font-bold text-gray-800 mb-4">
+          R$ {Number(product.price).toFixed(2).replace('.', ',')}
+        </p>
+
+        {availableSizes.length > 0 && (
+          <div className="mb-4">
+            <p className="text-sm font-semibold text-gray-700 mb-2">Tamanhos disponíveis:</p>
+            <div className="flex flex-wrap gap-2">
+              {availableSizes.map((size, index) => (
+                <label key={index} className="flex items-center space-x-1">
+                  <input
+                    type="radio"
+                    name={`size-${product.id}`}
+                    value={size}
+                    checked={selectedSize === size}
+                    onChange={(e) => setSelectedSize(e.target.value)}
+                    className="text-pink-600 focus:ring-pink-500"
+                  />
+                  <span className="text-sm">{size}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <Button 
+          onClick={handleAddToCart} 
+          disabled={addToCart.isPending || availableSizes.length === 0}
+          style={{ backgroundColor: '#811B2D' }} 
+          className="w-full hover:bg-pink-700 text-white font-semibold"
+        >
+          {addToCart.isPending ? "Adicionando..." : 
+           availableSizes.length === 0 ? "Sem estoque" :
+           user ? "Adicionar ao Carrinho" : "Fazer Login"}
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 export default function ShoesSection() {
-  const [activeCategory, setActiveCategory] = useState("sapatos")
+  const [activeCategory, setActiveCategory] = useState<'todos' | 'sapatos' | 'tenis' | 'sandalias'>('todos')
+  
+  const { data: allCalcados, isLoading: loadingAll } = useCalcados()
+  const { data: sapatos, isLoading: loadingSapatos } = useSapatos()
+  const { data: tenis, isLoading: loadingTenis } = useTenis()
+  const { data: sandalias, isLoading: loadingSandalias } = useSandalias()
+
+  const getCurrentProducts = () => {
+    switch (activeCategory) {
+      case 'sapatos':
+        return sapatos || []
+      case 'tenis':
+        return tenis || []
+      case 'sandalias':
+        return sandalias || []
+      default:
+        return allCalcados || []
+    }
+  }
+
+  const isLoading = () => {
+    switch (activeCategory) {
+      case 'sapatos':
+        return loadingSapatos
+      case 'tenis':
+        return loadingTenis
+      case 'sandalias':
+        return loadingSandalias
+      default:
+        return loadingAll
+    }
+  }
+
+  const products = getCurrentProducts()
 
   return (
     <section className="py-8 md:py-16 bg-gradient-to-br from-pink-50 to-rose-50">
@@ -95,17 +185,22 @@ export default function ShoesSection() {
           {/* Category Navigation */}
           <aside className="lg:col-span-2">
             <nav className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
-              {Object.keys(shoesCategories).map((category) => (
+              {[
+                { key: 'todos', label: 'Todos' },
+                { key: 'sapatos', label: 'Sapatos' },
+                { key: 'tenis', label: 'Tênis' },
+                { key: 'sandalias', label: 'Sandálias' }
+              ].map((category) => (
                 <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
+                  key={category.key}
+                  onClick={() => setActiveCategory(category.key as any)}
                   className={`px-4 py-2 text-left font-semibold rounded-lg transition-colors whitespace-nowrap lg:whitespace-normal ${
-                    activeCategory === category
+                    activeCategory === category.key
                       ? "bg-pink-600 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-pink-100"
                   }`}
                 >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                  {category.label}
                 </button>
               ))}
             </nav>
@@ -113,18 +208,31 @@ export default function ShoesSection() {
 
           {/* Products Grid */}
           <div className="lg:col-span-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {shoesCategories[activeCategory as keyof typeof shoesCategories].map((product, index) => (
-                <ProductCard
-                  key={index}
-                  image={product.image}
-                  title={product.title}
-                  description={product.description}
-                  price={product.price}
-                  sizes={product.sizes}
-                />
-              ))}
-            </div>
+            {isLoading() ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="text-lg text-gray-600">Carregando produtos...</div>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="text-center">
+                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                    Nenhum produto encontrado
+                  </h3>
+                  <p className="text-gray-500">
+                    {activeCategory === 'todos' 
+                      ? 'Não há calçados disponíveis no momento.'
+                      : `Não há produtos na categoria "${activeCategory}" no momento.`
+                    }
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {products.map((product: Product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

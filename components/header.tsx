@@ -155,16 +155,6 @@ export default function Header() {
                 <span>Painel Admin</span>
               </Link>
             )}
-                          {isAdmin && (
-                <Link
-                  href="/admin"
-                  onClick={closeMenu}
-                  className="flex items-center space-x-3 p-4 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  <Settings className="h-6 w-6" />
-                  <span className="text-lg font-medium">Painel Admin</span>
-                </Link>
-              )}
               <Button
                 onClick={handleLogout}
                 variant='ghost'

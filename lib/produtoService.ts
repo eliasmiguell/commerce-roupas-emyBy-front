@@ -119,12 +119,15 @@ export const getNovosProdutos = async (limit = 6) => {
   const response = await api.get('/products', {
     params: { limit, page: 1, orderBy: 'createdAt', order: 'desc' },
   })
+
   return response.data.products || response.data
 }
 
 export const getProdutos = async (params = {}) => {
   const response = await api.get('/products', { params })
-  return response.data.products || response.data
+  console.log('Resposta da API produtos:', response.data)
+  // A API retorna { products: [...] } diretamente
+  return response.data
 }
 
 export const getProduto = async (id: string) => {

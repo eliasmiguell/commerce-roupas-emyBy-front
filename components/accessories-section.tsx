@@ -1,54 +1,176 @@
 "use client"
 
 import { useState } from "react"
-import ProductCard from "./product-card"
+import { useRelogios, useColares, useTodosAcessorios } from "@/lib/acessoriosService"
+import { useProfile } from "@/lib/authService"
+import { useAddToCart } from "@/lib/cartService"
+import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { getImageUrl } from "@/lib/utils"
 
-const accessoriesCategories = {
-  relogios: [
-    {
-      image:
-        "https://d2r9epyceweg5n.cloudfront.net/stores/754/485/products/lrgj138l-kz511-26351753f5637bafc016345825233105-1024-1024.png",
-      title: "Kit relógio Lice",
-      description: "Kit completo com relógio e pulseiras",
-      price: "R$ 400,00",
-      sizes: [],
-    },
-    {
-      image: "https://images.tcdn.com.br/img/img_prod/555399/3857_0_20200229141847.jpg",
-      title: "Kit relógio HTS",
-      description: "Kit relógio elegante",
-      price: "R$ 250,00",
-      sizes: [],
-    },
-    {
-      image: "https://zionstorerj.com.br/wp-content/uploads/2021/04/Screenshot_2-2.png",
-      title: "Kit relógio Zions",
-      description: "Kit relógio premium",
-      price: "R$ 350,00",
-      sizes: [],
-    },
-  ],
-  colares: [
-    {
-      image:
-        "https://d3ugyf2ht6aenh.cloudfront.net/stores/001/296/390/products/whatsapp-image-2023-02-07-at-13-01-331-46de0e2c1ffea4cfb916759659039393-480-0.webp",
-      title: "Colar Dourado",
-      description: "Colar elegante dourado",
-      price: "R$ 150,00",
-      sizes: [],
-    },
-    {
-      image: "https://i.pinimg.com/474x/52/d3/db/52d3dbb7279b833b73a6ce2a4aa8ce0a.jpg",
-      title: "Colar de Ouro",
-      description: "Colar de ouro premium",
-      price: "R$ 1000,00",
-      sizes: [],
-    },
-  ],
+interface Product {
+  id: string
+  name: string
+  description: string
+  price: string
+  imageUrl: string | null
+  category: {
+    id: string
+    name: string
+    slug: string
+  }
+  variants: {
+    id: string
+    size: string
+    color?: string
+    stock: number
+    productId: string
+  }[]
+}
+
+interface ProductCardProps {
+  product: Product
+}
+
+function ProductCard({ product }: ProductCardProps) {
+  const [selectedSize, setSelectedSize] = useState("")
+  const { data: user } = useProfile()
+  const addToCart = useAddToCart()
+  const { toast } = useToast()
+  const router = useRouter()
+
+  const availableSizes = product.variants
+    .filter(variant => variant.stock > 0)
+    .map(variant => variant.size)
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      router.push("/login")
+      return
+    }
+
+    if (availableSizes.length > 1 && !selectedSize) {
+      toast({
+        title: "Selecione um tamanho",
+        description: "Por favor, selecione um tamanho antes de adicionar ao carrinho.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    const variantId = product.variants.find(v => v.size === selectedSize)?.id
+    
+    addToCart.mutate({
+      productId: product.id,
+      variantId: variantId || product.variants[0]?.id,
+      quantity: 1,
+    }, {
+      onSuccess: () => {
+        toast({
+          title: "Produto adicionado!",
+          description: `${product.name} foi adicionado ao seu carrinho.`,
+        })
+      },
+      onError: () => {
+        toast({
+          title: "Erro",
+          description: "Não foi possível adicionar o produto ao carrinho.",
+          variant: "destructive",
+        })
+      }
+    })
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+      <div className="aspect-square bg-gray-100 flex items-center justify-center">
+        {product.imageUrl ? (
+          <img
+            src={getImageUrl(product.imageUrl)}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="text-gray-400 text-center">
+            <div className="text-4xl mb-2">📦</div>
+            <p className="text-sm">Imagem não disponível</p>
+          </div>
+        )}
+      </div>
+      
+      <div className="p-4">
+        <h3 className="font-semibold text-lg mb-2 text-gray-800">{product.name}</h3>
+        <p className="text-gray-600 text-sm mb-3">{product.description}</p>
+        
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-2xl font-bold text-pink-600">
+            R$ {Number(product.price).toFixed(2).replace('.', ',')}
+          </span>
+          <span className="text-sm text-gray-500">{product.category.name}</span>
+        </div>
+
+        {availableSizes.length > 1 && (
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tamanho:
+            </label>
+            <select
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            >
+              <option value="">Selecione o tamanho</option>
+              {availableSizes.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <Button
+          onClick={handleAddToCart}
+          className="w-full bg-pink-600 hover:bg-pink-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+          disabled={addToCart.isPending}
+        >
+          {addToCart.isPending ? "Adicionando..." : user ? "Adicionar ao Carrinho" : "Fazer Login"}
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 export default function AccessoriesSection() {
-  const [activeCategory, setActiveCategory] = useState("relogios")
+  const [activeCategory, setActiveCategory] = useState<'todos' | 'relogios' | 'colares'>('todos')
+  const { data: todosAcessorios, isLoading: isLoadingTodos } = useTodosAcessorios()
+  const { data: relogios, isLoading: isLoadingRelogios } = useRelogios()
+  const { data: colares, isLoading: isLoadingColares } = useColares()
+
+  const getProducts = () => {
+    switch (activeCategory) {
+      case 'relogios':
+        return relogios || []
+      case 'colares':
+        return colares || []
+      default:
+        return todosAcessorios?.todos || []
+    }
+  }
+
+  const isLoading = () => {
+    switch (activeCategory) {
+      case 'relogios':
+        return isLoadingRelogios
+      case 'colares':
+        return isLoadingColares
+      default:
+        return isLoadingTodos
+    }
+  }
+
+  const products = getProducts()
 
   return (
     <section className="py-8 md:py-16">
@@ -64,36 +186,56 @@ export default function AccessoriesSection() {
           {/* Category Navigation */}
           <aside className="lg:col-span-2">
             <nav className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
-              {Object.keys(accessoriesCategories).map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`px-4 py-2 text-left font-semibold rounded-lg transition-colors whitespace-nowrap lg:whitespace-normal ${
-                    activeCategory === category
-                      ? "bg-pink-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-pink-100"
-                  }`}
-                >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </button>
-              ))}
+              <button
+                onClick={() => setActiveCategory('todos')}
+                className={`px-4 py-2 text-left font-semibold rounded-lg transition-colors whitespace-nowrap lg:whitespace-normal ${
+                  activeCategory === 'todos'
+                    ? "bg-pink-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-pink-100"
+                }`}
+              >
+                Todos
+              </button>
+              <button
+                onClick={() => setActiveCategory('relogios')}
+                className={`px-4 py-2 text-left font-semibold rounded-lg transition-colors whitespace-nowrap lg:whitespace-normal ${
+                  activeCategory === 'relogios'
+                    ? "bg-pink-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-pink-100"
+                }`}
+              >
+                Relógios
+              </button>
+              <button
+                onClick={() => setActiveCategory('colares')}
+                className={`px-4 py-2 text-left font-semibold rounded-lg transition-colors whitespace-nowrap lg:whitespace-normal ${
+                  activeCategory === 'colares'
+                    ? "bg-pink-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-pink-100"
+                }`}
+              >
+                Colares
+              </button>
             </nav>
           </aside>
 
           {/* Products Grid */}
           <div className="lg:col-span-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {accessoriesCategories[activeCategory as keyof typeof accessoriesCategories].map((product, index) => (
-                <ProductCard
-                  key={index}
-                  image={product.image}
-                  title={product.title}
-                  description={product.description}
-                  price={product.price}
-                  sizes={product.sizes}
-                />
-              ))}
-            </div>
+            {isLoading() ? (
+              <div className="text-center py-8">
+                <div className="text-gray-500">Carregando produtos...</div>
+              </div>
+            ) : products.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-gray-500">Nenhum produto encontrado nesta categoria.</div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {products.map((product: any) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

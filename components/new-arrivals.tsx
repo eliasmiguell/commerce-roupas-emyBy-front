@@ -7,6 +7,7 @@ import ProductCard from "./product-card"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSearchParams } from "next/navigation"
+import { getImageUrl } from "@/lib/utils"
 
 function NewArrivalCard({ product }: { product: any }) {
   const [selectedSize, setSelectedSize] = useState(product.variants?.[0]?.size || "")
@@ -31,7 +32,7 @@ function NewArrivalCard({ product }: { product: any }) {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-      <img src={product.imageUrl || "/placeholder.svg"} alt={product.name} className="w-full h-48 md:h-64 object-cover" />
+      <img src={getImageUrl(product.imageUrl)} alt={product.name} className="w-full h-48 md:h-64 object-cover" />
       <div className="p-4">
         <h3 className="text-lg font-bold text-pink-600 mb-2" style={{ fontFamily: "Playfair Display, serif" }}>
           {product.name}
@@ -76,8 +77,9 @@ export default function NewArrivals() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["new-products"],
     queryFn: () => getNovosProdutos(6),
+    retry: 1,
+    staleTime: 0,
   })
-  console.log("teste",data?.products)
 
   return (
     <section className="py-16 bg-gradient-to-br from-pink-50 to-rose-50">
@@ -98,9 +100,23 @@ export default function NewArrivals() {
           <div className="text-center text-red-500">Erro ao carregar novidades</div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(data?.products || data?.data?.products || []).map((product: any) => (
-              <NewArrivalCard key={product.id} product={product} />
-            ))}
+            {Array.isArray(data?.products) && data.products.length > 0 ? (
+              data.products.map((product: any) => (
+                <NewArrivalCard key={product.id} product={product} />
+              ))
+            ) : Array.isArray(data?.data?.products) && data.data.products.length > 0 ? (
+              data.data.products.map((product: any) => (
+                <NewArrivalCard key={product.id} product={product} />
+              ))
+            ) : Array.isArray(data) && data.length > 0 ? (
+              data.map((product: any) => (
+                <NewArrivalCard key={product.id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-full text-center text-gray-500">
+                Nenhuma novidade encontrada
+              </div>
+            )}
           </div>
         )}
 

@@ -5,26 +5,24 @@ import FeaturedProducts from "@/components/featured-products"
 import NewArrivals from "@/components/new-arrivals" // Novo componente
 import Footer from "@/components/footer"
 import AuthGuard from "@/components/AuthGuard"
-import DebugAdminButton from "@/components/DebugAdminButton"
+
 import FinalAdminButton from "@/components/FinalAdminButton"
 import UltimateAdminButton from "@/components/UltimateAdminButton"
 
 export default function HomePage() {
   return (
-    <AuthGuard>
-      <div className="min-h-screen">
-        <Header />
-        <main>
+    <div className="min-h-screen">
+      <Header />
+              <main>
           <HeroCarousel />
           <AboutSection />
           <FeaturedProducts />
           <NewArrivals /> {/* Nova seção */}
         </main>
-        <Footer />
-        <DebugAdminButton />
-        <FinalAdminButton />
-        <UltimateAdminButton />
-      </div>
-    </AuthGuard>
+      <Footer />
+     
+      <FinalAdminButton />
+      <UltimateAdminButton />
+    </div>
   )
 }

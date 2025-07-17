@@ -14,6 +14,7 @@ export interface Category {
 export interface CreateCategoryData {
   name: string
   description?: string
+  slug: string
   imageUrl?: string
 }
 
@@ -91,11 +92,13 @@ export const useDeleteCategoria = () => {
 // Funções para chamada direta da API
 export const getCategorias = async () => {
   const response = await api.get('/categories')
+  console.log('Resposta da API categorias:', response.data)
+  // A API retorna array diretamente
   return response.data
 }
 
 export const getCategoria = async (id: string) => {
-  const response = await api.get(`/categories/${id}`)
+  const response = await api.get(`/categories/id/${id}`)
   return response.data
 }
 

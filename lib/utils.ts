@@ -1,16 +1,43 @@
-import { clsx, type ClassValue } from "clsx"
+import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Funções de formatação
-export const formatCurrency = (value: number): string => {
+export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
-    currency: 'BRL'
+    currency: 'BRL',
   }).format(value)
+}
+
+export function getImageUrl(imagePath: string | null): string {
+  // Se imagePath é null, undefined ou string vazia, retorna placeholder
+  if (!imagePath || imagePath === "null" || imagePath === "undefined") {
+    return "/placeholder.svg"
+  }
+  
+  // Se já é uma URL completa, retorna como está
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath
+  }
+  
+  // Se começa com /uploads, adiciona a URL base do backend
+  if (imagePath.startsWith('/uploads')) {
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001"
+    return `${baseUrl}${imagePath}`
+  }
+  
+  // Se não começa com /, adiciona /uploads/
+  if (!imagePath.startsWith('/')) {
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001"
+    return `${baseUrl}/uploads/${imagePath}`
+  }
+  
+  // Para outros casos, adiciona a URL base
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8001"
+  return `${baseUrl}${imagePath}`
 }
 
 export const formatDate = (date: string | Date): string => {

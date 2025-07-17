@@ -5,13 +5,20 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, ShoppingBag, CreditCard, Truck } from "lucide-react"
+import { ArrowLeft, ShoppingBag, CreditCard, Truck, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams, useRouter } from "next/navigation"
+import { useCartItems } from "@/lib/cartService"
+import { formatCurrency, getImageUrl } from "@/lib/utils"
+import api from "@/axios"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CheckCircle, XCircle } from "lucide-react"
 
 export default function CompraForm() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { data: cartData, isLoading: cartLoading } = useCartItems()
+  
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
@@ -24,7 +31,20 @@ export default function CompraForm() {
     cvv: "",
   })
 
-  // Dados do produto vindos da URL
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [paymentMethod, setPaymentMethod] = useState("CREDIT_CARD")
+  const [paymentStatus, setPaymentStatus] = useState<string | null>(null)
+  const [paymentMessage, setPaymentMessage] = useState<string>("")
+
+  // Dados do carrinho
+  const cartItems = cartData?.items || []
+  const subtotal = cartData?.total || 0
+  const shippingCost = 15.0 // Frete fixo
+  const total = subtotal + shippingCost
+
+  // Dados do produto vindos da URL (para compras diretas)
   const productData = {
     title: searchParams.get("title") || "Produto",
     price: searchParams.get("price") || "R$ 0,00",
@@ -33,18 +53,166 @@ export default function CompraForm() {
     size: searchParams.get("size") || "",
   }
 
+  // Verificar se veio do carrinho ou compra direta
+  const isFromCart = cartItems.length > 0
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
+    if (error) setError("")
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Compra finalizada:", { productData, formData })
-    // Aqui você adicionaria a lógica de finalização da compra
-    alert("Compra realizada com sucesso!")
+    setLoading(true)
+    setError("")
+    setSuccess("")
+    setPaymentStatus(null)
+    setPaymentMessage("")
+    
+    try {
+      if (isFromCart && cartItems.length === 0) {
+        setError("Seu carrinho está vazio!")
+        setLoading(false)
+        return
+      }
+
+      // Criar ou buscar usuário
+      let userId = ""
+      const token = localStorage.getItem("token")
+      
+      if (token) {
+        // Usuário logado - usar dados existentes
+        try {
+          const userResponse = await api.get("/auth/me")
+          userId = userResponse.data.user.id
+        } catch (error) {
+          console.log("Usuário não encontrado, criando novo...")
+        }
+      }
+
+      if (!userId) {
+        // Criar novo usuário
+        const userData = {
+          name: formData.nome,
+          email: formData.email,
+          password: "senha123", // Senha padrão para compras sem cadastro
+          role: "USER"
+        }
+
+        const userResponse = await api.post("/auth/register", userData)
+        userId = userResponse.data.user.id
+        
+        // Fazer login automático
+        const loginResponse = await api.post("/auth/login", {
+          email: formData.email,
+          password: "senha123"
+        })
+        
+        localStorage.setItem("token", loginResponse.data.token)
+      }
+
+      // Criar endereço
+      const addressData = {
+        street: formData.endereco,
+        city: formData.cidade,
+        state: "SP", // Estado padrão
+        zipCode: formData.cep,
+        phone: formData.telefone,
+        isDefault: true
+      }
+
+      const addressResponse = await api.post("/addresses", addressData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+
+      const addressId = addressResponse.data.address.id
+
+      // Preparar itens do pedido
+      let orderItems = []
+      
+      if (isFromCart) {
+        // Usar itens do carrinho
+        orderItems = cartItems.map((item: any) => ({
+          productId: item.product.id,
+          variantId: item.variant?.id || null,
+          quantity: item.quantity,
+          price: item.product.price
+        }))
+      } else {
+        // Criar item fictício para compra direta
+        const price = parseFloat(productData.price.replace("R$ ", "").replace(",", "."))
+        orderItems = [{
+          productId: "produto-ficticio",
+          variantId: null,
+          quantity: 1,
+          price: price
+        }]
+      }
+
+      // Criar pedido
+      const orderData = {
+        userId: userId,
+        status: "PENDING",
+        items: orderItems
+      }
+
+      const orderResponse = await api.post("/orders/admin", orderData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+      const orderId = orderResponse.data.order?.id || orderResponse.data.id
+      // Criar pagamento
+      const paymentRes = await api.post(`/orders/admin/${orderId}/payment`, {
+        orderId,
+        method: paymentMethod,
+        amount: total
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+      const paymentId = paymentRes.data.payment.id
+      // Processar pagamento (simulação)
+      const processRes = await api.post(`/orders/admin/payment/${paymentId}/process`, {}, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      })
+      setPaymentStatus(processRes.data.payment.status)
+      setPaymentMessage(processRes.data.message)
+      setSuccess("Compra realizada com sucesso! Pedido criado.")
+      
+      // Limpar carrinho se veio do carrinho
+      if (isFromCart) {
+        try {
+          await api.delete("/cart", {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          })
+        } catch (error) {
+          console.log("Erro ao limpar carrinho:", error)
+        }
+      }
+
+      // Redirecionar após 2 segundos
+      setTimeout(() => {
+        router.push("/")
+      }, 2000)
+
+    } catch (error: any) {
+      console.error("Erro na compra:", error)
+      setError(error.response?.data?.error || "Erro ao processar a compra")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (cartLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-pink-600" />
+          <p className="text-gray-600">Carregando dados do carrinho...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -54,13 +222,15 @@ export default function CompraForm() {
           {/* Formulário de Compra */}
           <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
             <CardHeader className="text-center space-y-4">
-            <Button
-            onClick={() => router.push("/")}
-            className="  flex items-center space-x-2 text-white transition-colors bg-pink-600 backdrop-blur-sm rounded-lg px-3 py-2 w-[140px] mb-4"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">Voltar à loja</span>
-          </Button>
+              <Button
+                onClick={() => router.push(isFromCart ? "/carrinho" : "/")}
+                className="flex items-center space-x-2 text-white transition-colors bg-pink-600 backdrop-blur-sm rounded-lg px-3 py-2 w-[140px] mb-4"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span className="hidden sm:inline">
+                  {isFromCart ? "Voltar ao carrinho" : "Voltar à loja"}
+                </span>
+              </Button>
               <div className="flex items-center justify-center space-x-3 mb-4">
                 <ShoppingBag className="h-8 w-8 text-pink-600" />
                 <h1 className="text-2xl font-bold text-pink-600" style={{ fontFamily: "Pacifico, cursive" }}>
@@ -70,7 +240,9 @@ export default function CompraForm() {
               <CardTitle className="text-2xl font-bold text-gray-800" style={{ fontFamily: "Playfair Display, serif" }}>
                 Finalizar Compra
               </CardTitle>
-              <CardDescription className="text-gray-600">Complete seus dados para finalizar a compra</CardDescription>
+              <CardDescription className="text-gray-600">
+                {isFromCart ? "Complete seus dados para finalizar a compra" : "Complete seus dados para finalizar a compra"}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -233,12 +405,62 @@ export default function CompraForm() {
                   </div>
                 </div>
 
+                {/* Seleção de método de pagamento */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-800 border-b pb-2 flex items-center gap-2">
+                    <CreditCard className="h-5 w-5" />
+                    Método de Pagamento
+                  </h3>
+                  <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                    <SelectTrigger className="border-gray-300 focus:border-pink-500 focus:ring-pink-500">
+                      <SelectValue placeholder="Selecione o método de pagamento" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="CREDIT_CARD">Cartão de Crédito</SelectItem>
+                      <SelectItem value="DEBIT_CARD">Cartão de Débito</SelectItem>
+                      <SelectItem value="PIX">Pix</SelectItem>
+                      <SelectItem value="BANK_TRANSFER">Transferência Bancária</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Mensagens de erro/sucesso */}
+                {error && (
+                  <div className="text-red-600 text-sm font-semibold text-center bg-red-50 p-3 rounded-lg">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="text-green-600 text-sm font-semibold text-center bg-green-50 p-3 rounded-lg">
+                    {success}
+                  </div>
+                )}
+
+                {/* Mensagens de status do pagamento */}
+                {paymentStatus && (
+                  <div className={`text-center p-3 rounded-lg font-semibold ${paymentStatus === "APPROVED" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"}`}>
+                    {paymentStatus === "APPROVED" ? (
+                      <span className="flex items-center justify-center gap-2"><CheckCircle className="h-5 w-5" /> {paymentMessage}</span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2"><XCircle className="h-5 w-5" /> {paymentMessage}</span>
+                    )}
+                  </div>
+                )}
+
                 <Button
                   type="submit"
                   style={{ backgroundColor: '#811B2D' }}
                   className="w-full hover:bg-pink-700 text-white font-semibold py-3"
+                  disabled={(isFromCart && cartItems.length === 0) || loading}
                 >
-                  Finalizar Compra
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Processando...
+                    </>
+                  ) : (
+                    isFromCart && cartItems.length === 0 ? "Carrinho vazio" : "Finalizar Compra"
+                  )}
                 </Button>
               </form>
             </CardContent>
@@ -254,38 +476,85 @@ export default function CompraForm() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Produto */}
-                <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                  <img
-                    src={productData.image}
-                    alt={productData.title}
-                    className="w-20 h-20 object-cover rounded-lg"
-                  />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-800">{productData.title}</h4>
-                    <p className="text-sm text-gray-600">{productData.description}</p>
-                    {productData.size && (
-                      <p className="text-sm text-gray-600">Tamanho: {productData.size}</p>
-                    )}
-                    <p className="font-bold text-pink-600 text-lg">{productData.price}</p>
-                  </div>
-                </div>
+                {isFromCart ? (
+                  // Resumo do carrinho
+                  <>
+                    {/* Itens do carrinho */}
+                    <div className="space-y-3 max-h-64 overflow-y-auto">
+                      {cartItems.map((item: any) => (
+                        <div key={item.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                          <img
+                            src={getImageUrl(item.product.imageUrl)}
+                            alt={item.product.name}
+                            className="w-16 h-16 object-cover rounded-lg"
+                          />
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-800 text-sm">{item.product.name}</h4>
+                            {item.variant && (
+                              <p className="text-xs text-gray-600">Tamanho: {item.variant.size}</p>
+                            )}
+                            <p className="text-xs text-gray-600">Qtd: {item.quantity}</p>
+                            <p className="font-bold text-pink-600 text-sm">
+                              {formatCurrency(item.product.price * item.quantity)}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
 
-                {/* Custos */}
-                <div className="space-y-2 border-t pt-4">
-                  <div className="flex justify-between text-sm">
-                    <span>Subtotal:</span>
-                    <span>{productData.price}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Frete:</span>
-                    <span>R$ 15,00</span>
-                  </div>
-                  <div className="flex justify-between font-bold text-lg border-t pt-2">
-                    <span>Total:</span>
-                    <span className="text-pink-600">{productData.price}</span>
-                  </div>
-                </div>
+                    {/* Custos */}
+                    <div className="space-y-2 border-t pt-4">
+                      <div className="flex justify-between text-sm">
+                        <span>Subtotal:</span>
+                        <span>{formatCurrency(subtotal)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Frete:</span>
+                        <span>{formatCurrency(shippingCost)}</span>
+                      </div>
+                      <div className="flex justify-between font-bold text-lg border-t pt-2">
+                        <span>Total:</span>
+                        <span className="text-pink-600">{formatCurrency(total)}</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  // Resumo de compra direta
+                  <>
+                    {/* Produto */}
+                    <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <img
+                        src={productData.image}
+                        alt={productData.title}
+                        className="w-20 h-20 object-cover rounded-lg"
+                      />
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-800">{productData.title}</h4>
+                        <p className="text-sm text-gray-600">{productData.description}</p>
+                        {productData.size && (
+                          <p className="text-sm text-gray-600">Tamanho: {productData.size}</p>
+                        )}
+                        <p className="font-bold text-pink-600 text-lg">{productData.price}</p>
+                      </div>
+                    </div>
+
+                    {/* Custos */}
+                    <div className="space-y-2 border-t pt-4">
+                      <div className="flex justify-between text-sm">
+                        <span>Subtotal:</span>
+                        <span>{productData.price}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Frete:</span>
+                        <span>R$ 15,00</span>
+                      </div>
+                      <div className="flex justify-between font-bold text-lg border-t pt-2">
+                        <span>Total:</span>
+                        <span className="text-pink-600">{productData.price}</span>
+                      </div>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>

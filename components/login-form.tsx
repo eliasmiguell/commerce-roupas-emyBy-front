@@ -44,7 +44,7 @@ export default function LoginForm() {
         body: JSON.stringify({ email, password }),
       })
       const data = await res.json()
-      console.log(data)
+      console.log("Resposta do login:", data)
       if (!res.ok) {
         setError(data.error || "Erro ao fazer login")
         setLoading(false)
@@ -53,9 +53,12 @@ export default function LoginForm() {
       // Salvar token no localStorage
       localStorage.setItem("token", data.token)
       localStorage.setItem("user", JSON.stringify(data.user))
+      console.log("Token salvo:", data.token.substring(0, 20) + "...")
+      console.log("Usuário salvo:", data.user)
       // Redirecionar para a home
       router.push("/")
     } catch (err) {
+      console.error("Erro no login:", err)
       setError("Erro de conexão com o servidor")
       setLoading(false)
     }

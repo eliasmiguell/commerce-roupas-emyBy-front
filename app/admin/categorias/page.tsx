@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { getProdutos, deleteProduto } from "@/lib/produtoService"
-import { getImageUrl } from "@/lib/utils"
+import { getCategorias, deleteCategoria } from "@/lib/categoriaService"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Edit, Trash2, Eye } from "lucide-react"
@@ -21,82 +20,80 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-export default function AdminProdutosPage() {
+export default function AdminCategoriasPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [produtosData, setProdutosData] = useState<any>(null)
+  const [categoriasData, setCategoriasData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<any>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [productToDelete, setProductToDelete] = useState<any>(null)
+  const [categoryToDelete, setCategoryToDelete] = useState<any>(null)
   const [deleting, setDeleting] = useState(false)
   
   const router = useRouter()
   const { toast } = useToast()
 
   useEffect(() => {
-    const fetchProdutos = async () => {
+    const fetchCategorias = async () => {
       try {
-        console.log('Executando fetch de produtos...')
-        const result = await getProdutos({ limit: 100 })
-        console.log('Resultado do fetch:', result)
-        setProdutosData(result)
+        console.log('Executando fetch de categorias...')
+        const result = await getCategorias()
+        console.log('Resultado do fetch categorias:', result)
+        setCategoriasData(result)
       } catch (err) {
-        console.error('Erro no fetch:', err)
+        console.error('Erro no fetch categorias:', err)
         setError(err)
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchProdutos()
+    fetchCategorias()
   }, [])
 
-  const produtos = produtosData?.products || []
-  
-  console.log('Debug produtos:', { produtosData, produtos, isLoading, error })
+  const categorias = Array.isArray(categoriasData) ? categoriasData : []
 
-  const filteredProdutos = produtos.filter((produto: any) =>
-    produto.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    produto.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategorias = categorias.filter((categoria: any) =>
+    categoria.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    categoria.description?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleEdit = (id: string) => {
-    router.push(`/admin/produtos/editar/${id}`)
+    router.push(`/admin/categorias/editar/${id}`)
   }
 
   const handleView = (id: string) => {
-    router.push(`/admin/produtos/${id}`)
+    router.push(`/admin/categorias/${id}`)
   }
 
-  const handleDelete = (produto: any) => {
-    setProductToDelete(produto)
+  const handleDelete = (categoria: any) => {
+    setCategoryToDelete(categoria)
     setDeleteDialogOpen(true)
   }
 
   const confirmDelete = async () => {
-    if (!productToDelete) return
+    if (!categoryToDelete) return
 
     setDeleting(true)
     try {
-      await deleteProduto(productToDelete.id)
+      await deleteCategoria(categoryToDelete.id)
       toast({
-        title: "Produto excluído",
-        description: `${productToDelete.name} foi excluído com sucesso.`,
+        title: "Categoria excluída",
+        description: `${categoryToDelete.name} foi excluída com sucesso.`,
       })
       
       // Recarregar a lista
-      const result = await getProdutos({ limit: 100 })
-      setProdutosData(result)
+      const result = await getCategorias()
+      setCategoriasData(result)
     } catch (error) {
       toast({
         title: "Erro",
-        description: "Erro ao excluir produto. Tente novamente.",
+        description: "Erro ao excluir categoria. Tente novamente.",
         variant: "destructive",
       })
     } finally {
       setDeleting(false)
       setDeleteDialogOpen(false)
-      setProductToDelete(null)
+      setCategoryToDelete(null)
     }
   }
 
@@ -105,7 +102,7 @@ export default function AdminProdutosPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-center h-64">
           <Loader2 className="h-8 w-8 animate-spin text-pink-600" />
-          <span className="ml-2">Carregando produtos...</span>
+          <span className="ml-2">Carregando categorias...</span>
         </div>
       </div>
     )
@@ -116,7 +113,7 @@ export default function AdminProdutosPage() {
       <div className="container mx-auto px-4 py-8">
         <Card className="max-w-2xl mx-auto">
           <CardContent className="p-6 text-center">
-            <h2 className="text-xl font-bold text-red-600 mb-2">Erro ao carregar produtos</h2>
+            <h2 className="text-xl font-bold text-red-600 mb-2">Erro ao carregar categorias</h2>
             <p className="text-gray-600 mb-4">Tente novamente mais tarde.</p>
             <Button onClick={() => window.location.reload()}>
               Tentar Novamente
@@ -131,13 +128,13 @@ export default function AdminProdutosPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Gerenciar Produtos</h1>
-          <p className="text-gray-600">Visualize e gerencie todos os produtos da loja</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Gerenciar Categorias</h1>
+          <p className="text-gray-600">Visualize e gerencie todas as categorias da loja</p>
         </div>
-        <Link href="/admin/produtos/novo">
+        <Link href="/admin/categorias/novo">
           <Button className="bg-pink-600 hover:bg-pink-700">
             <Plus className="h-4 w-4 mr-2" />
-            Novo Produto
+            Nova Categoria
           </Button>
         </Link>
       </div>
@@ -146,7 +143,7 @@ export default function AdminProdutosPage() {
       <div className="mb-6">
         <input
           type="text"
-          placeholder="Buscar produtos..."
+          placeholder="Buscar categorias..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
@@ -157,46 +154,46 @@ export default function AdminProdutosPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card>
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-pink-600">{produtos.length}</div>
-            <div className="text-sm text-gray-600">Total de Produtos</div>
+            <div className="text-2xl font-bold text-pink-600">{categorias.length}</div>
+            <div className="text-sm text-gray-600">Total de Categorias</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-green-600">
-              {produtos.filter((p: any) => p.isActive).length}
+              {categorias.filter((c: any) => c.slug).length}
             </div>
-            <div className="text-sm text-gray-600">Produtos Ativos</div>
+            <div className="text-sm text-gray-600">Com Slug</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-blue-600">
-              {produtos.filter((p: any) => p.imageUrl).length}
+              {categorias.filter((c: any) => c.imageUrl).length}
             </div>
             <div className="text-sm text-gray-600">Com Imagem</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Lista de produtos */}
-      {filteredProdutos.length === 0 ? (
+      {/* Lista de categorias */}
+      {filteredCategorias.length === 0 ? (
         <Card>
           <CardContent className="p-8 text-center">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
-              {searchTerm ? "Nenhum produto encontrado" : "Nenhum produto cadastrado"}
+              {searchTerm ? "Nenhuma categoria encontrada" : "Nenhuma categoria cadastrada"}
             </h3>
             <p className="text-gray-600 mb-4">
               {searchTerm 
                 ? "Tente ajustar os termos de busca" 
-                : "Comece criando seu primeiro produto"
+                : "Comece criando sua primeira categoria"
               }
             </p>
             {!searchTerm && (
-              <Link href="/admin/produtos/novo">
+              <Link href="/admin/categorias/novo">
                 <Button className="bg-pink-600 hover:bg-pink-700">
                   <Plus className="h-4 w-4 mr-2" />
-                  Criar Primeiro Produto
+                  Criar Primeira Categoria
                 </Button>
               </Link>
             )}
@@ -204,32 +201,23 @@ export default function AdminProdutosPage() {
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProdutos.map((produto: any) => (
-            <Card key={produto.id} className="overflow-hidden">
-              <div className="aspect-square bg-gray-100">
-                <img
-                  src={getImageUrl(produto.imageUrl)}
-                  alt={produto.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+          {filteredCategorias.map((categoria: any) => (
+            <Card key={categoria.id} className="overflow-hidden">
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">{produto.name}</CardTitle>
+                <CardTitle className="text-lg">{categoria.name}</CardTitle>
                 <p className="text-sm text-gray-600 line-clamp-2">
-                  {produto.description}
+                  {categoria.description}
                 </p>
+                {categoria.slug && (
+                  <p className="text-xs text-gray-500">
+                    Slug: {categoria.slug}
+                  </p>
+                )}
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-bold text-pink-600">
-                    R$ {Number(produto.price).toFixed(2).replace('.', ',')}
-                  </span>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    produto.isActive 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {produto.isActive ? 'Ativo' : 'Inativo'}
+                  <span className="text-sm text-gray-500">
+                    Criada em: {new Date(categoria.createdAt).toLocaleDateString('pt-BR')}
                   </span>
                 </div>
                 
@@ -237,7 +225,7 @@ export default function AdminProdutosPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleView(produto.id)}
+                    onClick={() => handleView(categoria.id)}
                     className="flex-1"
                   >
                     <Eye className="h-4 w-4 mr-1" />
@@ -246,7 +234,7 @@ export default function AdminProdutosPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleEdit(produto.id)}
+                    onClick={() => handleEdit(categoria.id)}
                     className="flex-1"
                   >
                     <Edit className="h-4 w-4 mr-1" />
@@ -255,7 +243,7 @@ export default function AdminProdutosPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleDelete(produto)}
+                    onClick={() => handleDelete(categoria)}
                     className="flex-1 text-red-600 hover:text-red-700"
                   >
                     <Trash2 className="h-4 w-4 mr-1" />
@@ -274,7 +262,7 @@ export default function AdminProdutosPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar exclusão</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir o produto "{productToDelete?.name}"? 
+              Tem certeza que deseja excluir a categoria "{categoryToDelete?.name}"? 
               Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>

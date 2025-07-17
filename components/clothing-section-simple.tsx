@@ -8,6 +8,7 @@ import { useAddToCart } from "@/lib/cartService"
 import { useToast } from "@/hooks/use-toast"
 import { ShoppingCart, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { getImageUrl } from "@/lib/utils"
 
 export default function ClothingSectionSimple() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -137,9 +138,10 @@ export default function ClothingSectionSimple() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {produtosExibidos?.map((product: any) => (
+                  console.log("product", product),
                   <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                     <img 
-                      src={product.imageUrl || "/placeholder.svg"} 
+                      src={getImageUrl(product.imageUrl)} 
                       alt={product.name} 
                       className="w-full h-48 md:h-64 object-cover"
                       onError={(e) => {

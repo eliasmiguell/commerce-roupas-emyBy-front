@@ -4,6 +4,7 @@ import { useState } from "react"
 import ProductCard from "./product-card"
 import { useVestidos, useBlusas, useSaias, useCalcas, getRoupaAvailableSizes } from "@/lib/roupasService"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getImageUrl } from "@/lib/utils"
 
 const clothingCategories = {
   vestidos: "vestidos",
@@ -96,7 +97,7 @@ export default function ClothingSection() {
                   <ProductCard
                     key={product.id}
                     id={product.id}
-                    image={product.imageUrl || "/placeholder.svg"}
+                    image={getImageUrl(product.imageUrl)}
                     title={product.name}
                     description={product.description}
                     price={product.price}

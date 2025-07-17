@@ -5,6 +5,7 @@ import { useGetCategorias } from "@/lib/categoriaService"
 import { getProdutos } from "@/lib/produtoService"
 import { useQuery } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
+import { getImageUrl } from "@/lib/utils"
 
 export default function FeaturedProducts() {
   // Buscar categorias usando hook
@@ -14,6 +15,8 @@ export default function FeaturedProducts() {
   const { data: productsData } = useQuery({
     queryKey: ["products"],
     queryFn: () => getProdutos({ limit: 100 }),
+    retry: 1,
+    staleTime: 0,
   })
 
   if (isLoading) return (
@@ -58,7 +61,7 @@ export default function FeaturedProducts() {
             >
               <div className="relative h-48 md:h-64">
                 <img
-                  src={category.imageUrl || "/placeholder.svg"}
+                  src={getImageUrl(category.imageUrl)}
                   alt={category.name}
                   className="w-full h-full object-cover"
                 />
@@ -80,7 +83,7 @@ export default function FeaturedProducts() {
                     {(productsByCategory[category.id] || []).slice(0, 2).map((product: any) => (
                       <div key={product.id} className="flex items-center gap-3">
                         <img 
-                          src={product.imageUrl || "/placeholder.svg"} 
+                          src={getImageUrl(product.imageUrl)} 
                           alt={product.name} 
                           className="w-12 h-12 object-cover rounded" 
                         />

@@ -7,7 +7,7 @@ import { ShoppingCart, ArrowLeft, Trash2, Loader2 } from "lucide-react"
 import Link from "next/link"
 import { useCartItems, useUpdateCartItem, useRemoveCartItem, useClearCart } from "@/lib/cartService"
 import { useToast } from "@/hooks/use-toast"
-import { formatCurrency } from "@/lib/utils"
+import { formatCurrency, getImageUrl } from "@/lib/utils"
 
 export default function CartPage() {
   const { data: cartData, isLoading, error } = useCartItems()
@@ -132,7 +132,7 @@ export default function CartPage() {
               {cartItems.map((item: any) => (
                 <Card key={item.id} className="flex items-center p-4">
                   <img
-                    src={item.product.imageUrl || "/placeholder.svg"}
+                    src={getImageUrl(item.product.imageUrl)}
                     alt={item.product.name}
                     className="w-24 h-24 object-cover rounded-lg mr-4"
                   />

@@ -1,61 +1,66 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '@/axios'
-import type { Address } from './addressService'
 
 // Tipos
-export interface OrderItem {
-  id: string
-  quantity: number
-  price: number
-  product: {
-    id: string
-    name: string
-    description: string
-    imageUrl: string
-  }
-  variant?: {
-    id: string
-    size: string
-    color?: string
-  }
-}
-
 export interface Order {
   id: string
-  orderNumber: string
-  status: 'PENDING' | 'CONFIRMED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
+  userId: string
   total: number
+  status: string
+  items: OrderItem[]
+  user?: User
   createdAt: string
   updatedAt: string
-  address: Address
-  orderItems: OrderItem[]
-  payment?: {
-    id: string
-    amount: number
-    method: 'CREDIT_CARD' | 'DEBIT_CARD' | 'PIX' | 'BANK_TRANSFER'
-    status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'
-    transactionId?: string
-  }
+}
+
+export interface OrderItem {
+  id: string
+  productId: string
+  quantity: number
+  price: number
+  product?: Product
+}
+
+export interface Product {
+  id: string
+  name: string
+  price: number
+  imageUrl?: string
+}
+
+export interface User {
+  id: string
+  name: string
+  email: string
 }
 
 export interface CreateOrderData {
-  addressId: string
-  paymentMethod: 'CREDIT_CARD' | 'DEBIT_CARD' | 'PIX' | 'BANK_TRANSFER'
+  userId: string
+  items: Array<{
+    productId: string
+    quantity: number
+  }>
+}
+
+export interface UpdateOrderData {
+  status?: string
+  total?: number
 }
 
 // Hooks para usar em componentes
 export const useOrders = () => {
-  return useQuery({
+  return useQuery<any>({
     queryKey: ['orders'],
     queryFn: async () => {
       const response = await api.get('/orders')
+      console.log('Resposta da API pedidos:', response.data)
       return response.data
     },
   })
 }
 
 export const useOrder = (id: string) => {
-  return useQuery({
+  return useQuery<any>({
     queryKey: ['order', id],
     queryFn: async () => {
       const response = await api.get(`/orders/${id}`)
@@ -76,7 +81,35 @@ export const useCreateOrder = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] })
-      queryClient.invalidateQueries({ queryKey: ['cart'] })
+    },
+  })
+}
+
+export const useUpdateOrder = () => {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: UpdateOrderData }) => {
+      const response = await api.put(`/orders/${id}`, data)
+      return response.data
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
+      queryClient.invalidateQueries({ queryKey: ['order', data.order.id] })
+    },
+  })
+}
+
+export const useDeleteOrder = () => {
+  const queryClient = useQueryClient()
+  
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await api.delete(`/orders/${id}`)
+      return response.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] })
     },
   })
 }
@@ -84,6 +117,7 @@ export const useCreateOrder = () => {
 // Funções para chamada direta da API
 export const getOrders = async () => {
   const response = await api.get('/orders')
+  console.log('Resposta da API pedidos:', response.data)
   return response.data
 }
 
@@ -97,37 +131,14 @@ export const createOrder = async (data: CreateOrderData) => {
   return response.data
 }
 
-// Utilitários
-export const getOrderStatusLabel = (status: Order['status']): string => {
-  const statusLabels = {
-    PENDING: 'Pendente',
-    CONFIRMED: 'Confirmado',
-    PROCESSING: 'Em Processamento',
-    SHIPPED: 'Enviado',
-    DELIVERED: 'Entregue',
-    CANCELLED: 'Cancelado'
-  }
-  return statusLabels[status] || status
+export const updateOrder = async (id: string, data: UpdateOrderData) => {
+  const response = await api.put(`/orders/${id}`, data)
+  return response.data
 }
 
-export const getPaymentMethodLabel = (method: string): string => {
-  const methodLabels = {
-    CREDIT_CARD: 'Cartão de Crédito',
-    DEBIT_CARD: 'Cartão de Débito',
-    PIX: 'PIX',
-    BANK_TRANSFER: 'Transferência Bancária'
-  }
-  return methodLabels[method as keyof typeof methodLabels] || method
-}
-
-export const getPaymentStatusLabel = (status: string): string => {
-  const statusLabels = {
-    PENDING: 'Pendente',
-    APPROVED: 'Aprovado',
-    REJECTED: 'Rejeitado',
-    CANCELLED: 'Cancelado'
-  }
-  return statusLabels[status as keyof typeof statusLabels] || status
+export const deleteOrder = async (id: string) => {
+  const response = await api.delete(`/orders/${id}`)
+  return response.data
 }
 
  

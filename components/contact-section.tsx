@@ -17,11 +17,33 @@ export default function ContactSection() {
     telefone: "",
     mensagem: "",
   })
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState("")
+  const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
-    // Aqui você adicionaria a lógica de envio do formulário
+    setLoading(true)
+    setSuccess("")
+    setError("")
+    try {
+      const res = await fetch("http://localhost:8001/api/contact/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setSuccess(data.message || "Mensagem enviada com sucesso!")
+        setFormData({ nome: "", email: "", telefone: "", mensagem: "" })
+      } else {
+        setError(data.error || "Erro ao enviar mensagem.")
+      }
+    } catch (err) {
+      setError("Erro ao enviar mensagem. Tente novamente mais tarde.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -114,9 +136,12 @@ export default function ContactSection() {
                 type="submit"
                 style={{ backgroundColor: '#811B2D' }} 
                 className="w-full md:w-auto hover:bg-pink-700 text-white font-semibold px-8 py-3"
+                disabled={loading}
               >
-                Enviar
+                {loading ? "Enviando..." : "Enviar"}
               </Button>
+              {success && <p className="text-green-600 font-semibold mt-2">{success}</p>}
+              {error && <p className="text-red-600 font-semibold mt-2">{error}</p>}
             </form>
           </div>
 

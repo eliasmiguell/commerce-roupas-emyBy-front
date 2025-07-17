@@ -5,7 +5,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Providers } from "@/components/providers"
 import WorkingAdminButton from "@/components/WorkingAdminButton"
-import DebugAdminButton from "@/components/DebugAdminButton"
+
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,7 +31,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider>
             {children}
             <WorkingAdminButton />
-            <DebugAdminButton />
           </ThemeProvider>
         </Providers>
       </body>

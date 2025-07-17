@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import api from '@/axios'
+import type { Product } from './produtoService'
 
 // Tipos específicos para acessórios
 export interface Acessorio {
@@ -27,7 +28,7 @@ export interface Acessorio {
 }
 
 export interface AcessorioFilters {
-  category?: 'relogios' | 'colares' | 'pulseiras' | 'brincos' | 'anéis'
+  category?: 'relogios' | 'colares'
   minPrice?: number
   maxPrice?: number
   inStock?: boolean
@@ -40,45 +41,51 @@ export const useAcessorios = (filters: AcessorioFilters = {}) => {
     queryFn: async () => {
       const params = new URLSearchParams()
       
-      // Filtrar por categorias de acessórios
-      const acessorioCategories = ['relogios', 'colares', 'pulseiras', 'brincos', 'aneis']
       if (filters.category) {
-        params.append('categorySlug', filters.category)
-      } else {
-        // Se não especificar categoria, buscar todas as de acessórios
-        acessorioCategories.forEach(cat => params.append('categorySlug', cat))
+        params.append('category', filters.category)
       }
-      
-      if (filters.minPrice) params.append('minPrice', filters.minPrice.toString())
-      if (filters.maxPrice) params.append('maxPrice', filters.maxPrice.toString())
-      if (filters.inStock) params.append('inStock', 'true')
-      
+      if (filters.minPrice) {
+        params.append('minPrice', filters.minPrice.toString())
+      }
+      if (filters.maxPrice) {
+        params.append('maxPrice', filters.maxPrice.toString())
+      }
+      if (filters.inStock) {
+        params.append('inStock', 'true')
+      }
+
       const response = await api.get(`/products?${params.toString()}`)
-      return response.data as Acessorio[]
+      return response.data.products as Acessorio[]
     },
+    staleTime: 5 * 60 * 1000, // 5 minutos
   })
 }
 
+// Hook específico para relógios
 export const useRelogios = () => {
   return useQuery({
-    queryKey: ['acessorios', 'relogios'],
+    queryKey: ['relogios'],
     queryFn: async () => {
-      const response = await api.get('/products?categorySlug=relogios')
-      return response.data as Acessorio[]
+      const response = await api.get('/products?category=relogios')
+      return response.data.products as Acessorio[]
     },
+    staleTime: 5 * 60 * 1000,
   })
 }
 
+// Hook específico para colares
 export const useColares = () => {
   return useQuery({
-    queryKey: ['acessorios', 'colares'],
+    queryKey: ['colares'],
     queryFn: async () => {
-      const response = await api.get('/products?categorySlug=colares')
-      return response.data as Acessorio[]
+      const response = await api.get('/products?category=colares')
+      return response.data.products as Acessorio[]
     },
+    staleTime: 5 * 60 * 1000,
   })
 }
 
+// Hook para buscar acessório específico por ID
 export const useAcessorio = (id: string) => {
   return useQuery({
     queryKey: ['acessorio', id],
@@ -87,6 +94,30 @@ export const useAcessorio = (id: string) => {
       return response.data as Acessorio
     },
     enabled: !!id,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+// Hook para buscar todos os acessórios (relógios + colares)
+export const useTodosAcessorios = () => {
+  return useQuery({
+    queryKey: ['todos-acessorios'],
+    queryFn: async () => {
+      const [relogiosResponse, colaresResponse] = await Promise.all([
+        api.get('/products?category=relogios'),
+        api.get('/products?category=colares')
+      ])
+      
+      const relogios = relogiosResponse.data.products as Acessorio[]
+      const colares = colaresResponse.data.products as Acessorio[]
+      
+      return {
+        relogios,
+        colares,
+        todos: [...relogios, ...colares]
+      }
+    },
+    staleTime: 5 * 60 * 1000,
   })
 }
 
