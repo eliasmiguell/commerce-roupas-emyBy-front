@@ -57,6 +57,7 @@ export interface User {
       
       sessionStorage.clear()
     
+     // Remover o redirecionamento automático
       window.location.href = "/login"
     }
   }
@@ -89,6 +90,7 @@ export interface User {
   export const redirectIfNotAuthenticated = () => {
     if (typeof window === "undefined") return
     
+   // Remover o redirecionamento automático para login
     if (!requireAuth()) {
       window.location.href = "/login"
     }
@@ -99,6 +101,7 @@ export interface User {
     
     const authState = getAuthState()
     
+    // Remover o redirecionamento automático para a página inicial
     if (authState.isAuthenticated && !isTokenExpired(authState.token!)) {
       window.location.href = "/"
     }

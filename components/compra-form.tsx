@@ -58,6 +58,7 @@ export default function CompraForm() {
     size: searchParams.get("size") || "",
   }
 
+  console.log("productData", productData.image)
   // Verificar se veio do carrinho ou compra direta
   const isFromCart = cartItems.length > 0
 
@@ -624,7 +625,7 @@ export default function CompraForm() {
                     {/* Produto */}
                     <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
                       <img
-                        src={productData.image}
+                        src={getImageUrl(productData.image)}
                         alt={productData.title}
                         className="w-20 h-20 object-cover rounded-lg"
                       />

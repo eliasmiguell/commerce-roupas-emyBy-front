@@ -7,7 +7,7 @@ import { Menu, X, Home, ShoppingCart, MessageCircle, Shirt,Gem,
   import { FaShoePrints } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useCartItems } from "@/lib/cartService";
 import AdminNotification from "./AdminNotification";
 import { API_ENDPOINTS } from "@/lib/config";
@@ -19,6 +19,7 @@ export default function Header() {
   const [userName, setUserName] = useState("")
   const [showAdminNotification, setShowAdminNotification] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
   const { isAuthenticated, user, logout } = useAuth()
   const { data: cartData } = useCartItems()
 
@@ -60,7 +61,10 @@ export default function Header() {
     }
   }
   const handleLogout = () => {
+    console.log('Header - Logout clicado')
     logout()
+    // Redirecionar manualmente para login após logout
+    router.push('/login')
   }
   const closeMenu = () => {
     setIsMenuOpen(false)
@@ -78,7 +82,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3" onClick={closeMenu}>
             
-            <img src="imagens/logo-loja.png" alt="logo-loja" className="w-[80px] h-[60px]"/>
+            <img src="/imagens/logo-loja.png" alt="logo-loja" className="w-[80px] h-[60px]"/>
           </Link>
 
           {/* Desktop Navigation */}

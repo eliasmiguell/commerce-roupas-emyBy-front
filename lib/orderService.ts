@@ -76,7 +76,9 @@ export const useOrder = (id: string) => {
   return useQuery<any>({
     queryKey: ['order', id],
     queryFn: async () => {
+      console.log('useOrder - Fazendo requisição para /orders/' + id)
       const response = await api.get(`/orders/${id}`)
+      console.log('useOrder - Resposta da API:', response.data)
       return response.data
     },
     enabled: !!id,

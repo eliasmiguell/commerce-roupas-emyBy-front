@@ -80,16 +80,27 @@ export default function PedidoDetalhesPage() {
   const orderId = params.id as string
   const { data: orderData, isLoading, error } = useOrder(orderId)
 
+  console.log('=== PedidoDetalhesPage ===')
+  console.log('orderId:', orderId)
+  console.log('isAuthenticated:', isAuthenticated)
+  console.log('orderData:', orderData)
+  console.log('isLoading:', isLoading)
+  console.log('error:', error)
+
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login')
-      return
-    }
+    console.log('PedidoDetalhesPage useEffect - isAuthenticated:', isAuthenticated)
+    // Remover o redirecionamento automático para login
+    // if (!isAuthenticated) {
+    //   console.log('PedidoDetalhesPage - Redirecionando para login')
+    //   router.push('/login')
+    //   return
+    // }
   }, [isAuthenticated, router])
 
-  if (!isAuthenticated) {
-    return null
-  }
+  // Remover a verificação que retorna null
+  // if (!isAuthenticated) {
+  //   return null
+  // }
 
   if (isLoading) {
     return (
@@ -126,7 +137,33 @@ export default function PedidoDetalhesPage() {
     )
   }
 
-  if (error || !orderData) {
+  if (error) {
+    console.log('PedidoDetalhesPage - Erro:', error)
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="pt-8">
+          <div className="container mx-auto px-4 py-8">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">Erro ao carregar pedido</h1>
+              <p className="text-gray-600 mb-6">Ocorreu um erro ao carregar os detalhes do pedido.</p>
+              <Button 
+                onClick={() => router.push('/meus-pedidos')}
+                style={{ backgroundColor: '#811B2D' }}
+                className="hover:bg-pink-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar aos Meus Pedidos
+              </Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (!orderData) {
+    console.log('PedidoDetalhesPage - orderData é null/undefined')
     return (
       <div className="min-h-screen">
         <Header />
@@ -150,7 +187,38 @@ export default function PedidoDetalhesPage() {
     )
   }
 
-  const order = orderData.order || orderData
+  // A API pode retornar o pedido diretamente ou dentro de um objeto
+  const order = orderData?.order || orderData
+  
+  console.log('PedidoDetalhesPage - order:', order)
+  console.log('PedidoDetalhesPage - order.orderItems:', order?.orderItems)
+  console.log('PedidoDetalhesPage - order.items:', order?.items)
+  
+  // Verificar se o pedido existe
+  if (!order) {
+    console.log('PedidoDetalhesPage - order é null/undefined')
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="pt-8">
+          <div className="container mx-auto px-4 py-8">
+            <div className="text-center">
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">Pedido não encontrado</h1>
+              <p className="text-gray-600 mb-6">O pedido que você está procurando não existe ou não foi encontrado.</p>
+              <Button 
+                onClick={() => router.push('/meus-pedidos')}
+                style={{ backgroundColor: '#811B2D' }}
+                className="hover:bg-pink-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar aos Meus Pedidos
+              </Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen">
@@ -177,56 +245,62 @@ export default function PedidoDetalhesPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle className="text-2xl">
-                        Pedido #{order.orderNumber || order.id.slice(-8)}
+                        Pedido #{order.orderNumber || order.id?.slice(-8) || 'N/A'}
                       </CardTitle>
                       <CardDescription className="flex items-center space-x-4 mt-2">
                         <span className="flex items-center">
                           <Calendar className="h-4 w-4 mr-1" />
-                          {new Date(order.createdAt).toLocaleDateString('pt-BR')}
+                          {order.createdAt ? new Date(order.createdAt).toLocaleDateString('pt-BR') : 'Data não disponível'}
                         </span>
                         <span className="flex items-center">
                           <DollarSign className="h-4 w-4 mr-1" />
-                          {formatCurrency(order.total)}
+                          {formatCurrency(order.total || 0)}
                         </span>
                       </CardDescription>
                     </div>
-                    <Badge className={`${getStatusColor(order.status)} text-lg px-4 py-2`}>
-                      <span className="mr-2">{getStatusIcon(order.status)}</span>
-                      {translateStatus(order.status)}
+                    <Badge className={`${getStatusColor(order.status || 'pending')} text-lg px-4 py-2`}>
+                      <span className="mr-2">{getStatusIcon(order.status || 'pending')}</span>
+                      {translateStatus(order.status || 'pending')}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold text-gray-800 mb-4">Produtos do Pedido</h3>
-                    {order.items?.map((item: any) => (
-                      <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                        <img
-                          src={getImageUrl(item.product?.imageUrl || '/placeholder.svg')}
-                          alt={item.product?.name || 'Produto'}
-                          className="w-20 h-20 object-cover rounded-md"
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg'
-                          }}
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-800">
-                            {item.product?.name || 'Produto não encontrado'}
-                          </h4>
-                          <p className="text-sm text-gray-600">
-                            Quantidade: {item.quantity}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            Preço unitário: {formatCurrency(item.price)}
-                          </p>
+                    {(order.orderItems || order.items || []).length > 0 ? (
+                      (order.orderItems || order.items || []).map((item: any) => (
+                        <div key={item.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                          <img
+                            src={getImageUrl(item.product?.imageUrl || '/placeholder.svg')}
+                            alt={item.product?.name || 'Produto'}
+                            className="w-20 h-20 object-cover rounded-md"
+                            onError={(e) => {
+                              e.currentTarget.src = '/placeholder.svg'
+                            }}
+                          />
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-gray-800">
+                              {item.product?.name || 'Produto não encontrado'}
+                            </h4>
+                            <p className="text-sm text-gray-600">
+                              Quantidade: {item.quantity}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Preço unitário: {formatCurrency(item.price)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-gray-800">
+                              {formatCurrency(item.price * item.quantity)}
+                            </p>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-gray-800">
-                            {formatCurrency(item.price * item.quantity)}
-                          </p>
-                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8">
+                        <p className="text-gray-600">Nenhum produto encontrado neste pedido.</p>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -242,7 +316,7 @@ export default function PedidoDetalhesPage() {
                 <CardContent className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal:</span>
-                    <span className="font-semibold">{formatCurrency(order.total)}</span>
+                    <span className="font-semibold">{formatCurrency(order.total || 0)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Frete:</span>

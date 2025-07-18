@@ -33,14 +33,16 @@ export function useAuth() {
     saveAuthData(token, userData)
     setIsAuthenticated(true)
     setUser(userData)
-    router.push('/')
+    // Remover o redirecionamento automático para a página inicial
+    // router.push('/')
   }
 
   const logout = () => {
     logoutAuth()
     setIsAuthenticated(false)
     setUser(null)
-    router.push('/login')
+    // Remover o redirecionamento automático para login
+    // router.push('/login')
   }
 
   return {

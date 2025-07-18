@@ -210,14 +210,15 @@ export default function MeusPedidosPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {order.items?.map((item: any) => (
-                        <div key={item.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                          <img
-                            src={getImageUrl(item.product?.imageUrl || '/placeholder.svg')}
-                            alt={item.product?.name || 'Produto'}
-                            className="w-16 h-16 object-cover rounded-md"
-                            onError={(e) => {
-                              e.currentTarget.src = '/placeholder.svg'
+                      {(order.orderItems || order.items || []).length > 0 ? (
+                        (order.orderItems || order.items || []).map((item: any) => (
+                          <div key={item.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                            <img
+                              src={getImageUrl(item.product?.imageUrl || '/placeholder.svg')}
+                              alt={item.product?.name || 'Produto'}
+                              className="w-16 h-16 object-cover rounded-md"
+                              onError={(e) => {
+                                e.currentTarget.src = '/placeholder.svg'
                             }}
                           />
                           <div className="flex-1">
@@ -229,8 +230,13 @@ export default function MeusPedidosPage() {
                             </p>
                           </div>
                         </div>
-                      ))}
-                    </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-4">
+                        <p className="text-gray-600">Nenhum produto encontrado neste pedido.</p>
+                      </div>
+                    )}
+                  </div>
                     
                     <div className="mt-6 pt-4 border-t border-gray-200">
                       <div className="flex items-center justify-between">
@@ -242,7 +248,11 @@ export default function MeusPedidosPage() {
                         </div>
                         <Button
                           variant="outline"
-                          onClick={() => router.push(`/pedido/${order.id}`)}
+                          onClick={() => {
+                            console.log('Clicando em Ver Detalhes para pedido:', order.id)
+                            console.log('URL de destino:', `/pedido/${order.id}`)
+                            router.push(`/pedido/${order.id}`)
+                          }}
                           className="border-pink-300 text-pink-600 hover:bg-pink-50"
                         >
                           <Eye className="h-4 w-4 mr-2" />
