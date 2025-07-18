@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useAuth } from "@/hooks/use-auth"
+import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 
 interface ProtectedRouteProps {
@@ -11,6 +12,7 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   const { isAuthenticated, loading } = useAuth()
+  const router = useRouter()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -41,9 +43,7 @@ export default function ProtectedRoute({ children, fallback }: ProtectedRoutePro
     }
     
     // Redirecionar para login
-    if (typeof window !== "undefined") {
-      window.location.href = "/login"
-    }
+    router.push("/login")
     return null
   }
 

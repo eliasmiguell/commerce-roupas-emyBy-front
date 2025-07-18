@@ -13,6 +13,7 @@ export function useAuth() {
   useEffect(() => {
     const checkAuth = () => {
       const authState = getAuthState()
+      console.log('useAuth - checkAuth chamado, authState:', authState)
       setIsAuthenticated(authState.isAuthenticated)
       setUser(authState.user)
       setLoading(false)
@@ -22,6 +23,7 @@ export function useAuth() {
 
     // Listener para mudanças no localStorage
     const handleStorageChange = () => {
+      console.log('useAuth - Storage change detectado')
       checkAuth()
     }
 
@@ -30,19 +32,22 @@ export function useAuth() {
   }, [])
 
   const login = (token: string, userData: any) => {
+    console.log('useAuth - Login chamado com token:', token ? 'presente' : 'ausente')
+    console.log('useAuth - User data:', userData)
     saveAuthData(token, userData)
     setIsAuthenticated(true)
     setUser(userData)
-    // Remover o redirecionamento automático para a página inicial
-    // router.push('/')
+    console.log('useAuth - Redirecionando para página inicial')
+    // Redirecionar para a página inicial após login
+    router.push('/')
   }
 
   const logout = () => {
     logoutAuth()
     setIsAuthenticated(false)
     setUser(null)
-    // Remover o redirecionamento automático para login
-    // router.push('/login')
+    // Redirecionar para login após logout
+    router.push('/login')
   }
 
   return {

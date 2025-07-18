@@ -63,8 +63,7 @@ export default function Header() {
   const handleLogout = () => {
     console.log('Header - Logout clicado')
     logout()
-    // Redirecionar manualmente para login após logout
-    router.push('/login')
+    // O hook useAuth já faz o redirecionamento
   }
   const closeMenu = () => {
     setIsMenuOpen(false)

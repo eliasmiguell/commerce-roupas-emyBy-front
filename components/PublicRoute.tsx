@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useAuth } from "@/hooks/use-auth"
+import { useRouter } from "next/navigation"
 import { Loader2 } from "lucide-react"
 
 interface PublicRouteProps {
@@ -11,6 +12,7 @@ interface PublicRouteProps {
 
 export default function PublicRoute({ children, redirectTo = "/" }: PublicRouteProps) {
   const { isAuthenticated, loading } = useAuth()
+  const router = useRouter()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -36,9 +38,8 @@ export default function PublicRoute({ children, redirectTo = "/" }: PublicRouteP
 
   // Se estiver autenticado, redirecionar
   if (isAuthenticated) {
-    if (typeof window !== "undefined") {
-      window.location.href = redirectTo
-    }
+    console.log('PublicRoute - Usuário autenticado, redirecionando para:', redirectTo)
+    router.push(redirectTo)
     return null
   }
 

@@ -51,6 +51,7 @@ export default function LoginForm() {
         setLoading(false)
         return
       }
+      console.log('LoginForm - Login bem-sucedido, chamando login hook')
       // Usar o hook de autenticação para fazer login
       login(data.token, data.user)
     } catch (err) {

@@ -49,7 +49,7 @@ export interface User {
     }
   }
   
-  export const logout = () => {
+    export const logout = () => {
     if (typeof window !== "undefined") {
      
       localStorage.removeItem("token")
@@ -57,8 +57,8 @@ export interface User {
       
       sessionStorage.clear()
     
-     // Remover o redirecionamento automático
-      window.location.href = "/login"
+      // Comentar para evitar conflitos com o hook useAuth
+      // window.location.href = "/login"
     }
   }
   
@@ -87,13 +87,13 @@ export interface User {
     return true
   }
   
-  export const redirectIfNotAuthenticated = () => {
+    export const redirectIfNotAuthenticated = () => {
     if (typeof window === "undefined") return
     
-   // Remover o redirecionamento automático para login
-    if (!requireAuth()) {
-      window.location.href = "/login"
-    }
+    // Comentar para evitar conflitos com o hook useAuth
+    // if (!requireAuth()) {
+    //   window.location.href = "/login"
+    // }
   }
   
   export const redirectIfAuthenticated = () => {
@@ -101,8 +101,8 @@ export interface User {
     
     const authState = getAuthState()
     
-    // Remover o redirecionamento automático para a página inicial
-    if (authState.isAuthenticated && !isTokenExpired(authState.token!)) {
-      window.location.href = "/"
-    }
+    // Comentar para evitar conflitos com o hook useAuth
+    // if (authState.isAuthenticated && !isTokenExpired(authState.token!)) {
+    //   window.location.href = "/"
+    // }
   }
