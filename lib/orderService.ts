@@ -59,6 +59,19 @@ export const useOrders = () => {
   })
 }
 
+export const useUserOrders = () => {
+  return useQuery<any>({
+    queryKey: ['user-orders'],
+    queryFn: async () => {
+      console.log('useUserOrders - Fazendo requisição para /orders')
+      const response = await api.get('/orders')
+      console.log('Resposta da API meus pedidos:', response.data)
+      return response.data
+    },
+    enabled: true, // Sempre habilitado
+  })
+}
+
 export const useOrder = (id: string) => {
   return useQuery<any>({
     queryKey: ['order', id],

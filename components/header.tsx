@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Menu, X, Home, ShoppingCart, MessageCircle, Shirt,Gem,
   MessageSquare,
-  LogOut, Settings, Crown, } from "lucide-react";
+  LogOut, Settings, Crown, Package, } from "lucide-react";
   import { FaShoePrints } from "react-icons/fa";
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -135,7 +135,7 @@ export default function Header() {
               }`}
             >
               <MessageSquare size={18} /> 
-              <span>Fale Conosco</span>
+              <span>Contato</span>
             </Link>
             <Link
               href="/carrinho"
@@ -150,21 +150,32 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            {isAuthenticated && !isAdmin && (
+              <Link
+                href="/meus-pedidos"
+                onClick={() => console.log('Link Meus Pedidos clicado - Desktop')}
+                className={`flex items-center space-x-2 transition-colors ${
+                  isActive("/meus-pedidos") ? "text-pink-600" : "text-white hover:text-pink-600"
+                }`}
+              >
+                <Package className="h-5 w-5" />
+                <span>Meus Pedidos</span>
+              </Link>
+            )}
             
             {/* Indicador de Admin */}
-            {isAdmin && (
+            {/* {isAdmin && (
               <div className="flex items-center space-x-2 text-yellow-400">
                 <Crown className="h-5 w-5" />
                 <span className="text-sm font-medium">Admin</span>
               </div>
             )}
-            
+             */}
 
-            
             {/* Seção do usuário logado - Desktop */}
             {isAuthenticated && user && (
-              <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
-                <div className="w-8 h-8 bg-pink-100 rounded-full flex items-center justify-center">
+              <div className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 ">
+                <div className="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center">
                   {user.avatar ? (
                     <img 
                       src={user.avatar} 
@@ -178,11 +189,11 @@ export default function Header() {
                   )}
                 </div>
                 <div className="hidden md:block">
-                  <p className="text-sm font-medium text-white">{user.name}</p>
+                  <p className="text-sm font-medium text-white">{user.name.split(" ")[0]}</p>
                   {isAdmin && (
                     <div className="flex items-center space-x-1">
                       <Crown className="h-3 w-3 text-yellow-400" />
-                      <span className="text-xs text-yellow-400">Admin</span>
+                      <span className="text-xs text-yellow-40s0">Admin</span>
                     </div>
                   )}
                 </div>
@@ -335,6 +346,23 @@ export default function Header() {
                   </span>
                 )}
               </Link>
+              
+              {/* Link para Meus Pedidos - Mobile */}
+              {isAuthenticated && !isAdmin && (
+                <Link
+                  href="/meus-pedidos"
+                  onClick={() => {
+                    console.log('Link Meus Pedidos clicado - Mobile')
+                    closeMenu()
+                  }}
+                  className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                    isActive("/meus-pedidos") ? "bg-pink-100 text-pink-600" : "text-gray-800 hover:bg-gray-100"
+                  }`}
+                >
+                  <Package className="h-6 w-6" />
+                  <span className="text-lg font-medium">Meus Pedidos</span>
+                </Link>
+              )}
               
               {/* Indicador de Admin no Mobile */}
               {isAdmin && (
