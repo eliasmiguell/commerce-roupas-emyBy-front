@@ -1,5 +1,5 @@
 // Configuração da API
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://emy-backend.onrender.com'
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
 
 // Endpoints da API
 export const API_ENDPOINTS = {

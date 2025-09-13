@@ -23,7 +23,7 @@ api.interceptors.response.use(
     return response
   },
   (error) => {
-    console.error('Erro da API:', error.config?.url, error.response?.status, error.response?.data)
+    console.log('Erro da API:', error.config?.url, error.response?.status, error.response?.data)
     return Promise.reject(error)
   }
 )
